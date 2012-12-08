@@ -1,0 +1,35 @@
+# ==============================================================================
+# SCREEN SETTINGS
+# ==============================================================================
+
+activity "*** ACTIVITY IN %n (%t) [%w:%s]~ ***"
+autodetach on
+bell_msg "*** BELL (%n)! ***"
+caption splitonly "%{= bw}[%{y}%h%{w}] %{y}%n*%f %t%?: %u%?%="
+compacthist on
+defscrollback 888
+escape ^pp # ^aa  default
+hardcopy_append on
+hardstatus alwayslastline '%{= Kr}[%{G}%h%{r}][%=%{w}%?%-Lw%?%{r}(%{y}%n*%f %t%?: %u%?%{r})%{w}%?%+Lw%?%=%{r}][%{G}%l%{r}]'
+msgwait 2
+multiuser off				
+pow_detach_msg "*** SCREEN SESSION OF $LOGNAME ENDED ****"
+shell zsh
+silencewait 15
+sorendition "= yr"
+startup_message off
+vbell off
+vbell_msg "*** WUFF WUFF ***"
+
+bind k # k and ^k kills the current window, can't imagine I'd used it
+bind ^k
+bind . # can't imagine I'd dump a .termcap file either
+bind ^\ # why would you want to quit?
+bind \\ # why would you want to quit?
+
+# a vim hack to paste intelligently
+# prepend/append register [/] to the paste if ^a^] is pressed.
+register [ "\033:set paste\015a"
+register ] "\033:set nopaste\015a"
+bind ^] paste [.]
+
