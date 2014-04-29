@@ -121,23 +121,28 @@ if [ `/usr/bin/id -u` -eq 0 ]; then
 fi
 
 alias cp='nocorrect cp'
+alias dir='/bin/ls -abhlF'
 alias du='du -h'
 alias df='df -h'
 alias ftp='ftp -i'
 alias grep='grep -E --color=auto'
 alias irb='irb --readline -r irb/completion --prompt simple'
 alias job='jobs -l'
-alias ll='/bin/ls -abhlF --color=auto'
-alias ls='/bin/ls -abhF --color=auto'
+alias ll='/bin/ls -AbhlF'
+alias ls='/bin/ls -AbhF'
 alias mkdir='nocorrect mkdir'
 alias more='less'
 alias mv='nocorrect mv'
 alias pstree='pstree -hul'
-alias repo='cd ~/projects/gitrepos'
+alias repo='cd ~/Repos'
 alias screen='screen -DR'
 alias vi='vim'
-alias w='w -fu'
 alias who='who -HTu'
+
+# enable online help
+unalias run-help
+autoload run-help
+HELPDIR=/usr/local/share/zsh/helpfiles
 
 save_configs() {
     /bin/tar cfz ._configs.tar.gz \
