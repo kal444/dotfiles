@@ -58,18 +58,19 @@ if [ `/usr/bin/id -u` -eq 0 ]; then
   alias mv='mv -i'
 fi
 
+alias dir='/bin/ls -abhlF'
 alias du='du -h'
 alias df='df -h'
 alias ftp='ftp -i'
 alias grep='grep -E --color=auto'
 alias irb='irb --readline -r irb/completion --prompt simple'
 alias job='jobs -l'
-alias ll='/bin/ls -abhlF --color=auto'
-alias ls='/bin/ls -abhF --color=auto'
+alias ll='/bin/ls -abhlF'
+alias ls='/bin/ls -abhF'
 alias more='less'
 alias pstree='pstree -hul'
+alias repo='cd ~/Repos'
 alias screen='screen -DR'
 alias vi='vim'
-alias w='w -fu'
 alias who='who -HTu'
 
