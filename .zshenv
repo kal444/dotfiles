@@ -2,7 +2,6 @@
 # This file is used by all zsh shells
 # Only configurations applying to all 
 # shells (login, interactive, normal) should go here
-#
 
 export LESS="-R -Mei -x4"
 export EDITOR="vim"

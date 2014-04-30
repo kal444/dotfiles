@@ -153,4 +153,3 @@ save_configs() {
             .toprc \
             .xinitrc
 }
-
