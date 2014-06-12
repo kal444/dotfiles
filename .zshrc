@@ -12,7 +12,7 @@ else
 fi
 
 # xterm and rxvt title setting
-case ${TERM} in
+case $TERM in
     xterm*|rxvt*|Eterm|aterm|kterm|gnome)
         precmd() {
             # OK, this needs some documentaions, ]0 chooses title and icon title
