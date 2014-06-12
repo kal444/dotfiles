@@ -3,9 +3,6 @@
 # Only configurations applying to all 
 # shells (login, interactive, normal) should go here
 
-export LESS="-R -Mei -x4"
-export EDITOR="vim"
-
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 export PATH=$HOME/usr/bin:$PATH
 
