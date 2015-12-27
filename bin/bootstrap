@@ -13,8 +13,8 @@ function link() {
   for file in $DOTFILES/link/*
   do
     base="$(basename $file)"
-    dest="$HOME/$base"
-    echo ln -sf "$dest" "$file"
+    dest="$HOME/.$base"
+    echo ln -sf "$file" "$dest"
   done
 }
 
