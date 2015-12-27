@@ -15,7 +15,7 @@ function link() {
     base="$(basename $file)"
     dest="$HOME/.$base"
     l_good "Linking $file to $dest"
-    ln -sf "$file" "$dest"
+    ln -sfF "$file" "$dest"
   done
 }
 
