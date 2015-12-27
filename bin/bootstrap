@@ -10,7 +10,8 @@ function l_bad()  { echo -e "  \033[1;31m✖\033[0m  $@" }
 function link() {
   local file base dest
 
-  for file in $DOTFILES/link/*; do
+  for file in $DOTFILES/link/*
+  do
     base="$(basename $file)"
     dest="$HOME/.$base"
     l_good "Linking $file to $dest"
@@ -18,7 +19,8 @@ function link() {
   done
 }
 
-if [[ -d "$DOTFILES" ]]; then
+if [[ -d "$DOTFILES" ]]
+then
   cd "$DOTFILES"
   l_ln "Updating from repo"
   git pull
