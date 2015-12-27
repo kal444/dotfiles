@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# put scripts here to run when the computer wakes up from sleep
+~kal/usr/bin/berunda-mount-shares
+
+echo I am awake
+

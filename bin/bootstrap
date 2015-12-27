@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+export DOTREPO=git@github.com:kal444/dotfiles.git
+export DOTFILES=~/.dotfiles
+
+function l_ln()   { echo -e "\n\033[1m$@\033[0m" }
+function l_good() { echo -e "  \033[1;32m✔\033[0m  $@" }
+function l_bad()  { echo -e "  \033[1;31m✖\033[0m  $@" }
+
+function link() {
+  local file base dest
+
+  for file in $DOTFILES/link/*
+  do
+    base="$(basename $file)"
+    dest="$HOME/$base"
+    echo ln -sf "$dest" "$file"
+  done
+}
+
+if [[ -d "$DOTFILES" ]]
+then
+  cd "$DOTFILES"
+  l_ln "Updating from repo"
+  git pull
+  git submodule update --init --recursive --quiet
+else
+  l_ln "Cloning from repo"
+  git clone --recursive "$DOTREPO" "$DOTFILES"
+  cd "$DOTFILES"
+fi
+
+link
+
+l_ln "All Done!"

@@ -1,5 +1,3 @@
-# .zshrc
-
 export EDITOR="vim"
 export LESS="-R -Mei -x4"
 export CLICOLOR=1 # for ls color output
@@ -126,32 +124,6 @@ configure_bindings() {
   bindkey -r "^[/"
 }
 configure_bindings
-
-# alias def
-if [ `/usr/bin/id -u` -eq 0 ]; then
-  alias cp='cp -i'
-  alias rm='rm -i'
-  alias mv='mv -i'
-fi
-
-alias cp='nocorrect cp'
-alias rm='nocorrect rm'
-alias mv='nocorrect mv'
-alias mkdir='nocorrect mkdir'
-
-alias ls='/bin/ls -AbhF'
-alias ll='/bin/ls -AbhlF'
-alias dir='/bin/ls -AbhlF'
-
-alias du='du -h'
-alias df='df -h'
-alias ftp='ftp -i'
-alias grep='egrep --color=auto'
-alias egrep='egrep --color=auto'
-alias irb='irb --readline -r irb/completion --prompt simple'
-alias more='less'
-alias screen='screen -DR'
-alias vi='vim'
 
 # enable online help
 unalias run-help

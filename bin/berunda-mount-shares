@@ -1,0 +1,19 @@
+#!/bin/sh
+
+for i in `seq 1 9`; do
+  # wait until interface is active again.
+  # is there a better way to do this?
+  ifconfig en0 | grep -q 'status: active' && break;
+  sleep 5
+done
+
+ping -q -c1 berunda >/dev/null || exit; # server not up
+
+pw=$(security find-internet-password -w -a kal -s berunda)
+
+# mount only when it's not mounted
+mount | grep -q /opt/kyle/berunda/media || mount -t smbfs smb://kal:$pw@berunda/media /opt/kyle/berunda/media
+mount | grep -q /opt/kyle/berunda/public || mount -t smbfs smb://kal:$pw@berunda/public /opt/kyle/berunda/public
+mount | grep -q /opt/kyle/berunda/attic || mount -t smbfs smb://kal:$pw@berunda/attic /opt/kyle/berunda/attic
+mount | grep -q /opt/kyle/berunda/kal || mount -t smbfs smb://kal:$pw@berunda/home /opt/kyle/berunda/kal
+
