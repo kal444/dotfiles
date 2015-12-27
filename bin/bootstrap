@@ -3,9 +3,9 @@
 export DOTREPO=git@github.com:kal444/dotfiles.git
 export DOTFILES=~/.dotfiles
 
-function l_ln()   { echo -e "\n\033[1m$@\033[0m" }
-function l_good() { echo -e "  \033[1;32m✔\033[0m  $@" }
-function l_bad()  { echo -e "  \033[1;31m✖\033[0m  $@" }
+function l_ln()   { echo -e "\n\033[1m$@\033[0m"; }
+function l_good() { echo -e "  \033[1;32m✔\033[0m  $@"; }
+function l_bad()  { echo -e "  \033[1;31m✖\033[0m  $@"; }
 
 function link() {
   local file base dest
