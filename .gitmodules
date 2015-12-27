@@ -1,0 +1,9 @@
+[submodule "z"]
+	path = thirdparty/z
+	url = git@github.com:rupa/z.git
+[submodule "rbenv"]
+	path = thirdparty/rbenv
+	url = git@github.com:rbenv/rbenv.git
+[submodule "ruby-build"]
+	path = link/rbenv/plugins/ruby-build
+	url = git@github.com:rbenv/ruby-build.git
