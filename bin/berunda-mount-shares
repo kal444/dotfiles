@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 for i in `seq 1 9`; do
   # wait until interface is active again.
@@ -16,4 +16,3 @@ mount | grep -q /opt/kyle/berunda/media || mount -t smbfs smb://kal:$pw@berunda/
 mount | grep -q /opt/kyle/berunda/public || mount -t smbfs smb://kal:$pw@berunda/public /opt/kyle/berunda/public
 mount | grep -q /opt/kyle/berunda/attic || mount -t smbfs smb://kal:$pw@berunda/attic /opt/kyle/berunda/attic
 mount | grep -q /opt/kyle/berunda/kal || mount -t smbfs smb://kal:$pw@berunda/home /opt/kyle/berunda/kal
-

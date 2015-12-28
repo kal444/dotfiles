@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ping -q -c1 berunda >/dev/null || exit; # server not up
 
@@ -7,4 +7,3 @@ mount | grep -q /opt/kyle/berunda/media && umount /opt/kyle/berunda/media
 mount | grep -q /opt/kyle/berunda/public && umount /opt/kyle/berunda/public
 mount | grep -q /opt/kyle/berunda/attic && umount /opt/kyle/berunda/attic
 mount | grep -q /opt/kyle/berunda/kal && umount /opt/kyle/berunda/kal
-
