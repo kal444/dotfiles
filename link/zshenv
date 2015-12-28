@@ -1,1 +1,4 @@
+# this file is soured by all shell modes (login/interactive/normal)
+# keep this small and fast
+#
 export DOTFILES=$HOME/.dotfiles

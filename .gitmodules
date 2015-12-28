@@ -7,3 +7,6 @@
 [submodule "ruby-build"]
 	path = link/rbenv/plugins/ruby-build
 	url = git@github.com:rbenv/ruby-build.git
+[submodule "vundle"]
+	path = link/vim/bundle/Vundle.vim
+	url = git@github.com:VundleVim/Vundle.vim.git

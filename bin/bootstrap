@@ -3,34 +3,57 @@
 export DOTREPO=git@github.com:kal444/dotfiles.git
 export DOTFILES=~/.dotfiles
 
+backup_dir="$DOTFILES/backups/$(date "+%Y_%m_%d-%H_%M_%S")"
+
 function l_ln()   { echo -e "\n\033[1m$@\033[0m"; }
 function l_good() { echo -e "  \033[1;32m✔\033[0m  $@"; }
 function l_bad()  { echo -e "  \033[1;31m✖\033[0m  $@"; }
+function l_info() { echo -e "  \033[1;34m➜\033[0m  $@"; }
 
-function link() {
-  local file base dest
+function backupIfNeeded() {
+  local dest="$1"
+  if [[ -e "$dest" ]]; then
+    l_info "Need to backup $dest"
+    [[ -d "$backup_dir" ]] || mkdir -p "$backup_dir"
+    mv "$dest" "$backup_dir"
+  fi
+}
 
-  for file in $DOTFILES/link/*
-  do
-    base="$(basename $file)"
-    dest="$HOME/.$base"
-    l_good "Linking $file to $dest"
-    ln -sfF "$file" "$dest"
+function link_one() {
+  local file="$1"
+  local dest="$HOME/.$(basename $file)"
+  backupIfNeeded "$dest"
+  l_good "Linking $file to $dest"
+  ln -s "$file" "$dest"
+}
+
+function link_all() {
+  local file
+  for file in $DOTFILES/link/*; do
+    link_one "$file"
   done
 }
 
-if [[ -d "$DOTFILES" ]]
-then
-  cd "$DOTFILES"
-  l_ln "Updating from repo"
-  git pull
-  git submodule update --init --recursive --quiet
-else
-  l_ln "Cloning from repo"
-  git clone --recursive "$DOTREPO" "$DOTFILES"
-  cd "$DOTFILES"
-fi
+function install() {
+  if [[ -d "$DOTFILES" ]]; then
+    cd "$DOTFILES"
+    l_ln "Updating from repo"
+    git pull
+    git submodule update --init --recursive --quiet
+  else
+    l_ln "Cloning from repo"
+    git clone --recursive "$DOTREPO" "$DOTFILES"
+    cd "$DOTFILES"
+  fi
 
-link
+  link_all
 
-l_ln "All Done!"
+  if [[ -d "$backup_dir" ]]; then
+    l_ln "The following files are backed up to $backup_dir"
+    ls -lFbA "$backup_dir"
+  fi
+
+  l_ln "All Done!"
+}
+
+install

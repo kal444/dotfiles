@@ -130,7 +130,7 @@ unalias run-help
 autoload -U run-help
 HELPDIR=/usr/local/share/zsh/5.0.5/help
 
-source $HOME/Repos/z/z.sh
+source $DOTFILES/thirdparty/z/z.sh
 
 save_configs() {
     /bin/tar cfz ._configs.tar.gz \
