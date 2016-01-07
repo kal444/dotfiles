@@ -25,3 +25,6 @@ alias vi='vim'
 
 alias ftp='ftp -i'
 alias irb='irb --readline -r irb/completion --prompt simple'
+
+alias d='docker'
+alias dm='docker-machine'

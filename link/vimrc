@@ -1,77 +1,127 @@
-" don't bother with vi compatibility
-set nocompatible
+" Author: Kyle Huang (https://github.com/kal444)
+"
+" Based on many others' vimrc files
+"   many years ago, the initial version is http://www.guckes.net/vim/
+"   then, it went through many modifications
+"   recently, I'm inspired to look at more vim plugins and started to go
+"   through this: https://github.com/square/maximum-awesome
+"   some more 'sensible' settings from https://github.com/tpope/vim-sensible
 
-" enable syntax highlighting
-syntax enable
 
-" configure Vundle
-filetype on " without this vim emits a zero exit status, later, because of :ft off
+" vimrc location can vary based on OSes
+" see :version
+" http://vim.wikia.com/wiki/Open_vimrc_file#Location_of_vimrc
+"========== save vimrc location for later use
+if has("win32") || has("win64")
+  let vimrc='$HOME\_vimrc"'
+else
+  let vimrc='$HOME/.vimrc"'
+endif
+
+"========== configure Vundle
+" This expects Vundle is already cloned into bundles directory
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
-" install Vundle bundles
+" Vundle bundles
 if filereadable(expand("~/.vim/vimrc.bundles"))
   source ~/.vim/vimrc.bundles
   source ~/.vim/vimrc.bundles.local
 endif
-
 call vundle#end()
+filetype plugin indent on " enable file type detection.
 
-" ensure ftdetect et al work by including this after the Vundle stuff
-filetype plugin indent on
+" ========== Turn on syntax highlighting
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable
+endif
 
-set autoindent
-set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
-set backspace=2                                              " Fix broken backspace in some setups
-set backupcopy=yes                                           " see :help crontab
-set clipboard=unnamed                                        " yank and paste with the system clipboard
-set directory-=.                                             " don't store swapfiles in the current directory
+"========== Settings
+set nocompatible " we want VIM not VI!
+
+"========== File/buffer handling
+set autoread " read the file again when it's changed outside vim and not inside vim
+set autowrite " write file when :next, :rewind, :last, :first, :previous, :stop, :suspend, :tag, :!, :make commands are used
+set nobackup " backups are for wimps  ;-)
+set backupcopy=yes " see :help crontab
 set encoding=utf-8
-set expandtab                                                " expand tabs to spaces
-set ignorecase                                               " case-insensitive search
-set incsearch                                                " search as you type
-set laststatus=2                                             " always show statusline
-set list                                                     " show trailing whitespace
-set listchars=tab:▸\ ,trail:▫
-set number                                                   " show line numbers
-set ruler                                                    " show where you are
-set scrolloff=3                                              " show context above/below cursorline
-set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
-set showcmd
-set smartcase                                                " case-sensitive search if any caps
-set softtabstop=2                                            " insert mode tab and backspace use 2 spaces
-set tabstop=8                                                " actual tabs occupy 8 characters
-set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
-set wildmenu                                                 " show a navigable menu for tab completion
-set wildmode=longest,list,full
+set hidden " keep the changed buffer without saving it
+set writebackup " make a backup before overwriting a file. then remove it after the file was successfully written
 
-" Enable basic mouse behavior such as resizing buffers.
+"========== Tabs and spaces
+set autoindent " copy indent from current line when starting a new line 
+set expandtab " use only spaces instead of tabs
+set shiftwidth=2 " number of spaces to use for each step of (auto)indent
+set smarttab " smart handling of tab at the front of the line vs in the line
+set softtabstop=2 " number of spaces to use for each <Tab> or <BS> in editing
+set tabstop=8 " real tabs are 8 spaces
+
+"========== Folding
+set foldenable " folding is good
+set foldmethod=indent " make folding indent sensitive
+set foldlevel=10 " don't start folding too early
+
+"========== Display
+set cursorline " makes cursor easier to find
+set nocursorcolumn " don't make cursor TOO easy to find - too distracting
+set display+=lastline " display last line as much as possible
+set laststatus=2 " always show status line
+set lazyredraw " don't update screen while executing macros, registers and other commands that have not been typed
+set list " show trailing whitespace
+set listchars=tab:▸\ ,trail:▫ " set nicer chars for tabs and trailing spaces
+set nomodeline " don't use modelines
+set number " do show line numbers
+set report=0 " report all changed lines
+set ruler " show cursor position always
+set scrolloff=1 " show 1 row context above/below cursorline
+set sidescrolloff=5 " show 5 columns as context
+set shortmess+=atI " abbreviate all messages
+set showcmd " show current uncompleted command
+set showmatch " show matching bracket briefly
+set showmode " show the current mode
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ [LEN=%L]
+set tabpagemax=50 " limit tabs opened
+set title " have vim try to update the title of the window
+set ttimeout ttimeoutlen=100 " timeout keycode after 100ms, do not timeout mappings
+set ttyfast " we are on a fast connection
+set wildchar=<Tab> " use tab to start wildcard expansion in the command-line
+set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc " ignore some files/directories for completion
+set wildmenu " show a navigable menu for tab completion
+set wildmode=longest,list,full " longest match, and list if can't match only one
+
+set noerrorbells " disable error bell beep
+set visualbell " use visual bell, but we will disable it later
+set t_vb= " disable visualbell terminal chars
+
+"========== Editting
+set backspace=indent,eol,start " this is much smarter. back over autoindent,<EOL> and insert position
+set clipboard=unnamed " yank and paste with the system clipboard
+set esckeys " allow cursor movement in insert mode
+set formatoptions+=2j " better indenting. join comment lines better
+set nrformats-=octal " octal would cause numbers with leading zero to be treated as octal. Not good with ^A and ^X
+set virtualedit=all " allow cursor movement anywhere
+set whichwrap+=<,>,[,] " allow left, right keys to wrap in normal/visual mode
+
+"========== History and Searching
+set history=1000 " keep 1000 commands and 1000 search patterns in the history.
+set hlsearch " highlight searches
+set incsearch " display the match for a search pattern when halfway typing it
+set ignorecase " do ignore case in search patterns. This works well with smartcase set on
+set smartcase " ignore case when the pattern contains lowercase letters only
+
+"========== Enable basic mouse behavior such as resizing buffers.
 set mouse=a
 if exists('$TMUX')  " Support resizing in tmux
   set ttymouse=xterm2
 endif
 
-" keyboard shortcuts
-let mapleader = ','
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-noremap <leader>l :Align
-nnoremap <leader>a :Ag<space>
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>d :NERDTreeToggle<CR>
-nnoremap <leader>f :NERDTreeFind<CR>
-nnoremap <leader>t :CtrlP<CR>
-nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
-nnoremap <leader>] :TagbarToggle<CR>
-nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
-nnoremap <leader>g :GitGutterToggle<CR>
-noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
-" in case you forgot to sudo
-cnoremap w!! %!sudo tee > /dev/null %
+
+
+
+
+
+
 
 " plugin settings
 let g:ctrlp_match_window = 'order:ttb,max:20'
@@ -111,19 +161,137 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+
+" ========================================================================
+" ==== MAPPING
+" ========================================================================
+let mapleader = ','
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <leader>l :Align
+nnoremap <leader>a :Ag<space>
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>f :NERDTreeFind<CR>
+nnoremap <leader>t :CtrlP<CR>
+nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
+nnoremap <leader>] :TagbarToggle<CR>
+nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
+nnoremap <leader>g :GitGutterToggle<CR>
+noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+" in case you forgot to sudo
+cnoremap w!! %!sudo tee > /dev/null %
+
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
+
+inoremap <C-U> <C-G>u<C-U> " insert mode ^U will clear line, but undo buffer now saves the cleared text.
+
 " Don't copy the contents of an overwritten selection.
 vnoremap p "_dP
+vnoremap p <Esc>:let current_reg = @"<cr>gvdi<c-r>=current_reg<cr><Esc> " p in visual mode replace the selected text with the "" register.
+ noremap Q gq " don't use Ex mode, use Q for formatting
+ noremap <c-w><c-e> <c-w><c-w><c-w>_<cr> " switch to the other window ala ^w^w, but maximize the target window too
+nnoremap <silent> <F3> :NERDTreeToggle<CR> " use F$3 to toggle NERDTree window
+nnoremap <silent> <F4> :TlistToggle<CR> " use F4 to toggle tag window
+nnoremap <silent> <F5> :MiniBufExplorer<CR> " use F5 to open buffer explorer window
+nnoremap <silent> <F6> :BufExplorer<CR> " use F6 to open buffer explorer window
 
-" Go crazy!
+nnoremap ,rcm :%s/<c-v><c-m>//g<cr> " rcm = remove ^M from DOS file
+
+ noremap ,cel :g/^[<c-i> ]*$/d<cr> " cel = clear empty lines - deletes all empty or whitespace only lines
+  ounmap ,cel
+
+nnoremap ,ss :/ /<cr> " ss = show space - highlight all spaces
+nnoremap ,st :/<c-i>/<cr> " st = show tabs - highlight all tabs
+nnoremap ,sts :/ \{1,\}$/<cr> " sts = show trailing spaces - highlight all trailing spaces
+
+ noremap ,sl :g/^$/-j<cr> " sl = squeeze lines - turns a block of empty lines into *one* empty line
+  ounmap ,sl
+
+" executes the command on the line, it will start executing from the first normal character
+nnoremap ,run 0/[a-zA-Z0-9]<c-m>y$:r !<c-r>y
+
+" ========================================================================
+" VIMRC - Editing and updating the vimrc:
+" As I often make changes to this file I use these commands to start editing it and also update it:
+" ========================================================================
+noremap ,v :exe ":edit " . $vimrc<cr> " ,v = ~/.vimrc editing (edit this file)
+noremap ,u :exe ":source " . $vimrc<cr> " ,u = update by reading this file
+
+if has("autocmd")
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  " autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  " change the current directory to the one a file I open is in
+  autocmd BufRead * lcd %:p:h
+
+  autocmd BufNewFile,BufRead *.textile,*.txtl set filetype=textile
+  autocmd BufNewFile,BufRead *.clojure,*.clj set filetype=clojure
+  autocmd BufNewFile,BufRead *.as set filetype=actionscript
+  autocmd BufNewFile,BufRead *.markdown,*.mkd set filetype=mkd
+
+  autocmd GUIEnter * set visualbell t_vb= " disable screen flashing AND bells in GUI
+
+  augroup END
+endif
+
+if has("gui_running")
+"    behave xterm
+    set columns=132 " default to 132 columns
+    set lines=50 " default to 50 lines
+
+    set background=dark " use the dark bg color set
+    set guicursor=a:blinkon0 " diable blinky cursor
+    set mousehide " hide the mouse when typing
+
+    colorscheme solarized
+
+"    if has("win32") || has("win64")
+"        set guifont=DejaVu_Sans_Mono:h10:cANSI
+"    else
+"        set guifont=DejaVu\ Sans\ Mono\ 10
+"    endif
+
+    " Make shift-insert work like in Xterm
+"    map <S-Insert> <MiddleMouse>
+"    map! <S-Insert> <MiddleMouse>
+
+        " Set nice colors for basic non-syntax files
+        " background for normal text is light grey
+        " Text below the last line is darker grey
+        " Cursor is green, Cyan when ':lmap' mappings are active
+        " Constants are not underlined but have a slightly lighter background
+"        highlight Cursor guibg=black guifg=orange
+"        highlight iCursor guibg=black guifg=orange
+"        highlight Normal guibg=grey90
+"        highlight NonText guibg=grey80
+"        highlight Constant gui=NONE guibg=grey95
+"        highlight Special gui=NONE guibg=grey95
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
 if filereadable(expand("~/.vim/vimrc.local"))
-  " In your .vimrc.local, you might like:
-  "
-  " set autowrite
-  " set nocursorline
-  " set nowritebackup
-  " set whichwrap+=<,>,h,l,[,] " Wrap arrow keys between lines
-  "
-  " autocmd! bufwritepost .vimrc source ~/.vimrc
-  " noremap! jj <ESC>
   source ~/.vim/vimrc.local
 endif

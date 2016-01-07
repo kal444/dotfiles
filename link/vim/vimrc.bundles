@@ -1,39 +1,55 @@
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'scrooloose/nerdtree'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'austintaylor/vim-indentobject'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'juvenn/mustache.vim'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'rking/ag.vim'
-Plugin 'garbas/vim-snipmate'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'nono/vim-handlebars'
-Plugin 'pangloss/vim-javascript'
-Plugin 'wookiehangover/jshint.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'slim-template/vim-slim'
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-cucumber'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-pastie'
-Plugin 'tpope/vim-ragtag'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-vividchalk'
-Plugin 'eventualbuddha/vim-protobuf'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'vim-scripts/Align'
-Plugin 'vim-scripts/greplace.vim'
-Plugin 'vim-scripts/matchit.zip'
+Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
+
+"Plugin 'tpope/vim-sensible' " a universal set of defaults that (hopefully) everyone can agree on
+
+" color schemes
+Plugin 'altercation/vim-colors-solarized' " soloarized color schemes
+"Plugin 'tpope/vim-vividchalk' " a color schme similar to Vibrant Ink in TextMate
+"Plugin 'vim-scripts/herald.vim' " a nice dark color scheme, this is probably no longer needed with solarized
+
+Plugin 'scrooloose/nerdtree' " directory tree explorer
+Plugin 'Xuyuanp/nerdtree-git-plugin' " nerdtree plugin to show git statuses
+Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
+Plugin 'airblade/vim-gitgutter' " show git changes in gutter
+Plugin 'majutsushi/tagbar' " current file tag browser
+
+Plugin 'garbas/vim-snipmate' " snippet supprt similar to textmate, check out https://github.com/honza/vim-snippets
+Plugin 'MarcWeber/vim-addon-mw-utils' " util library for vim - used by snipmate
+Plugin 'tomtom/tlib_vim' " util library for vim - used by snipmate
+
+Plugin 'michaeljsmith/vim-indent-object' " allow selection of text by indent levels
+Plugin 'vim-scripts/Align' " align text, equations, declarations
+Plugin 'vim-scripts/matchit.zip' " configure % to match more than just single characters
+
+Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
+Plugin 'rking/ag.vim' " the_silver_searcher plugin for vim
+Plugin 'vim-scripts/greplace.vim' " global replace
+
+Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
+
+" vim modes for file types
+Plugin 'pangloss/vim-javascript' " better javascript vim mode
+Plugin 'vim-ruby/vim-ruby' " ruby vim mode
+Plugin 'mustache/vim-mustache-handlebars' " mustache/handlebar vim modes
+Plugin 'slim-template/vim-slim' " slim-lang vim mode
+Plugin 'eventualbuddha/vim-protobuf' " google protocol buffer vim mode
+Plugin 'pearofducks/ansible-vim' " ansible vim mode
+Plugin 'tpope/vim-bundler' " ruby bundler support vim mode
+Plugin 'tpope/vim-rails' " rails support vim mode
+Plugin 'tpope/vim-cucumber' " cucumber vim mode
+"Plugin 'kchmck/vim-coffee-script'
+"Plugin 'leafgarland/typescript-vim'
+
+Plugin 'scrooloose/syntastic' " syntax checker for various languages
+"Plugin 'wookiehangover/jshint.vim' " is this really needed with syntastic?
+
+Plugin 'tpope/vim-fugitive' " git wrapper
+Plugin 'tpope/vim-rhubarb' " hub wrapper
+Plugin 'tpope/vim-commentary' " comment/uncomment stuff
+Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
+Plugin 'tpope/vim-dispatch' " asynchronous build and test dispatcher
+Plugin 'tpope/vim-ragtag' " mappings for html, xml, asp, eruby, jsp, etc.
+Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
+Plugin 'tpope/vim-speeddating' " working with dates via increment/decrement
+Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc.
+Plugin 'tpope/vim-unimpaired' " paired mappings
