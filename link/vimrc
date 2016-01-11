@@ -7,15 +7,14 @@
 "   through this: https://github.com/square/maximum-awesome
 "   some more 'sensible' settings from https://github.com/tpope/vim-sensible
 
-
 " vimrc location can vary based on OSes
 " see :version
 " http://vim.wikia.com/wiki/Open_vimrc_file#Location_of_vimrc
 "========== save vimrc location for later use
 if has("win32") || has("win64")
-  let vimrc='$HOME\_vimrc"'
+  let vimrc='$HOME\_vimrc'
 else
-  let vimrc='$HOME/.vimrc"'
+  let vimrc='$HOME/.vimrc'
 endif
 
 "========== configure Vundle
@@ -49,7 +48,7 @@ set hidden " keep the changed buffer without saving it
 set writebackup " make a backup before overwriting a file. then remove it after the file was successfully written
 
 "========== Tabs and spaces
-set autoindent " copy indent from current line when starting a new line 
+set autoindent " copy indent from current line when starting a new line
 set expandtab " use only spaces instead of tabs
 set shiftwidth=2 " number of spaces to use for each step of (auto)indent
 set smarttab " smart handling of tab at the front of the line vs in the line
@@ -79,7 +78,10 @@ set shortmess+=atI " abbreviate all messages
 set showcmd " show current uncompleted command
 set showmatch " show matching bracket briefly
 set showmode " show the current mode
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ [LEN=%L]
+"my status line
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [%p%%][POS=%l,%v][LINES=%L]
+"show syntastic error in status line
+set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
 set tabpagemax=50 " limit tabs opened
 set title " have vim try to update the title of the window
 set ttimeout ttimeoutlen=100 " timeout keycode after 100ms, do not timeout mappings
@@ -115,44 +117,7 @@ if exists('$TMUX')  " Support resizing in tmux
   set ttymouse=xterm2
 endif
 
-
-
-
-
-
-
-
-
-" plugin settings
-let g:ctrlp_match_window = 'order:ttb,max:20'
-let g:NERDSpaceDelims=1
-let g:gitgutter_enabled = 0
-
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
-" fdoc is yaml
-autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
-" md is markdown
-autocmd BufRead,BufNewFile *.md set filetype=markdown
-autocmd BufRead,BufNewFile *.md set spell
-" extra rails.vim help
-autocmd User Rails silent! Rnavcommand decorator      app/decorators            -glob=**/* -suffix=_decorator.rb
-autocmd User Rails silent! Rnavcommand observer       app/observers             -glob=**/* -suffix=_observer.rb
-autocmd User Rails silent! Rnavcommand feature        features                  -glob=**/* -suffix=.feature
-autocmd User Rails silent! Rnavcommand job            app/jobs                  -glob=**/* -suffix=_job.rb
-autocmd User Rails silent! Rnavcommand mediator       app/mediators             -glob=**/* -suffix=_mediator.rb
-autocmd User Rails silent! Rnavcommand stepdefinition features/step_definitions -glob=**/* -suffix=_steps.rb
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
-
-" Fix Cursor in TMUX
+"========== Fix Cursor in tmux
 if exists('$TMUX')
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
@@ -161,130 +126,87 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+"========== Plugin settings
+let g:gitgutter_enabled = 1 " do enable git gutter
 
-" ========================================================================
-" ==== MAPPING
-" ========================================================================
+let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" set extensions for markdown files
+autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set filetype=markdown
+" markdown files should have spell checking
+autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set spell
+" restore last edit position if we can
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+"========== Key mappings
 let mapleader = ','
+
+nnoremap <leader>hl :let @/ = ""<CR> " clear hlsearch highlights
+nnoremap <leader>rcm :%s/<c-v><c-m>//g<cr> " rcm = remove ^M from DOS file
+nnoremap <leader>v :exe ":edit " . vimrc<CR> " vimrc editing (edit this file)
+nnoremap <leader>V :exe ":source " . vimrc<CR> " update by reading this file
+
+vnoremap p "_dP " p i visual mode yank into blackhole register before pasting
+vnoremap <leader>cel :g/^[<c-i> ]*$/d<cr> " cel = clear empty lines - deletes all empty or whitespace only lines
+
+inoremap jj <ESC> " jj quickly in insertmode gives escape key
+inoremap <C-U> <C-G>u<C-U> " insert mode ^U will clear line, but undo buffer now saves the cleared text.
+
+" rewrite the file with sudo
+cnoremap w!! w !sudo tee > /dev/null %
+
+" window movements
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-noremap <leader>l :Align
+noremap <c-w><c-e> <c-w><c-w><c-w>_<cr> " switch to the other window ala ^w^w, but maximize the target window too
+
+" plugin keys
+nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
 nnoremap <leader>a :Ag<space>
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
+nnoremap <leader>g :GitGutterToggle<CR>
+nnoremap <leader>l :Tabularize<space>/
+vnoremap <leader>l :Tabularize<space>/
 nnoremap <leader>t :CtrlP<CR>
 nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
 nnoremap <leader>] :TagbarToggle<CR>
-nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
-nnoremap <leader>g :GitGutterToggle<CR>
-noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
-
-" in case you forgot to sudo
-cnoremap w!! %!sudo tee > /dev/null %
-
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-endif
-
-inoremap <C-U> <C-G>u<C-U> " insert mode ^U will clear line, but undo buffer now saves the cleared text.
-
-" Don't copy the contents of an overwritten selection.
-vnoremap p "_dP
-vnoremap p <Esc>:let current_reg = @"<cr>gvdi<c-r>=current_reg<cr><Esc> " p in visual mode replace the selected text with the "" register.
- noremap Q gq " don't use Ex mode, use Q for formatting
- noremap <c-w><c-e> <c-w><c-w><c-w>_<cr> " switch to the other window ala ^w^w, but maximize the target window too
-nnoremap <silent> <F3> :NERDTreeToggle<CR> " use F$3 to toggle NERDTree window
-nnoremap <silent> <F4> :TlistToggle<CR> " use F4 to toggle tag window
-nnoremap <silent> <F5> :MiniBufExplorer<CR> " use F5 to open buffer explorer window
-nnoremap <silent> <F6> :BufExplorer<CR> " use F6 to open buffer explorer window
-
-nnoremap ,rcm :%s/<c-v><c-m>//g<cr> " rcm = remove ^M from DOS file
-
- noremap ,cel :g/^[<c-i> ]*$/d<cr> " cel = clear empty lines - deletes all empty or whitespace only lines
-  ounmap ,cel
-
-nnoremap ,ss :/ /<cr> " ss = show space - highlight all spaces
-nnoremap ,st :/<c-i>/<cr> " st = show tabs - highlight all tabs
-nnoremap ,sts :/ \{1,\}$/<cr> " sts = show trailing spaces - highlight all trailing spaces
-
- noremap ,sl :g/^$/-j<cr> " sl = squeeze lines - turns a block of empty lines into *one* empty line
-  ounmap ,sl
-
-" executes the command on the line, it will start executing from the first normal character
-nnoremap ,run 0/[a-zA-Z0-9]<c-m>y$:r !<c-r>y
-
-" ========================================================================
-" VIMRC - Editing and updating the vimrc:
-" As I often make changes to this file I use these commands to start editing it and also update it:
-" ========================================================================
-noremap ,v :exe ":edit " . $vimrc<cr> " ,v = ~/.vimrc editing (edit this file)
-noremap ,u :exe ":source " . $vimrc<cr> " ,u = update by reading this file
-
-if has("autocmd")
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  " autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  " change the current directory to the one a file I open is in
-  autocmd BufRead * lcd %:p:h
-
-  autocmd BufNewFile,BufRead *.textile,*.txtl set filetype=textile
-  autocmd BufNewFile,BufRead *.clojure,*.clj set filetype=clojure
-  autocmd BufNewFile,BufRead *.as set filetype=actionscript
-  autocmd BufNewFile,BufRead *.markdown,*.mkd set filetype=mkd
-
-  autocmd GUIEnter * set visualbell t_vb= " disable screen flashing AND bells in GUI
-
-  augroup END
-endif
 
 if has("gui_running")
-"    behave xterm
-    set columns=132 " default to 132 columns
-    set lines=50 " default to 50 lines
+  set columns=132 " default to 132 columns
+  set lines=50 " default to 50 lines
 
-    set background=dark " use the dark bg color set
-    set guicursor=a:blinkon0 " diable blinky cursor
-    set mousehide " hide the mouse when typing
+  set background=dark " use the dark bg color set
+  set guicursor=a:blinkon0 " diable blinky cursor
+  set mousehide " hide the mouse when typing
 
-    colorscheme solarized
+  " at some point the fonts will be needed
+  " if has("win32") || has("win64")
+  "   set guifont=DejaVu_Sans_Mono:h10:cANSI
+  " else
+  "   set guifont=DejaVu\ Sans\ Mono\ 10
+  " endif
+endif
 
-"    if has("win32") || has("win64")
-"        set guifont=DejaVu_Sans_Mono:h10:cANSI
-"    else
-"        set guifont=DejaVu\ Sans\ Mono\ 10
-"    endif
-
-    " Make shift-insert work like in Xterm
-"    map <S-Insert> <MiddleMouse>
-"    map! <S-Insert> <MiddleMouse>
-
-        " Set nice colors for basic non-syntax files
-        " background for normal text is light grey
-        " Text below the last line is darker grey
-        " Cursor is green, Cyan when ':lmap' mappings are active
-        " Constants are not underlined but have a slightly lighter background
-"        highlight Cursor guibg=black guifg=orange
-"        highlight iCursor guibg=black guifg=orange
-"        highlight Normal guibg=grey90
-"        highlight NonText guibg=grey80
-"        highlight Constant gui=NONE guibg=grey95
-"        highlight Special gui=NONE guibg=grey95
+if has('gui_running') || &t_Co == 256
+  colorscheme solarized
 endif
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
