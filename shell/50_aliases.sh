@@ -12,7 +12,9 @@ fi
 alias du='du -h'
 alias df='df -h'
 alias ls='ls -h -Fb'
+alias la='ls -a'
 alias ll='ls -l'
+alias lla='ll -a'
 alias dir='ll'
 alias tree='tree -h -xF'
 
