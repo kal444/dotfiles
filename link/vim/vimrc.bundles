@@ -19,6 +19,7 @@ Plugin 'godlygeek/tabular' " align text on =, :, etc.
 Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
 Plugin 'tpope/vim-speeddating' " working with dates via increment/decrement
 " search and replace
+Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
 Plugin 'rking/ag.vim' " the_silver_searcher plugin for vim
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
 Plugin 'vim-scripts/greplace.vim' " global replace

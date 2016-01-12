@@ -8,7 +8,5 @@ PATH=/usr/local/sbin:/usr/local/bin:$PATH
 PATH=$DOTFILES/sbin:$DOTFILES/bin:$PATH
 export PATH
 
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
+# load interactive config
+[[ $PS1 && -f ~/.bashrc ]] && . ~/.bashrc
