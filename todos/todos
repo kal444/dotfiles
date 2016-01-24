@@ -9,3 +9,9 @@ in no particular order
   * defaults calls
 * remove obsolete stuff
 * update bash config
+* curlrc/wgetrc
+  * https://github.com/mathiasbynens/dotfiles/blob/master/.curlrc
+  * https://github.com/mathiasbynens/dotfiles/blob/master/.wgetrc
+* ubuntu options
+* setup .gitignore at some point
+* 
