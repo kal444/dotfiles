@@ -1,0 +1,40 @@
+0 itchyny/lightline.vim " better and lighter status line
+airblade/vim-rooter " set current dir to project root
+bkad/CamelCaseMotion " move by CamelCase
+bling/vim-airline " pretty status line
+calebsmith/vim-lambdify " pretty lambda functions
+easymotion/vim-easymotion " don't get it yet :)
+ervandew/supertab " completion using tab
+haya14busa/incsearch.vim " better incremental search
+honza/vim-snippets " community snippets
+https://github.com/bling/dotvim
+https://github.com/terryma/dotfiles/blob/master/.vimrc
+jiangmiao/auto-pairs " insert/delete brackets,parens and quotes in pairs
+jpalardy/vim-slime " SLIME (emacs) like plugin to work with REPLs
+junegunn/vim-easy-align " alignment tool like tabular / Align
+junegunn/vim-emoji " emoji support in vim (only osx)
+junegunn/vim-peekaboo " show register contents
+junegunn/vim-plug " another plugin manager
+junegunn/vim-xmark " markdown previewer (only osx)
+kien/rainbow_parentheses.vim " colorized parens
+mbbill/undotree " undo history in a tree
+mhinz/vim-startify " starting screen for vim
+nelstrom/vim-visual-star-search " visually select and search
+pbrisbin/vim-mkdir " w cmd will create missing dirs
+powerline/powerline " pretty status line
+raimondi/delimitMate " auto-completion for quotes, parens, brackets
+Shougo/neocomplete.vim " another completion library
+Shougo/unite.vim " The unite or unite.vim plug-in can search and display information from arbitrary sources like files, buffers, recently used files or registers.
+SirVer/ultisnips " snippets solution (needs python builtin)
+sjl/gundo.vim " undo history in a tree
+terryma/vim-expand-region " selection expansion
+terryma/vim-multiple-cursors " sublime text like multiple selection mode
+tomtom/tcomment_vim " another comment plugin
+tpope/vim-eunuch " unix command wrapper
+tyru/caw.vim " comment any way
+Valloric/YouCompleteMe " huge completion library
+vim-scripts/Mark--Karkat " mark occurences
+vim-scripts/VOoM " outliner
+vim-scripts/yaifa.vim " indent finder for current file
+vim-scripts/YankRing.vim " yank with a history
+vim-scripts/ZoomWin " window zoom toggles
