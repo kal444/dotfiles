@@ -9,7 +9,7 @@ if [ `/usr/bin/id -u` -eq 0 ]; then
 fi
 
 # humanize file sizes
-alias du='du -h'
+alias du='du -hx'
 alias df='df -h'
 alias ls='ls -h -Fb'
 alias la='ls -A'

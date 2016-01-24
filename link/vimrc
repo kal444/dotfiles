@@ -160,7 +160,7 @@ nnoremap <leader>rcm :%s/<c-v><c-m>//g<cr> " rcm = remove ^M from DOS file
 nnoremap <leader>v :exe ":edit " . vimrc<CR> " vimrc editing (edit this file)
 nnoremap <leader>V :exe ":source " . vimrc<CR> " update by reading this file
 
-vnoremap p "_dP " p i visual mode yank into blackhole register before pasting
+vnoremap p "_dP " p in visual mode yank into blackhole register before pasting
 vnoremap <leader>cel :g/^[<c-i> ]*$/d<cr> " cel = clear empty lines - deletes all empty or whitespace only lines
 
 inoremap jj <ESC> " jj quickly in insertmode gives escape key
