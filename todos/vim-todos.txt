@@ -1,7 +1,5 @@
-0 itchyny/lightline.vim " better and lighter status line
 airblade/vim-rooter " set current dir to project root
 bkad/CamelCaseMotion " move by CamelCase
-bling/vim-airline " pretty status line
 calebsmith/vim-lambdify " pretty lambda functions
 easymotion/vim-easymotion " don't get it yet :)
 ervandew/supertab " completion using tab

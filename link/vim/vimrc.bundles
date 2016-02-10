@@ -2,6 +2,7 @@ Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
 " color schemes
 Plugin 'altercation/vim-colors-solarized' " soloarized color schemes
 " visual and large functionality enhancements
+Plugin 'itchyny/lightline.vim' " lightweight pretty status line
 Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'airblade/vim-gitgutter' " show git changes in gutter
 Plugin 'scrooloose/nerdtree' " directory tree explorer
