@@ -1,0 +1,78 @@
+[user]
+  name = Kyle Huang
+  email = kyle@yellowaxe.com
+[credential]
+  helper = osxkeychain
+[diff]
+  # Detect copies as well as renames
+  renames = copies
+[diff "bin"]
+  # Use `hexdump` to diff binary files
+  textconv = hexdump -v -C
+[pull]
+  rebase = preserve
+[push]
+  default = simple
+[branch]
+  autosetuprebase = always
+[merge]
+  # Include summaries of merged commits in newly created merge commit messages
+  log = true
+[alias]
+  # http://haacked.com/archive/2014/07/28/github-flow-aliases/
+  # edit the global gitconfig
+  ec = config --global -e
+
+  # shortened checkout
+  co = checkout
+
+  # show short hash, graph and refnames of last 20 commits
+  lg = log -n 20 --graph --decorate --pretty=oneline --abbrev-commit
+
+  # short status
+  st = status -s -b
+
+  # Show the diff between the latest commit and the current state
+  df = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+  # `git dfn $number` shows the diff between the state `$number` revisions ago and the current state
+  dfn = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+
+  # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+
+  # Find branches containing commit
+  fb = "!f() { git branch -a --contains $1; }; f"
+
+  # Find tags containing commit
+  ft = "!f() { git describe --always --contains $1; }; f"
+
+  # Find commits by commit message
+  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+  # Find commits by source code
+  fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+  # Remove branches that have already been merged with master
+  # a.k.a. "delete merged" - same as bclean
+  # http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
+  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+  # pull from remote, rebase local changes and remove obsolete remote tracking branches. update submodules too
+  up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+
+  # start new work by switching to a branch
+  cob = checkout -b
+
+  # add and commit all changes
+  cm = !git add -A && git commit -m
+
+  save = !git add -A && git commit -m 'SAVEPOINT'
+  wip = !git add -u && git commit -m "WIP"
+  undo = reset HEAD~1 --mixed
+  amend = commit -a --amend
+  wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+  bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+  bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
