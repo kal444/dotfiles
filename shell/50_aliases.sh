@@ -22,6 +22,12 @@ alias tree='tree -h -xF'
 alias grep='egrep --color=auto'
 alias egrep='egrep --color=auto'
 
+# allow sudo on aliases
+alias sudo='sudo '
+
+# week number
+alias week='date +%V'
+
 alias more='less'
 alias vi='vim'
 

@@ -1,0 +1,3 @@
+curl -O# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+curl -O# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.tcsh
+curl -O# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
