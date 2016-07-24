@@ -7,12 +7,13 @@ autodetach on
 bell_msg "*** BELL (%n)! ***"
 caption splitonly "%{= bw}[%{y}%h%{w}] %{y}%n*%f %t%?: %u%?%="
 compacthist on
-defscrollback 888
+defscrollback 88888
+defutf8 on # start with utf8 enabled
 escape ^pp # ^aa  default
 hardcopy_append on
 hardstatus alwayslastline '%{= Kr}[%{G}%h%{r}][%=%{w}%?%-Lw%?%{r}(%{y}%n*%f %t%?: %u%?%{r})%{w}%?%+Lw%?%=%{r}][%{G}%l%{r}]'
 msgwait 2
-multiuser off				
+multiuser off
 pow_detach_msg "*** SCREEN SESSION OF $LOGNAME ENDED ****"
 shell zsh
 silencewait 15
