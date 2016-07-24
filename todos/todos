@@ -1,6 +1,9 @@
+* https://github.com/mathiasbynens/dotfiles
+  * aliases
+  * functions
+  * osx configs / defaults calls
 * osx specific configuraiton
   * homebrew
-  * defaults calls
 * ubuntu options
 * go through grml zsh configuration and steal the good parts
 * go through vim-todo file and look at interesting plugins
