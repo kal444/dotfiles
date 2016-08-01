@@ -62,7 +62,7 @@
   st = status -s -b
 
   # show short hash, graph and refnames of last 20 commits
-  lg = log -n 20 --graph --decorate --pretty=oneline --abbrev-commit
+  lg = !"git --no-pager log -n 20 --graph --decorate --pretty=oneline --abbrev-commit"
 
   # Show the diff between the latest commit and the current state
   df = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
