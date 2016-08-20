@@ -19,3 +19,6 @@
 [submodule "pyenv"]
 	path = thirdparty/pyenv
 	url = https://github.com/yyuu/pyenv.git
+[submodule "pyenv-virtualenv"]
+	path = link/pyenv/plugins/pyenv-virtualenv
+	url = https://github.com/yyuu/pyenv-virtualenv.git
