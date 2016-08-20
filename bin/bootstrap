@@ -83,4 +83,4 @@ function install() {
   l_ln "All Done!"
 }
 
-install $@
+install "$@"
