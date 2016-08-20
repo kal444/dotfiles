@@ -1,9 +1,9 @@
 case $TERM in
     xterm*|rxvt*|Eterm|aterm|kterm|gnome)
-        PROMPT_COMMAND='echo -ne "\033]0;${PWD/$HOME/~} [${USER}@${HOSTNAME}]\007"'
+        PROMPT_COMMAND="$PROMPT_COMMAND"$'\n''echo -ne "\033]0;${PWD/$HOME/~} [${USER}@${HOSTNAME}]\007"'
         ;;
     screen)
-        PROMPT_COMMAND='echo -ne "\033_${PWD/$HOME/~}\033\\"'
+        PROMPT_COMMAND="$PROMPT_COMMAND"$'\n''echo -ne "\033_${PWD/$HOME/~}\033\\"'
         ;;
     linux*)
         echo -ne "\e[?17;0;64c"
