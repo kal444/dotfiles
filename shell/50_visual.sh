@@ -1,7 +1,7 @@
 export EDITOR="vim"
 export VISUAL="$EDITOR"
 
-export LESS="-XR -Mei -x4"
+export LESS="-Fe -RX -M -i -x4"
 export LESSEDIT="$EDITOR ?lm+%lm -- %f"
 
 export CLICOLOR=1 # for ls color output
