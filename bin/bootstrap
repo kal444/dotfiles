@@ -19,12 +19,27 @@ function backupIfNeeded() {
   fi
 }
 
+function copy_one() {
+  local file="$1"
+  local dest="$HOME/.$(basename $file)"
+  backupIfNeeded "$dest"
+  l_good "Copying $file to $dest"
+  cp "$file" "$dest"
+}
+
 function link_one() {
   local file="$1"
   local dest="$HOME/.$(basename $file)"
   backupIfNeeded "$dest"
   l_good "Linking $file to $dest"
   ln -s "$file" "$dest"
+}
+
+function copy_all() {
+  local file
+  for file in $DOTFILES/link/*; do
+    copy_one "$file"
+  done
 }
 
 function link_all() {
@@ -35,6 +50,7 @@ function link_all() {
 }
 
 function install() {
+  op=shift
   if [[ -d "$DOTFILES" ]]; then
     cd "$DOTFILES"
     l_ln "Updating from repo"
@@ -46,7 +62,13 @@ function install() {
     cd "$DOTFILES"
   fi
 
-  link_all
+  if [[ "$op" = "copy" ]]; then
+    copy_all
+  elif [[ "$op" = "link" ]]; then
+    link_all
+  else
+    l_ln "tell me to 'copy' or 'link' files"
+  fi
 
   if [[ -d "$backup_dir" ]]; then
     l_ln "The following files are backed up to $backup_dir"
@@ -56,4 +78,4 @@ function install() {
   l_ln "All Done!"
 }
 
-install
+install $*
