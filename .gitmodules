@@ -1,18 +1,18 @@
 [submodule "z"]
 	path = thirdparty/z
-	url = git@github.com:rupa/z.git
+	url = https://github.com/rupa/z.git
 [submodule "rbenv"]
 	path = thirdparty/rbenv
-	url = git@github.com:rbenv/rbenv.git
+	url = https://github.com/rbenv/rbenv.git
 [submodule "ruby-build"]
 	path = link/rbenv/plugins/ruby-build
-	url = git@github.com:rbenv/ruby-build.git
+	url = https://github.com/rbenv/ruby-build.git
 [submodule "vundle"]
 	path = link/vim/bundle/Vundle.vim
-	url = git@github.com:VundleVim/Vundle.vim.git
+	url = https://github.com/VundleVim/Vundle.vim.git
 [submodule "zsh-syntax-highlighting"]
 	path = thirdparty/zsh-syntax-highlighting
-	url = git@github.com:zsh-users/zsh-syntax-highlighting.git
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "zsh-completions"]
 	path = thirdparty/zsh-completions
-	url = git@github.com:zsh-users/zsh-completions.git
+	url = https://github.com/zsh-users/zsh-completions.git
