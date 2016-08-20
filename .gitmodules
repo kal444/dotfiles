@@ -16,3 +16,6 @@
 [submodule "zsh-completions"]
 	path = thirdparty/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "pyenv"]
+	path = thirdparty/pyenv
+	url = https://github.com/yyuu/pyenv.git
