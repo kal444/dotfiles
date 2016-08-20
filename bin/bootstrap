@@ -11,7 +11,7 @@ function l_bad()  { echo -e "  \033[1;31m✖\033[0m  $@"; }
 function l_info() { echo -e "  \033[1;34m➜\033[0m  $@"; }
 
 function backupIfNeeded() {
-  local dest="$1"
+  local dest=shift
   if [[ -e "$dest" ]]; then
     l_info "Need to backup $dest"
     [[ -d "$backup_dir" ]] || mkdir -p "$backup_dir"
@@ -20,7 +20,7 @@ function backupIfNeeded() {
 }
 
 function copy_one() {
-  local file="$1"
+  local file=shift
   local dest="$HOME/.$(basename $file)"
   backupIfNeeded "$dest"
   l_good "Copying $file to $dest"
@@ -28,7 +28,7 @@ function copy_one() {
 }
 
 function link_one() {
-  local file="$1"
+  local file=shift
   local dest="$HOME/.$(basename $file)"
   backupIfNeeded "$dest"
   l_good "Linking $file to $dest"
@@ -50,7 +50,8 @@ function link_all() {
 }
 
 function install() {
-  op=shift
+  local op=shift
+  l_ln "selected $op operation"
   if [[ -d "$DOTFILES" ]]; then
     cd "$DOTFILES"
     l_ln "Updating from repo"
