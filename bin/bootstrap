@@ -24,7 +24,11 @@ function copy_one() {
   local dest="$HOME/.$(basename $file)"
   backupIfNeeded "$dest"
   l_good "Copying $file to $dest"
-  cp "$file" "$dest"
+  if [[ -d "$file" ]]; then
+    cp -r "$file" "$dest"
+  else
+    cp "$file" "$dest"
+  fi
 }
 
 function link_one() {
