@@ -1,5 +1,9 @@
+has_command vi && export EDITOR="vi"
 has_command vim && export EDITOR="vim"
 export VISUAL="$EDITOR"
+
+has_command more && export PAGER="more"
+has_command less && export PAGER="less"
 
 export LESS="-Fe -RX -M -i -x4"
 export LESSEDIT="$EDITOR ?lm+%lm -- %f"

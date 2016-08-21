@@ -26,11 +26,7 @@ alias la='ls -A'
 alias ll='ls -l'
 alias lla='ll -A'
 alias dir='ll'
-alias tree='tree -h -xF'
-
-# colorize greps
-alias grep='egrep --color=auto'
-alias egrep='egrep --color=auto'
+alias tree='tree -h -Fx --dirsfirst'
 
 # allow sudo on aliases
 alias sudo='sudo '
@@ -38,6 +34,8 @@ alias sudo='sudo '
 # week number
 alias week='date +%V'
 
+# command overrides
+has_command egrep && alias grep='egrep'
 has_command less && alias more='less'
 has_command vim && alias vi='vim'
 

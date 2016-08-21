@@ -1,8 +1,7 @@
-* https://github.com/mathiasbynens/dotfiles
-  * osx configs / defaults calls
 * osx specific configuraiton
+  * https://github.com/mathiasbynens/dotfiles
+    * osx configs / defaults calls
   * homebrew
-* ubuntu options
 * go through grml zsh configuration and steal the good parts
+  * debian/ubuntu options
 * go through vim-todo file and look at interesting plugins
-* look at ways to store sensitive information encrypted

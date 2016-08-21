@@ -1,7 +1,7 @@
 # history variables
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=$HISTSIZE
+HISTFILE=${ZDOTDIR:-${HOME}}/.zsh_history
+HISTSIZE=5000
+SAVEHIST=10000
 
 # history options
 setopt extended_history # adds more timing info to history file

@@ -10,3 +10,13 @@ autoload -U colors; colors;
 PS1='%{$fg[red]%}[%{$fg[cyan]%}%~%{$fg[red]%}]%{$fg[blue]%}$(__git_ps1 " (%s)")%{$reset_color%}
 %{$fg[red]%}[%{$fg[cyan]%}%*%{$fg[red]%}]%{$fg[blue]%}(%?) %{$fg[red]%}%#%{$reset_color%} '
 RPS1=' %{$fg[yellow]%}%n%{$fg[red]%}@%{$fg[yellow]%}%m%{$fg[red]%}:%{$fg[green]%}%l%{$reset_color%}'
+
+# secondary prompt, printed when the shell needs more information to complete a command.
+PS2='\`%_> '
+
+# selection prompt used within a select loop.
+PS3='?# '
+
+# the execution trace prompt (setopt xtrace). default: '+%N:%i>'
+PS4='+%N:%i:%_> '
+
