@@ -1,6 +1,4 @@
 * osx specific configuraiton
-  * https://github.com/mathiasbynens/dotfiles
-    * osx configs / defaults calls
   * homebrew
 * go through grml zsh configuration and steal the good parts
   * debian/ubuntu options

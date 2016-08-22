@@ -88,6 +88,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 
   # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-  alias update='sudo softwareupdate -i -a; brew update && brew upgrade --cleanup'
+  alias macupdate='sudo softwareupdate -i -a; brew update && brew upgrade --cleanup'
 
 fi
