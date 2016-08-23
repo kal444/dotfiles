@@ -42,6 +42,12 @@ has_command vim && alias vi='vim'
 alias ftp='ftp -i'
 alias irb='irb --readline -r irb/completion --prompt simple'
 
+# apt
+alias ac='apt-cache'
+alias ag='apt-get'
+alias dq='dpkg-query'
+
+# docker
 alias d='docker'
 alias dm='docker-machine'
 
@@ -63,7 +69,7 @@ alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.ar
 # Canonical hex dump; some systems have this symlinked
 has_command hd || alias hd="hexdump -C"
 
-# Intuitive map function
+# Intuitive map alias
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
