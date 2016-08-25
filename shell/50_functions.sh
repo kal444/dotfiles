@@ -5,6 +5,11 @@ function tre() {
   tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less;
 }
 
+# list files with have been modified in the last x days. x defaults to 1
+function modified() {
+  find . -mtime -${1:-1}
+}
+
 # `v` with no arguments opens the current directory in Vim, otherwise opens the
 # given location
 function v() {
@@ -37,7 +42,7 @@ function dataurl() {
 # Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
 function json() {
   if [ -t 0 ]; then # argument
-    python -mjson.tool <<< "$*" | pygmentize -l javascript;
+    echo "$*" | python -mjson.tool | pygmentize -l javascript;
   else # pipe
     python -mjson.tool | pygmentize -l javascript;
   fi;
@@ -106,19 +111,19 @@ function getcertnames() {
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
-  # Change working directory to the top-most Finder window location
-  function cdf() { # short for `cdfinder`
-    cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
-  }
+# Change working directory to the top-most Finder window location
+function cdf() { # short for `cdfinder`
+  cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+}
 
-  # `o` with no arguments opens the current directory, otherwise opens the given
-  # location
-  function o() {
-    if [ $# -eq 0 ]; then
-      open .;
-    else
-      open "$@";
-    fi;
-  }
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o() {
+  if [ $# -eq 0 ]; then
+    open .;
+  else
+    open "$@";
+  fi;
+}
 
 fi
