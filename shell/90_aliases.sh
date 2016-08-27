@@ -43,9 +43,9 @@ alias ftp='ftp -i'
 alias irb='irb --readline -r irb/completion --prompt simple'
 
 # apt
-alias ac='apt-cache'
-alias ag='apt-get'
-alias dq='dpkg-query'
+alias aptc='apt-cache'
+alias aptg='apt-get'
+alias dpkgq='dpkg-query'
 
 # docker
 alias d='docker'
