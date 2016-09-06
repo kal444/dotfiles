@@ -49,6 +49,9 @@ alias dpkgq='dpkg-query'
 
 # docker
 alias d='docker'
+alias db='docker build .'
+alias drun='docker run -i -t --rm'
+alias drmut='docker rmi $(docker images -q -f dangling=true)'
 alias dm='docker-machine'
 
 # IP addresses

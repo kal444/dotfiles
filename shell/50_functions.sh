@@ -5,6 +5,22 @@ function tre() {
   tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less;
 }
 
+# run a git command on all git repo under the current repo
+function gitr() {
+  local gitcmd=$1
+  if [ -z "$gitcmd" ]; then
+    echo "Usage: $0 <command>"
+    return 0
+  fi
+  shift
+  find . -name .git |
+  while read i; do
+    local dir=$(dirname $i)
+    echo $dir
+    git -C $dir $gitcmd $@
+  done
+}
+
 # list files with have been modified in the last x days. x defaults to 1
 function modified() {
   find . -mtime -${1:-1}
