@@ -68,3 +68,20 @@ zstyle ':completion:*:history-words' remove-all-dups yes
 # stop when reaching start or end of history
 zstyle ':completion:*:history-words' stop yes
 
+# Complete words from tmux scrollback
+ctxt=':completion:words-from-tmux'
+for i in pane window session server; do
+  zle -C words-from-tmux-$i complete-word _generic
+  zstyle "$ctxt-$i:*" completer _words-from-tmux
+  zle -C words-from-tmux-$i-anywhere complete-word _generic
+  zstyle "$ctxt-$i-anywhere:*" completer _words-from-tmux
+done
+zstyle "$ctxt-*:*" ignore-line current
+zstyle "$ctxt-*:*" menu yes select
+zstyle "$ctxt-*-anywhere:*" matcher-list 'b:=*'
+zstyle "$ctxt-*:*" capture-options -J -E - -S -
+zstyle "$ctxt-*:*" pre-trim-pattern '[<"'\''`‘]##'
+zstyle "$ctxt-*:*" post-trim-pattern '[>."'\''’]##'
+zstyle "$ctxt-*:*" trim-pattern '[\\]'
+unset i ctxt
+

@@ -1,0 +1,787 @@
+# -*- shell-script -*-
+
+## Copyright (c) 2011-2015 Frank Terbeck <ft@bewatermyfriend.org>
+##
+## Permission to use, copy, modify, and/or distribute this software for any
+## purpose with or without fee is hereby granted, provided that the above
+## copyright notice and this permission notice appear in all copies.
+##
+## THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+## WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+## MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+## ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+## WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+## ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+## OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+##################################################################help-start###
+#
+#      ta: attach or switch to existing or new tmux session
+#
+#
+# ### SHORT DESCRIPTION ###########################
+#
+# At its core, the objective of this function can be summarised like
+# this:
+#
+#  1. Check if a named session exists in the tmux server.
+#  2. If is does not, ask tmux to create the session.
+#  3. Then finally, in case...
+#       a. ...we're outside of tmux: use attach-session
+#       b. ...we're inside of tmux: use switch-client
+#
+#
+# ### USAGE #######################################
+#
+# Basic call structure:
+#
+#         ta [OPTION(s)] <session-name>
+#
+# `session-name' may be an existing or a new session name. If it is an
+# existing session's name, the session is attached to; otherwise, a new
+# session is registered with tmux and then attached to.
+#
+# Options:
+#
+#   -h      Display ta's reference manual.
+#
+#   -d      When attaching to an existing session, pass the `-d'
+#           option to tmux, which will detach any other clients
+#           attached to the session.
+#
+#   -x      Do *not* call "tmux attach" using `exec', but without.
+#           So, when present and the tmux session is detached from
+#           again, control will be picked up be the (still existing)
+#           parent shell again.
+#
+#   -k      If used inside of tmux, this will kill the session that
+#           `ta' leaves from into the specified new session. Outside
+#           of tmux, this is ignored.
+#
+#   -w xx   Use xx as the working directory for a new session, if a
+#           new session is what `ta' will create.
+#
+#   -L xx   Set tmux's socket-name; this override the style of the
+#           same name.
+#
+#   -S xx   Set tmux's socket-path; this override the style of the
+#           same name. This option also wins if both `-L' and `-S'
+#           are supplied.
+#
+# The `-x' option has no effect, when `ta' is being used from inside of
+# tmux. The `-d' option's effect can be completely inhibited by setting
+# a `dispatcher' style for the "outside". Finally, for more information
+# about the `-S' and `-L' options see tmux(1).
+#
+#       Use tab completion to complete option characters and
+#       names of existing sessions!
+#
+# For all of ta's features to work, you need a tmux version that has the
+# following features:
+#
+#   - `display-message' has to understand the "-F" option, with
+#     support for the following format expansions:
+#         + client_tty
+#         + client_session
+#   - `new-session' has to have support for "-c".
+#   - `detach-session' has to have support for "-a".
+#
+# If you are stuck on a particularly old version of tmux, you may still
+# use the function (w/ reduced features) by using the `tmux-is-ancient'
+# style (see below).
+#
+#
+# ### CONFIGURATION ###############################
+#
+# Apart from mere usage, the `ta' function is configurable by means of
+# the `zstyle' system, which is a context-sensitive configuration
+# mechanism provided by zsh. This manual differentiates between "Styles"
+# for mere settings and "Hooks" for fixes points in time during ta's
+# execution at which users are allowed to run their own code. Both
+# mechanisms are implemented via styles, though.
+#
+#
+# ### CONTEXT #####################################
+#
+# The full context string used with `ta' reads like this:
+#
+# :fnc:ta:<optstr>:<inout>:<srvstate>:<sessionstate>:<cursession>:<session>
+#
+# The ":fnc:ta:" prefix is static. The rest of the context is a colon
+# separated string of the following information:
+#
+#  <optstr>:
+#
+#     A summary of options provided to `ta'. This only includes
+#     the actual option character, not any possible arguments. In
+#     addition the string is sorted. Hence, with the following
+#     command line:
+#
+#       % ta -x -d -S foo my-session
+#
+#     This will read "dSx".
+#
+#  <inout>:
+#
+#     Either "inside" or "outside", depending on whether the
+#     function was called from inside or outside of a tmux client.
+#
+#  <srvstate>:
+#
+#     Either "up" or "down", depending on whether or not a tmux
+#     server was running at the time the `ta' function is entered.
+#
+#  <sessionstate>:
+#
+#     Either "new" or "existing", depending on whether or not the
+#     named session existing in the running tmux server at the
+#     time the `ta' function is entered.
+#
+#  <cursession>:
+#
+#     If used inside of tmux, this will be the name of the active
+#     session at the time that `ta' was called.
+#
+#  <session>:
+#
+#     The `session' argument supplied with the function call.
+#
+# When `ta' is fully running, all of these fields will be filled in
+# accordingly. However, during startup there pieces that cannot be
+# filled in yet will be left empty. Notable early contexts:
+#
+# :fnc:ta::::::
+#
+#     This is used in `+ta+generate-help' and therefore affects
+#     the styles looked up in that particular helper function
+#     (pager and pager-offset).
+#
+# :fnc:ta:<optstr>:<inout>::::<session>
+#
+#     Used during startup when neither <serverstate> nor
+#     <sessionstate> are known yet (affected styles: command,
+#     socket-path, socket-name).
+#
+# :fnc:ta:<optstr>:<inout>:<srvstate>::<cursession>:<session>
+#
+#     This affects anything that is connected to the the startup
+#     hook. Here only the <sessionstate> part is missing.
+#
+#
+# ### STYLES ######################################
+#
+# The first set of settings are used with the main operation of the `ta'
+# function.
+#
+# # command #
+#
+#     String that configures the `tmux' binary name. (Default: "tmux")
+#
+# # dispatcher #
+#
+#     The "dispatcher" is the tmux command that is used to activate the
+#     desired session at the end of the function's execution. This is a
+#     list of strings that is passed through `+ta+format-strings' to
+#     build the actual command. The style has two different defaults,
+#     depending on whther or not `ta' was called from inside tmux or
+#     from the outside:
+#
+#         - inside:  switch-client -t '%s'
+#         - outside: attach-session -t '%s'
+#
+# # replay-environment #
+#
+#     This is a boolean style, that controls if the TMUX variables
+#     original value is put back into place before the "dispatcher"
+#     command is finally called. (Default: false)
+#
+# # socket-name #
+#
+#     This controls the value of the `-L' option for tmux. The `-L'
+#     option to `ta' may be used to override this from the command line.
+#
+# # socket-path #
+#
+#     This controls the value of the `-S' option for tmux. The `-S'
+#     option to `ta' may be used to override this from the command line.
+#
+# # tmux-is-ancient #
+#
+#     This boolean style may be used to tell `ta' that is has to work
+#     with a particularly old version of tmux. (Default: false)
+#
+#     Setting this style should be done in a very general context like
+#     this:
+#
+#         zstyle ':fnc:ta:*' tmux-is-ancient true
+#
+#     What is means for the execution of `ta' is this:
+#
+#       1. The completion function `_ta' does *NOT* check if a
+#          tmux server is running before triggering completions
+#          (since the completion queries the server for
+#          information, this may cause errors).
+#
+#       2. The "%c" expansion in format-strings is always empty.
+#
+#       3. The <cursession> part of the context will be empty at
+#          all times.
+#
+#       4. The `working-directory' style (see below), and its
+#          command line counterpart "-w xx" are ignored.
+#
+#       5. The "-d" (detach-others) option has no effect.
+#
+#       6. The "-k" (kill-previous) option has no effect.
+#
+# # working-directory #
+#
+#     When a new session is created, use the directory named by this
+#     string as the session's working-directory. (Default: $HOME)
+#
+#
+# Some styles are used in helper functions. The following are used in
+# `+ta+wait-for-session':
+#
+# # wait-cycle #
+#
+#     When the function waits for a session to become available, this is
+#     the amount of time in 1/100th of a second, that it will let pass
+#     between consecutive polls to the server. (Default: 50; ie. 500ms)
+#
+# # max-session-checks #
+#
+#     This controls the maximum number of polls the function will
+#     perform against the server before giving up, assuming that the
+#     session will not become available after all. (Default: 10; ie.
+#     with the default `wait-cycle', the default timeout is about five
+#     seconds)
+#
+#
+# The following are used in `+ta+display-help':
+#
+# # pager #
+#
+#     This is a list of strings, that configures the pager to be used if
+#     the function's manual doesn't fit into one terminal page (which is
+#     rather likely at this point, because the manual is not exactly
+#     short anymore). (Default: "less")
+#
+# # pager-offset #
+#
+#     When determining if the manual fits onto one page of the calling
+#     terminal, this defines the number of lines that are substracted
+#     from $LINES to account for the calling shell's prompt, which will
+#     push the manual up additionally. (Default: 2)
+#
+#
+# The following are used in `+ta+new-session':
+#
+# # initial-command #
+#
+#     This defines a string that will be used as the command for the
+#     initial window of a new session. (Default: <unset>)
+#
+# # initial-name #
+#
+#     This defines a string that will be used as the name for the
+#     initial window of a new session. (Default: <unset>)
+#
+#
+# ### HOOKS #######################################
+#
+# Hooks are points in the execution time of `ta' at which users are
+# allowed to register code to be run (functions and external commands
+# really). When multiple pieces of code are registered, they are run in
+# succession. The return value of the pieces of code is significant:
+#
+#     - 0: Continue running the next piece of code.
+#     - 1: Break at this point, but continue with ta's execution.
+#     - 2: Break from the hook and make `ta' return to the caller with
+#          a return value taken from $REPLY (which defaults to "1").
+#
+#
+# The actual hooks, sorted in order of execution, are:
+#
+# # startup-hook #
+#
+#     This runs at the start of `ta' when the desired tmux base command
+#     has been established.
+#
+# # pre-session-creation-hook #
+#
+#     If a new session has to be created, this hooks runs before tmux is
+#     asked to do that.
+#
+# # post-session-creation-hook #
+#
+#     If a new session has to be created, this hooks runs after tmux is
+#     asked to do that.
+#
+# # pre-detach-hook #
+#
+#     If the `-d' option was used, this hook runs before tmux is asked
+#     to detach clients from the session in question.
+#
+# # pre-dispatch-hook #
+#
+#     This hook runs just before `ta' dispatches into the requested tmux
+#     session.
+#
+# # pre-kill-previous-session-hook #
+#
+#     Called before the previous session is killed off when the -k option
+#     is used. This takes one parameter, which the return code of the
+#     previous dispatcher call.
+#
+# # post-kill-previous-session-hook #
+#
+#     Called after the previous session is killed off when the -k option
+#     is used. This takes one parameter, which the return code of the
+#     previous kill-session call to tmux. Note that if the kill-session
+#     call succeeds that the session hosting the calling shell will be
+#     gone, which means that this hook will most likely not even run
+#     at all (unless signals run particularly slowly for some reason).
+#     You will most likely want to use this only in cases the kill-
+#     session call fails, in which case the argument to this hook will
+#     be non-zero.
+#
+#
+# ### ADDITIONAL API ##############################
+#
+# The `ta' function comes with a set of utility functions. These
+# functions should only be called within `ta'-context. Which for users
+# generally means "from functions called by hooks".
+#
+#
+# General utilities:
+#
+# # +ta+format-strings #
+#
+#     This performs string interpolation. That means that "%x" type
+#     tokens are expanded within strings passed to the function.
+#     Expansions that are performed:
+#
+#         - %s: The session name passed to the `ta' call.
+#
+#         - %c: The client's tty if called from inside of tmux.
+#               This may be empty in case `ta' was called from
+#               outside of tmux.
+#
+#         - %a: If called from the inside of tmux, this expands to
+#               the session the client is connected to currently.
+#               Empty otherwise.
+#
+#     The function expects a list of strings to be passed into it for
+#     transformation. If order to use a literal percent sign in such an
+#     input string, use "%%".
+#
+# # +ta+new-session #
+#
+#     Takes two arguments: A working directory and a session name. With
+#     those it instructs the tmux server to create a new session in the
+#     specified working directory.
+#
+# # +ta+run-hook #
+#
+#     Runs a hook by the name of the first and only argument passed to
+#     the function. See HOOKS above for details.
+#
+#
+# Server query utilities:
+#
+# # +ta+server-running #
+#
+#     Determine if a tmux server is running. Returns success or failure
+#     accordingly. This function takes no arguments.
+#
+# # +ta+has-session #
+#
+#     Takes the name of a session and checks whether the tmux server has
+#     a session by that name. Returns success or failure accordingly.
+#
+# # +ta+wait-for-session #
+#
+#     This uses `+ta+has-session' and the `wait-cycle' and
+#     `max-session-checks' settings to wait for a session to become
+#     available in a running tmux server.
+#
+#
+# Documentation helpers:
+#
+# # +ta+generate-help #
+#
+#     This generates the function's manual text by extracting it from
+#     the function's definition file in $fpath.
+#
+# # +ta+display-help #
+#
+#     Displays the `ta' function's manual, possibly in a pager if the
+#     text does not fit on one page of screen.
+#
+#
+# ### VARIABLES ###################################
+#
+# Zsh uses dynamic scope. This section describes the variables that may
+# be considered stable and that may be used in hook functions, for
+# example.
+#
+# # $TMUX # (string)
+#
+#     The environment variable being used by tmux. `ta' alters this
+#     value during its execution.
+#
+# # $SAVED_TMUX # (string)
+#
+#     The value of $TMUX at the start of ta's execution.
+#
+# # $tmux_cmd # (array)
+#
+#     The base tmux command used by `ta'. If you want to call out to
+#     tmux, this is what you should use in place of a plain "tmux".
+#
+# # $session # (string)
+#
+#     The "session" parameter passed to `ta' upon start up.
+#
+# # $context # (string)
+#
+#     This is the context used with zstyle calls.
+#
+# # $sessionstate # (string)
+#
+#     This is "existing" or "new" depending on whether or not $session
+#     is already to be found in the running tmux server.
+#
+# # $opt # (associative array)
+#
+#     This represents the options passed to `ta'. This parameter is
+#     filled by zsh's `zparseopts' builtin (see zshmodules(1)).
+#
+#
+# ### LICENCE #####################################
+#
+# Copyright (c) 2011-2015 Frank Terbeck <ft@bewatermyfriend.org>
+#
+# Permission to use, copy, modify, and/or distribute this software
+# for any purpose with or without fee is hereby granted, provided
+# that the above copyright notice and this permission notice
+# appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+# WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+# THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+# CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+# LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+# NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+# CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+####################################################################help-end###
+
+# zselect can be used to sleep for fractions of a second
+zmodload zsh/zselect
+
+function +ta+server-running () {
+    emulate -L zsh
+    setopt warncreateglobal
+    if zstyle -t $context tmux-is-ancient; then
+        "${tmux_cmd[@]}" server-info >/dev/null 2>&1 && return 0
+    else
+        "${tmux_cmd[@]}" display-message -p -F up >/dev/null 2>&1 && return 0
+    fi
+    return 1
+}
+
+function +ta+run-hook () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local hook="$1" tmp
+    shift
+    local -i rc=0
+    local -a hooks
+    if zstyle -a $context $hook hooks; then
+        REPLY=0
+        for tmp in $hooks; do
+            $tmp "$@"; rc=$?
+            (( $rc == 1 )) && return 0
+            (( $rc == 2 )) && return 1
+        done
+    fi
+    return 0
+}
+
+function +ta+has-session () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local tmp session="$1"
+    # This works around an epoll bug on Linux. Looks silly, but works.
+    "${tmux_cmd[@]}" has-session -t $session |& read tmp
+    return ${pipestatus[1]}
+}
+
+function +ta+wait-for-session () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local session="$1"
+    local -i t max i
+    # Time to wait before re-checking (in 1/100th of a second)
+    zstyle -s $context wait-cycle t || t=50
+    # How often to try and check for a session.
+    zstyle -s $context max-session-checks max || max=10
+    for (( i = 0; i <= max; i++ )); do
+        # With the default values, this timeouts after ~5secs.
+        +ta+has-session $session && return 0
+        (( i < max )) && zselect -t $t
+    done
+    return 1
+}
+
+function +ta+new-session () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local -i rc
+    local dir name iname icmd
+    local -a new_opts
+    new_opts=()
+    dir=$1
+    name=$2
+    zstyle -s $context initial-name iname && new_opts+=( -n $iname )
+    zstyle -s $context initial-command icmd && new_opts+=( $icmd )
+    if zstyle -t $context tmux-is-ancient; then
+        "${tmux_cmd[@]}" new-session -d -s $name "${new_opts[@]}"
+        rc=$?
+    else
+        "${tmux_cmd[@]}" new-session -d -c $dir -s $name "${new_opts[@]}"
+        rc=$?
+    fi
+    if (( rc != 0 )); then
+        printf 'Failed to created session `%s'\''\n' $session
+        return 1
+    fi
+    return 0
+}
+
+function +ta+format-strings () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local entry raw
+    reply=()
+    for raw in "$@"; do
+        zformat -f entry "$raw" "s:$session" "c:$client" "a:$clientsession"
+        reply+=( $entry )
+    done
+    return 0
+}
+
+function +ta+generate-help () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local -a files
+    files=( ${^fpath}/ta(N) )
+    local file=${files[1]}
+    if [[ ! -e $file ]]; then
+        printf 'ta: Could not find function definition file.\n'
+        printf 'ta: Therefore, could not generate help text.\n'
+        printf '\n'
+        printf 'USAGE: ta [OPTION(s)] <session-name>\n\n'
+        return 1
+    fi
+    local line sessionstate=find-start
+    while IFS= read -r line; do
+        case $sessionstate in
+        find-start) [[ $line == *'###help-start###' ]] && sessionstate=find-end ;;
+        *) [[ $line == *'###help-end###' ]] && break
+           line=${line#\#}
+           if [[ ${line# } == '### '* ]]; then
+               printf '####%s\n' ${line# }
+           elif [[ -n $line ]]; then
+               printf '    %s\n' ${line# }
+           else
+               printf '\n'
+           fi
+           ;;
+        esac
+    done < $file
+    return 0
+}
+
+typeset -ga ta_help_message
+ta_help_message=( "${(f)$( +ta+generate-help )}" )
+ta_help_message+=( '' )
+
+function +ta+display-help () {
+    emulate -L zsh
+    setopt warncreateglobal
+    local -a pager
+    local -i offset needpager=0
+    # Near empty context for these settings:
+    local context=":fnc:ta::::::"
+    zstyle -a $context pager pager || pager=( less )
+    zstyle -s $context pager-offset offset || offset=2
+    if (( ( $LINES - $offset ) < ${#ta_help_message} )); then
+        needpager=1
+    elif zstyle -t $context force-pager; then
+        needpager=1
+    fi
+    if (( needpager )); then
+        print -l "${ta_help_message[@]}" | "${pager[@]}"
+    else
+        print -l "${ta_help_message[@]}"
+    fi
+    return 0
+}
+
+function ta () {
+    emulate -L zsh
+    setopt {extended,null}_glob warncreateglobal
+
+    local -a reply
+    local REPLY
+
+    local -A opt
+    zparseopts -D -M -A opt q d h k x H L: S: w:
+    : "${(kv)opt[@]}"
+
+    if (( ${+opt[-h]} )); then
+        +ta+display-help
+        return 0
+    elif (( ARGC != 1 )); then
+        +ta+display-help
+        return 1
+    fi
+
+    local client
+    local clientsession
+    local serverstate
+    local optionstring
+    local inout=outside
+    local sessionstate
+    [[ -n $TMUX ]] && inout=inside
+
+    local session=$1
+    shift
+
+    local context
+    local tmp
+
+    local -a dispatcher_style
+    local -a dispatcher_cmd
+    local -a cmd
+    local -a tmux_cmd
+
+    local -i fullexec=1
+    local -i socketset=1
+
+    local SAVED_TMUX=$TMUX
+    local -x TMUX=
+
+    (( ${+opt[-x]} )) && fullexec=0
+    [[ $inout == inside ]] && fullexec=0
+
+    local tmux
+
+    # Early context (sessionstate unknown existing vs. new):
+    optionstring=${(j::)${(ok)opt}#-}
+    context=":fnc:ta:$optionstring:$inout::::$session"
+    zstyle -s $context command tmux || tmux=tmux
+
+    # Assemble tmux base command:
+    tmux_cmd=( $tmux )
+    if (( ${+opt[-S]} )); then
+        tmux_cmd+=( -S ${opt[-S]} )
+    elif zstyle -s $context socket-path tmp; then
+        tmux_cmd+=( -S $tmp )
+    else
+        socketset=0
+    fi
+
+    local -i namestyle=0
+    zstyle -s $context socket-name tmp && namestyle=1
+    if { (( ${+opt[-L]} )) || (( namestyle )) } && (( socketset )); then
+        printf 'ta: Warning: Session path set already; ignoring name.\n'
+    elif (( ${+opt[-L]} )); then
+        tmux_cmd+=( -L ${opt[-L]} )
+    elif (( namestyle )); then
+        tmux_cmd+=( -L $tmp )
+    fi
+
+    # Establish information about current client (if any):
+    if [[ $inout == inside ]] && ! zstyle -t $context tmux-is-ancient; then
+        client=$("${tmux_cmd[@]}" display-message -p -F '#{client_tty}')
+        clientsession=$("${tmux_cmd[@]}" display-message \
+                                          -p -F '#{client_session}')
+    fi
+
+    # Fill $serverstate into context:
+    +ta+server-running && serverstate=up || serverstate=down
+    context=":fnc:ta:$optionstring:$inout:$serverstate::$clientsession:$session"
+    +ta+run-hook startup-hook || return $REPLY
+    # Fill in $sessionstate for the full context:
+    +ta+has-session $session && sessionstate=existing || sessionstate=new
+    context=":fnc:ta:$optionstring:$inout:$serverstate:$sessionstate:$clientsession:$session"
+
+    if [[ $sessionstate == new ]]; then
+        +ta+run-hook pre-session-creation-hook || return $REPLY
+        zstyle -s $context working-directory tmp || tmp=$HOME
+        (( ${+opt[-w]} )) && tmp=${${opt[-w]}:A}
+        +ta+new-session $tmp $session
+        +ta+run-hook post-session-creation-hook $tmp || return $REPLY
+    fi
+
+    if ! zstyle -a $context dispatcher dispatcher_style; then
+        if [[ $inout == outside ]]; then
+            dispatcher_style=( attach-session -t '%s' )
+        else
+            dispatcher_style=( switch-client -t '%s' )
+        fi
+    fi
+
+    +ta+format-strings "${dispatcher_style[@]}"
+    dispatcher_cmd=( "${reply[@]}" )
+
+    zstyle -t $context replay-environment && TMUX=$SAVED_TMUX
+
+    if (( ${+opt[-d]} )) && ! zstyle -t $context tmux-is-ancient; then
+        cmd=( "${tmux_cmd[@]}" detach-client -a )
+        if [[ $inout == inside ]]; then
+            cmd+=( -t $client )
+            [[ $session == $clientsession ]] || cmd+=( -s $session )
+        fi
+        +ta+run-hook pre-detach-hook || return $REPLY
+        : cmd: "${cmd[@]}"
+        (( ${+opt[-H]} )) && read
+        "${cmd[@]}"
+    fi
+
+    +ta+run-hook pre-dispatch-hook || return $REPLY
+    cmd=( "${tmux_cmd[@]}" "${dispatcher_cmd[@]}" )
+    : fullexec: $fullexec
+    : cmd: "${cmd[@]}"
+    (( ${+opt[-H]} )) && read
+    if (( fullexec )); then
+        exec "${cmd[@]}"
+    else
+        local -i rc
+        "${cmd[@]}"
+        rc=$?
+        if (( ${+opt[-k]} )) && ! zstyle -t $context tmux-is-ancient; then
+            +ta+run-hook pre-kill-previous-session-hook "$rc" || return $REPLY
+            if (( $rc != 0 )); then
+                printf 'ta: Session dispatch failed (rc: %s).\n' "$rc"
+                printf 'ta: Therefore not killing previous session %s\n' \
+                       '(requested with -k).'
+                return $rc;
+            fi
+            cmd=( "${tmux_cmd[@]}" kill-session -t $clientsession )
+            : cmd: "${cmd[@]}"
+            (( ${+opt[-H]} )) && read
+            "${cmd[@]}"
+            rc=$?
+            +ta+run-hook post-kill-previous-session-hook "$rc" || return $REPLY
+        fi
+        return $rc
+    fi
+}
+
+ta "$@"

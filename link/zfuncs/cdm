@@ -1,0 +1,45 @@
+# change to a directory and set up a running tmux session accordingly.
+
+emulate -L zsh
+setopt extendedglob
+local cfg new tmp
+
+if (( $# == 1 )) && [[ "x$1" == "x-h" ]]; then
+    cat <<EOF
+usage: cdm [-h] [DIRECTORY]
+
+Switches the default working directory of a tmux session to DIRECTORY. If
+DIRECTORY is not supplied, cdm changes zsh's current working directory to
+the current tmux session's default working directory.
+
+Internally, the function uses a tmux-user-option named "@ft-zsh-wd".
+EOF
+    return 0
+fi
+
+if [[ -z "$TMUX" ]]; then
+    printf 'Not inside of `tmux'\''. Giving up.\n'
+    return 1
+fi
+
+if (( $# == 0 )); then
+    cfg=$(tmux show-options -v -q "@ft-zsh-wd")
+    if [[ -z $cfg ]]; then
+        new=$PWD
+    else
+        new=$cfg
+    fi
+elif (( $# == 1 )); then
+    new=$1
+else
+    printf 'cdm: Too many arguments! Try the -h option!\n'
+    return 1
+fi
+
+new=${new:A}
+[[ $new != $PWD ]] && cd $new
+[[ $cfg != $new ]] && tmux set-option "@ft-zsh-wd" $new
+[[ -n "$DISPLAY" ]] && tmp=on || tmp=off
+tmux "set-option" "set-titles" "$tmp"
+
+return 0

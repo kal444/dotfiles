@@ -24,13 +24,16 @@ setopt no_beep # don't want beeps!
 # key bindings
 # use vi style zle keys
 bindkey -v
-# overrides
-bindkey ' ' magic-space # makes space do history expansion
-bindkey '^[[1~' beginning-of-line # home key
-bindkey '^[[4~' end-of-line # end key
-bindkey '^[[2~' quoted-insert # insert key
-bindkey '^[[3~' delete-char # delete key
-bindkey '^[[5~' up-line-or-search # page up
-bindkey '^[[6~' down-line-or-search # page down
-bindkey '^[[C' forward-char # right
-bindkey '^[[D' backward-char # left
+
+bind2maps       viins emacs -- ' ' magic-space
+
+bind2maps vicmd viins emacs -- '^of' jump-after-first-word
+bind2maps vicmd viins emacs -- '^os' sudo-command-line
+
+bind2maps vicmd viins emacs -- '^ot' words-from-tmux-pane
+bind2maps vicmd viins emacs -- '^o^t' words-from-tmux-pane-anywhere
+
+bind2maps vicmd viins emacs -- '^[h' run-help
+bind2maps vicmd viins emacs -- "^[k" history-search-backward
+bind2maps vicmd viins emacs -- "^[j" history-search-forward
+

@@ -1,0 +1,82 @@
+#compdef ta
+
+## Copyright (c) 2011-2015, Frank Terbeck <ft@bewatermyfriend.org>
+##
+## Permission to use, copy, modify, and/or distribute this software for any
+## purpose with or without fee is hereby granted, provided that the above
+## copyright notice and this permission notice appear in all copies.
+##
+## THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+## WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+## MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+## ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+## WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+## ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+## OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+# This completion uses helpers from zsh's `tmux' completion. The problem is
+# that this helper only becomes visible when the _tmux completion is called
+# for the first time. This makes a fake call to _tmux when *this* completion
+# is used for the first time.
+() {
+    compadd() { return 1; }
+    zstyle() { return 1; }
+    trap 'unfunction compadd zstyle' EXIT INT
+    _tmux
+    unfunction compadd zstyle
+    trap - EXIT INT
+}
+
+function __ta-candidate () {
+    local expl
+    local curcontext="${curcontext}"
+    local context=":completion:${curcontext}:candidates"
+    local -a reply cb active strips
+    zstyle -a "$context" generate cb || return
+    (( ${+functions[$cb]} )) || return
+    "${cb[@]}"
+    if [[ $ZSH_VERSION == <5->.* ]] &&
+       ! zstyle -t "$context" tmux-is-ancient &&
+       zstyle -T "$context" strip-active-from-candidates
+    then
+        active=("${(f)$(command tmux list-sessions -F '#{session_name}')}")
+        reply=( ${(@)reply:|active} )
+    fi
+    if [[ $ZSH_VERSION == <5->.* ]] &&
+       zstyle -a "$context" remove strips
+    then
+        reply=( ${(@)reply:|strips} )
+    fi
+    _describe -t candidates 'candidates' reply "$@"
+}
+
+function __ta-session-or-candidate () {
+    __ta-candidate
+    __tmux-sessions
+}
+
+function _ta() {
+    local curcontext="${curcontext}"
+    local tacontext=":fnc:ta::::::"
+    local -a arguments
+    if zstyle -t $tacontext tmux-is-ancient ||
+       tmux display-message -p -F up >/dev/null 2>&1
+    then
+        arguments=(
+            '-L[specify socket name]:socket name:__tmux-socket-name'
+            '-S[specify socket path]:server socket:_path_files -g "*(=,/)"'
+            '-d[detach other clients when attaching to existing sessions]'
+            '-h[show ta'\''s reference manual]'
+            '-k[kill the session that is being left in the ta call]'
+            '-x[do not `exec'\'' off to tmux; just call it]'
+            '-w[define working directory for new sessions]:working directory:_path_files -g "*(-/)"'
+            '*::existing tmux sessions:__ta-session-or-candidate'
+        )
+        _arguments -s $arguments
+        return
+    else
+        _message "tmux not running on default server."
+    fi
+}
+
+_ta "$@"

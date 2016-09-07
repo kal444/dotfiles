@@ -1,0 +1,125 @@
+#autoload
+
+# This function was inspired by Julius Plenz's idea from:
+#   <http://blog.plenz.com/2012-01/zsh-complete-words-from-tmux-pane.html>
+#
+# It does however offer more features, more configurability and uses
+# more modern tmux features to actually gather the information.
+
+# Tmux is a terminal multiplexer that allows the user to access its scrollback
+# buffer. It makes sense to take a look at the scrollback buffer for generating
+# words for zsh's completion system.
+#
+# Tmux allows the user to organise multiple panes into a window; multiple
+# windows into a session; and finally have multiple session live in a server.
+# It also allows the user to query all that information.
+#
+# With that, this allows to complete words from:
+#
+#   - The currently focused pane.
+#   - The currently visible window.
+#   - The currently active session.
+#   - Every single scrollback buffer in the tmux server.
+#
+# The function discriminates between the different variants, by the name of the
+# widget that it is assigned to by "zle". Here is a possible setup:
+#
+#   ctxt=':completion:words-from-tmux'
+#   for i in pane window session server; do
+#       zle -C words-from-tmux-$i complete-word _generic
+#       zstyle "$ctxt-$i:*" completer _words-from-tmux
+#       zle -C words-from-tmux-$i-anywhere complete-word _generic
+#       zstyle "$ctxt-$i-anywhere:*" completer _words-from-tmux
+#   done
+#   zstyle "$ctxt-*:*" ignore-line current
+#   zstyle "$ctxt-*:*" menu yes select
+#   zstyle "$ctxt-*-anywhere:*" matcher-list 'b:=*'
+#   zstyle "$ctxt-*:*" capture-options -J -E - -S -
+#   zstyle "$ctxt-*:*" pre-trim-pattern '[<"'\''`‘]##'
+#   zstyle "$ctxt-*:*" post-trim-pattern '[>."'\''’]##'
+#   zstyle "$ctxt-*:*" trim-pattern '[\\]'
+#   unset i ctxt
+#
+#   # Match current word anywhere in candidates:
+#   bindkey '\esp' words-from-tmux-pane-anywhere
+#   bindkey '\esw' words-from-tmux-window-anywhere
+#   bindkey '\ess' words-from-tmux-session-anywhere
+#   bindkey '\ese' words-from-tmux-server-anywhere
+#   # Anchored versions (match on current prefix only)
+#   bindkey '\esap' words-from-tmux-pane
+#   bindkey '\esaw' words-from-tmux-window
+#   bindkey '\esas' words-from-tmux-session
+#   bindkey '\esae' words-from-tmux-server
+
+emulate -L zsh
+setopt extended_glob
+
+local expl description='words from '
+local -a captopts
+
+case $WIDGET in
+(words-from-tmux-pane(|-*)) description+='current tmux pane' ;;
+(words-from-tmux-window(|-*)) description+='current tmux window' ;;
+(words-from-tmux-session(|-*)) description+='current tmux session' ;;
+(words-from-tmux-server(|-*)) description+='entire tmux server' ;;
+(*) _message "Unsupported variant: $WIDGET"
+    return 1
+    ;;
+esac
+
+if [[ $WIDGET != words-from-tmux-server(|-*) ]] && [[ -z $TMUX_PANE ]]; then
+    _message "_words-from-tmux: Cannot generate words outside of tmux!"
+    return 1
+fi
+
+local -aU tmuxwords
+
+zstyle -a ":completion:${curcontext}:" capture-options captopts ||
+    captopts=( -J )
+
+# The order in which we go through scroll back buffers is significant, when
+# we're looking at more than one pane: It makes sense to first use words from
+# the current pane, then the rest of the panes from the current window, then
+# the rest of the windows from the current session and then the rest.
+
+# Current pane:
+tmuxwords=( $( tmux capture-pane "${captopts[@]}" -p ) )
+
+if [[ $WIDGET != words-from-tmux-pane(|-*) ]]; then
+    local s session window
+    # Current window:
+    for s in $( tmux list-panes -F '#{pane_id}' ); do
+        [[ $TMUX_PANE == $s ]] && continue
+        tmuxwords+=( $( tmux capture-pane "${captopts[@]}" -p -t $s ) )
+    done
+    if [[ $WIDGET != words-from-tmux-window(|-*) ]]; then
+        # Current session:
+        session=$( tmux display-message -p -F '#{session_id}' )
+        window=$( tmux display-message -p -F '#{window_id}' )
+        for s in $(tmux list-panes -s -t $session -F '#{pane_id}:#{window_id}')
+        do
+            [[ $window == ${s#*:} ]] && continue
+            tmuxwords+=( $( tmux capture-pane "${captopts[@]}" -p -t ${s%:*} ) )
+        done
+    fi
+    if [[ $WIDGET == words-from-tmux-server(|-*) ]]; then
+        # The rest:
+        for s in $(tmux list-panes -a -F '#{pane_id}:#{session_id}'); do
+            [[ $session == ${s#*:} ]] && continue
+            tmuxwords+=( $( tmux capture-pane "${captopts[@]}" -p -t ${s%:*} ) )
+        done
+    fi
+fi
+
+local pat prepat postpat
+zstyle -s ":completion:${curcontext}:" trim-pattern pat || pat=
+zstyle -s ":completion:${curcontext}:" pre-trim-pattern prepat || prepat=
+zstyle -s ":completion:${curcontext}:" post-trim-pattern postpat || postpat=
+
+[[ -n $pat ]] && tmuxwords=( ${"${tmuxwords[@]}"//${~pat}/} )
+if [[ -n $prepat ]] || [[ -n $postpat ]]
+then
+    tmuxwords=( ${${"${tmuxwords[@]}"##${~prepat}}%%${~postpat}} )
+fi
+
+_wanted values expl $description compadd -a tmuxwords
