@@ -28,12 +28,12 @@ bindkey -v
 bind2maps       viins emacs -- ' ' magic-space
 
 bind2maps vicmd viins emacs -- '^of' jump-after-first-word
+bind2maps vicmd viins emacs -- '^oh' run-help
 bind2maps vicmd viins emacs -- '^os' sudo-command-line
 
 bind2maps vicmd viins emacs -- '^ot' words-from-tmux-pane
 bind2maps vicmd viins emacs -- '^o^t' words-from-tmux-pane-anywhere
 
-bind2maps vicmd viins emacs -- '^[h' run-help
-bind2maps vicmd viins emacs -- "^[k" history-search-backward
-bind2maps vicmd viins emacs -- "^[j" history-search-forward
+bind2maps vicmd viins emacs -- "^p" history-search-backward
+bind2maps vicmd viins emacs -- "^n" history-search-forward
 
