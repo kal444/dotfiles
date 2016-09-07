@@ -1,208 +1,4 @@
-# Load a few modules
-is4 && \
-for mod in parameter complist deltochar mathfunc ; do
-    zmodload -i zsh/${mod} 2>/dev/null || print "Notice: no ${mod} available :("
-done && builtin unset -v mod
-
-# autoload zsh modules when they are referenced
-if is4 ; then
-    zmodload -a  zsh/stat    zstat
-    zmodload -a  zsh/zpty    zpty
-    zmodload -ap zsh/mapfile mapfile
-fi
-
-# called later (via is4 && grmlcomp)
-# note: use 'zstyle' for getting current settings
-#         press ^xh (control-x h) for getting tags in context; ^x? (control-x ?) to run complete_debug with trace output
-grmlcomp() {
-    # TODO: This could use some additional information
-
-    # Make sure the completion system is initialised
-    (( ${+_comps} )) || return 1
-
-    # allow one error for every three characters typed in approximate completer
-    zstyle ':completion:*:approximate:'    max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
-
-    # don't complete backup files as executables
-    zstyle ':completion:*:complete:-command-::commands' ignored-patterns '(aptitude-*|*\~)'
-
-    # start menu completion only if it could find no unambiguous initial string
-    zstyle ':completion:*:correct:*'       insert-unambiguous true
-    zstyle ':completion:*:corrections'     format $'%{\e[0;31m%}%d (errors: %e)%{\e[0m%}'
-    zstyle ':completion:*:correct:*'       original true
-
-    # activate color-completion
-    zstyle ':completion:*:default'         list-colors ${(s.:.)LS_COLORS}
-
-    # format on completion
-    zstyle ':completion:*:descriptions'    format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
-
-    # automatically complete 'cd -<tab>' and 'cd -<ctrl-d>' with menu
-    # zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
-
-    # insert all expansions for expand completer
-    zstyle ':completion:*:expand:*'        tag-order all-expansions
-    zstyle ':completion:*:history-words'   list false
-
-    # activate menu
-    zstyle ':completion:*:history-words'   menu yes
-
-    # ignore duplicate entries
-    zstyle ':completion:*:history-words'   remove-all-dups yes
-    zstyle ':completion:*:history-words'   stop yes
-
-    # match uppercase from lowercase
-    zstyle ':completion:*'                 matcher-list 'm:{a-z}={A-Z}'
-
-    # separate matches into groups
-    zstyle ':completion:*:matches'         group 'yes'
-    zstyle ':completion:*'                 group-name ''
-
-    if [[ "$NOMENU" -eq 0 ]] ; then
-        # if there are more than 5 options allow selecting from a menu
-        zstyle ':completion:*'               menu select=5
-    else
-        # don't use any menus at all
-        setopt no_auto_menu
-    fi
-
-    zstyle ':completion:*:messages'        format '%d'
-    zstyle ':completion:*:options'         auto-description '%d'
-
-    # describe options in full
-    zstyle ':completion:*:options'         description 'yes'
-
-    # on processes completion complete all user processes
-    zstyle ':completion:*:processes'       command 'ps -au$USER'
-
-    # offer indexes before parameters in subscripts
-    zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-
-    # provide verbose completion information
-    zstyle ':completion:*'                 verbose true
-
-    # recent (as of Dec 2007) zsh versions are able to provide descriptions
-    # for commands (read: 1st word in the line) that it will list for the user
-    # to choose from. The following disables that, because it's not exactly fast.
-    zstyle ':completion:*:-command-:*:'    verbose false
-
-    # set format for warnings
-    zstyle ':completion:*:warnings'        format $'%{\e[0;31m%}No matches for:%{\e[0m%} %d'
-
-    # define files to ignore for zcompile
-    zstyle ':completion:*:*:zcompile:*'    ignored-patterns '(*~|*.zwc)'
-    zstyle ':completion:correct:'          prompt 'correct to: %e'
-
-    # Ignore completion functions for commands you don't have:
-    zstyle ':completion::(^approximate*):*:functions' ignored-patterns '_*'
-
-    # Provide more processes in completion of programs like killall:
-    zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
-
-    # complete manual by their section
-    zstyle ':completion:*:manuals'    separate-sections true
-    zstyle ':completion:*:manuals.*'  insert-sections   true
-    zstyle ':completion:*:man:*'      menu yes select
-
-    # Search path for sudo completion
-    zstyle ':completion:*:sudo:*' command-path /usr/local/sbin \
-                                               /usr/local/bin  \
-                                               /usr/sbin       \
-                                               /usr/bin        \
-                                               /sbin           \
-                                               /bin            \
-                                               /usr/X11R6/bin
-
-    # provide .. as a completion
-    zstyle ':completion:*' special-dirs ..
-
-    # run rehash on completion so new installed program are found automatically:
-    _force_rehash() {
-        (( CURRENT == 1 )) && rehash
-        return 1
-    }
-
-    ## correction
-    # some people don't like the automatic correction - so run 'NOCOR=1 zsh' to deactivate it
-    if [[ "$NOCOR" -gt 0 ]] ; then
-        zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete _files _ignored
-        setopt nocorrect
-    else
-        # try to be smart about when to use what completer...
-        setopt correct
-        zstyle -e ':completion:*' completer '
-            if [[ $_last_try != "$HISTNO$BUFFER$CURSOR" ]] ; then
-                _last_try="$HISTNO$BUFFER$CURSOR"
-                reply=(_complete _match _ignored _prefix _files)
-            else
-                if [[ $words[1] == (rm|mv) ]] ; then
-                    reply=(_complete _files)
-                else
-                    reply=(_oldlist _expand _force_rehash _complete _ignored _correct _approximate _files)
-                fi
-            fi'
-    fi
-
-    # command for process lists, the local web server details and host completion
-    zstyle ':completion:*:urls' local 'www' '/var/www/' 'public_html'
-
-    # Some functions, like _apt and _dpkg, are very slow. We can use a cache in
-    # order to speed things up
-    if [[ ${GRML_COMP_CACHING:-yes} == yes ]]; then
-        GRML_COMP_CACHE_DIR=${GRML_COMP_CACHE_DIR:-${ZDOTDIR:-$HOME}/.cache}
-        if [[ ! -d ${GRML_COMP_CACHE_DIR} ]]; then
-            command mkdir -p "${GRML_COMP_CACHE_DIR}"
-        fi
-        zstyle ':completion:*' use-cache  yes
-        zstyle ':completion:*:complete:*' cache-path "${GRML_COMP_CACHE_DIR}"
-    fi
-
-    # host completion
-    if is42 ; then
-        [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
-        [[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-        [[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
-    else
-        _ssh_config_hosts=()
-        _ssh_hosts=()
-        _etc_hosts=()
-    fi
-    hosts=(
-        $(hostname)
-        "$_ssh_config_hosts[@]"
-        "$_ssh_hosts[@]"
-        "$_etc_hosts[@]"
-        localhost
-    )
-    zstyle ':completion:*:hosts' hosts $hosts
-    # TODO: so, why is this here?
-    #  zstyle '*' hosts $hosts
-
-    # use generic completion system for programs not yet defined; (_gnu_generic works
-    # with commands that provide a --help option with "standard" gnu-like output.)
-    for compcom in cp deborphan df feh fetchipac gpasswd head hnb ipacsum mv \
-                   pal stow uname ; do
-        [[ -z ${_comps[$compcom]} ]] && compdef _gnu_generic ${compcom}
-    done; unset compcom
-
-    # see upgrade function in this file
-    compdef _hosts upgrade
-}
-
-# Keyboard setup: The following is based on the same code, we wrote for
-# debian's setup. It ensures the terminal is in the right mode, when zle is
-# active, so the values from $terminfo are valid. Therefore, this setup should
-# work on all systems, that have support for `terminfo'. It also requires the
-# zsh in use to have the `zsh/terminfo' module built.
-#
-# If you are customising your `zle-line-init()' or `zle-line-finish()'
-# functions, make sure you call the following utility functions in there:
-#
-#     - zle-line-init():      zle-smkx
-#     - zle-line-finish():    zle-rmkx
-
-# Use emacs-like key bindings by default:
-bindkey -e
+#!/bin/zsh
 
 # Custom widgets:
 
@@ -222,6 +18,8 @@ beginning-or-end-of-somewhere() {
 }
 zle -N beginning-of-somewhere beginning-or-end-of-somewhere
 zle -N end-of-somewhere beginning-or-end-of-somewhere
+bind2maps emacs             -- Home   beginning-of-somewhere
+bind2maps emacs             -- End    end-of-somewhere
 
 # add a command line to the shells history without executing it
 commit-to-history() {
@@ -229,6 +27,7 @@ commit-to-history() {
     zle send-break
 }
 zle -N commit-to-history
+bind2maps emacs viins       -- -s "^x^h" commit-to-history
 
 # only slash should be considered as a word separator:
 slash-backward-kill-word() {
@@ -237,6 +36,12 @@ slash-backward-kill-word() {
     zle backward-kill-word
 }
 zle -N slash-backward-kill-word
+#k# Kill left-side word or everything up to next slash
+bind2maps emacs viins       -- -s '\ev' slash-backward-kill-word
+#k# Kill left-side word or everything up to next slash
+bind2maps emacs viins       -- -s '\e^h' slash-backward-kill-word
+#k# Kill left-side word or everything up to next slash
+bind2maps emacs viins       -- -s '\e^?' slash-backward-kill-word
 
 # a generic accept-line wrapper
 
@@ -778,9 +583,7 @@ key=(
 #   - Most terminals send "ESC x" when Meta-x is pressed. Thus, sequences like
 #     '\ex' are allowed in here as well.
 
-bind2maps emacs             -- Home   beginning-of-somewhere
 bind2maps       viins vicmd -- Home   vi-beginning-of-line
-bind2maps emacs             -- End    end-of-somewhere
 bind2maps       viins vicmd -- End    vi-end-of-line
 bind2maps emacs viins       -- Insert overwrite-mode
 bind2maps             vicmd -- Insert vi-insert
@@ -812,13 +615,6 @@ bind2maps emacs viins       -- -s '^xP' history-beginning-search-forward-end
 bind2maps emacs viins       -- PageUp history-beginning-search-backward-end
 #k# search history forward for entry beginning with typed text
 bind2maps emacs viins       -- PageDown history-beginning-search-forward-end
-bind2maps emacs viins       -- -s "^x^h" commit-to-history
-#k# Kill left-side word or everything up to next slash
-bind2maps emacs viins       -- -s '\ev' slash-backward-kill-word
-#k# Kill left-side word or everything up to next slash
-bind2maps emacs viins       -- -s '\e^h' slash-backward-kill-word
-#k# Kill left-side word or everything up to next slash
-bind2maps emacs viins       -- -s '\e^?' slash-backward-kill-word
 # Do history expansion on space:
 bind2maps emacs viins       -- -s ' ' magic-space
 #k# Trigger menu-complete

@@ -1,0 +1,165 @@
+http://bewatermyfriend.org/posts/2007/12-26.11-50-38-tooltime.html
+
+Have you ever been harassed by zsh, with the following question?
+
+'zsh: correct 'foo' to '_foo' [nyae]? '
+
+The auto-correction mechanism is (as opposed to the completion system), pretty
+inflexible. In this case, zsh could not find the command 'foo'. But it found a
+function called '_foo'. So, for the correction mechanism '_foo' is a sensible
+correction.
+
+For the user however, '_foo' is absolutely useless on the command line. It is
+part of the completion system (function names starting with an underscore are
+completion widgets per convention). Those functions, called from the command
+line, will bail out, telling you something like:
+
+_arguments:comparguments:303: can only be called from completion function
+
+Completely useless.
+
+This may have two reasons:
+  a) You just installed 'foo' and you didn't call 'hash -r'.
+  b) 'foo' is just not installed.
+
+You could solve a) by forcing 'hash -r' every time you hit enter. b) on the
+other hand isn't that simple. But doable, still. It requires changes to what
+the default 'accept-line' zle-widget does.
+
+If you have been to '#zsh' on freenode for a bit you may have noticed, that
+every once in a while, questions about doing automated changed to the command
+line buffer before calling 'accept-line' come up. The default answer to those
+questions is to create a wrapper around the default 'accept-line' widget.
+
+To solve these problems once and for all I created a generic wrapper for
+'accept-line', that is configurable via 'zstyle'.
+
+It can be found in my zsh configuration (in functions/accept-line).
+Copy that file into your $fpath and do:
+
+% autoload -U accept-line && accept-line
+
+Now you get a warning if you want to execute a command, zsh does not know about
+and for which a _completion exists. Hitting enter a second time will try that
+execution anyway.
+
+Forcing rehashing works, but has to be enabled via a style.
+This wrapper is configured via styles. That means, you issue commands, that look
+like:
+
+zstyle 'context' style value
+
+The context namespace, that we are using is 'acceptline'. That means, the actual
+context for your commands look like: ':acceptline:blafoobar'.
+
+Where 'blafoobar' is one of: default, normal, force, misc or empty.
+
+  default:
+    This is the value, the context is initialized with.
+    The 'compwarnfmt' and 'rehash' styles are looked up in this context.
+
+  normal:
+    If the first word in the command line is either a command, alias, function,
+    builtin or reserved word, you are in this context.
+
+  force:
+    This is the context, that is used if you hit enter again, after being warned
+    about the existence of a _completion for the non-existing command you
+    entered.
+
+  empty:
+    This is the context, you are in if the command line is empty or only
+    consists of whitespace.
+
+  misc:
+    This context is in effect, if you entered something that does not match any
+    of the above. (e.g.: variable assignments).
+
+Available styles:
+
+  nocompwarn:
+    If you set this style to true, the warning about non existent commands,
+    for which completions exist will not be issued.
+
+  compwarnfmt:
+    The message, that is displayed to warn about the _completion issue.
+    (default: '%c will not execute and completion %f exists.')
+    '%c' is replaced by the command name, '%f' by the completion's name.
+
+  rehash:
+    Defaults to 'false'.
+    If this is set, we'll force rehashing, if appropriate.
+
+  actions:
+    This can be a list of wigdets to call in a given context.
+    If you need a specific order for these to be called, name them accordingly.
+    The default value is an empty list.
+
+  default_action:
+    The name of a widget, that is called after the widgets from 'actions'.
+    By default, this will be '.accept-line'.
+
+  call_default:
+    If true in the current context, call the widget in the 'default_action'
+    style. (The default is 'true' in all contexts.)
+
+"Hear hear! - But, frankly: Huh!?"
+
+So, if it's examples you want; examples you get.
+
+If you are like me, and don't want the shell to do anything when you hit enter
+on an empty command line, you can now just disable that:
+
+% zstyle ':acceptline:empty' call_default false
+
+Or maybe you want the screen to be cleared, if you hit enter on an empty line:
+
+% zstyle ':acceptline:empty' default_action clear-screen
+
+If the warning about completions for non existing command confuses you,
+disable it:
+
+% zstyle ':acceptline:*' nocompwarn true
+
+Simple enough, I think.
+
+The rehashing thing is turned off by default. Switching it on is straight
+forward:
+
+% zstyle ':acceptline:*' rehash true
+
+If you never used styles before, you might wonder: 'Why not
+:acceptline:default?' - Well, in this particular case: Because it's shorter. :-)
+In general, though, contexts can be patterns not just fixed strings.
+
+Now how to change that warning message?
+
+% zstyle ":acceptline:*" compwarnfmt \
+'The command %c will not execute.
+A completion %f exists.
+You got auto correction set to ON.
+This may lead to unexpected results.
+
+Hit enter again, to try execution anyway.'
+
+Okay, one last example.
+Say you got two widgets, that do magic to the command line. That could be
+everything you would want to have. Like prepending 'aptitude' by 'sudo' if the
+first argument to the program needs superuser access. And a widgets that does
+some smart tricks for command lines that start with 'ssh'.
+
+Imagine, that you want to make sure the ssh thing runs *before* the aptitude
+widget. To achieve this name them something like this: 01_fixssh, 02_fixapt
+
+Now do:
+
+% zstyle ':acceptline:normal' actions 01_fixssh 02_fixapt
+
+If you got multiple actions set and you want to stop processing in certain
+situations you can do that by setting the $aldone parameter to something bigger
+than zero before returning from your widget.
+
+If you decide to use this wrapper yourself, feel free to do so. If you use grml,
+don't bother, you'll get it automatically pretty soon. :-)
+
+If you have suggestions, additions or found a bug, please go ahead and tell me.

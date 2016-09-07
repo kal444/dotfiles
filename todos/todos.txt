@@ -1,5 +1,4 @@
 * osx specific configuraiton
   * homebrew
 * go through grml zsh configuration and steal the good parts
-  * debian/ubuntu options
 * go through vim-plugins file and look at interesting plugins
