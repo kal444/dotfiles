@@ -1,9 +1,3 @@
-Valloric/YouCompleteMe " huge completion library
-SirVer/ultisnips " snippets solution (needs python builtin)
-honza/vim-snippets " community snippets
-
-sjl/gundo.vim " undo history in a tree
-raimondi/delimitMate " auto-completion for quotes, parens, brackets
 
 https://github.com/terryma/dotfiles/blob/master/.vimrc
 
