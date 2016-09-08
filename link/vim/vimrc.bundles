@@ -3,38 +3,34 @@ Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
 Plugin 'altercation/vim-colors-solarized' " soloarized color schemes
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
-Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
-Plugin 'airblade/vim-gitgutter' " show git changes in gutter
-Plugin 'scrooloose/nerdtree' " directory tree explorer
-Plugin 'majutsushi/tagbar' " current file tag browser
 Plugin 'scrooloose/syntastic' " syntax checker for various languages
-Plugin 'tpope/vim-dispatch' " asynchronous build and test dispatcher
+Plugin 'scrooloose/nerdtree' " directory tree explorer
+Plugin 'airblade/vim-gitgutter' " show git changes in gutter
 Plugin 'tpope/vim-fugitive' " git wrapper
-Plugin 'tpope/vim-rhubarb' " hub wrapper
+Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
+Plugin 'majutsushi/tagbar' " current file tag browser
 " editting related
-Plugin 'michaeljsmith/vim-indent-object' " allow selection of text by indent levels
+Plugin 'terryma/vim-expand-region' " selection expansion
 Plugin 'vim-scripts/matchit.zip' " configure % to match more than just single characters
-Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
-Plugin 'tpope/vim-commentary' " comment/uncomment stuff
 Plugin 'godlygeek/tabular' " align text on =, :, etc.
-Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
-Plugin 'tpope/vim-speeddating' " working with dates via increment/decrement
 " search and replace
-Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
 Plugin 'rking/ag.vim' " the_silver_searcher plugin for vim
+Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
+Plugin 'skwp/greplace.vim' " global search/replace across buffers
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
-Plugin 'vim-scripts/greplace.vim' " global replace
 " tmux related
 Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
 " snippets
-Plugin 'garbas/vim-snipmate' " snippet supprt similar to textmate, check out https://github.com/honza/vim-snippets
-Plugin 'MarcWeber/vim-addon-mw-utils' " util library for vim - used by snipmate
-Plugin 'tomtom/tlib_vim' " util library for vim - used by snipmate
 " vim modes for file types
-Plugin 'pearofducks/ansible-vim' " ansible vim mode
-Plugin 'pangloss/vim-javascript' " better javascript vim mode
-Plugin 'mustache/vim-mustache-handlebars' " mustache/handlebar vim modes
+Plugin 'pearofducks/ansible-vim'
+Plugin 'ekalinin/dockerfile.vim'
+Plugin 'fatih/vim-go'
+Plugin 'klen/python-mode'
+Plugin 'pangloss/vim-javascript'
+Plugin 'elzr/vim-json'
 " misc
-Plugin 'tpope/vim-ragtag' " mappings for html, xml, asp, eruby, jsp, etc.
+Plugin 'tpope/vim-commentary' " comment/uncomment stuff
+Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
+Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
 Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc.
-Plugin 'tpope/vim-unimpaired' " mappings that works with paried (typically prev/next) actions
+Plugin 'tpope/vim-unimpaired' " mappings that works with paired (typically prev/next) actions
