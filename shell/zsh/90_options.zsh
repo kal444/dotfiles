@@ -25,15 +25,18 @@ setopt no_beep # don't want beeps!
 # use vi style zle keys
 bindkey -v
 
-bind2maps       viins emacs -- ' ' magic-space
+# list key maps in order of emacs vicmd viins like in the man page
+bind2maps emacs       viins -- ' ' magic-space
 
-bind2maps vicmd viins emacs -- '^of' jump-after-first-word
-bind2maps vicmd viins emacs -- '^oh' run-help
-bind2maps vicmd viins emacs -- '^os' sudo-command-line
+bind2maps emacs       viins -- '^[[Z' reverse-menu-complete
 
-bind2maps vicmd viins emacs -- '^ot' words-from-tmux-pane
-bind2maps vicmd viins emacs -- '^o^t' words-from-tmux-pane-anywhere
+bind2maps emacs vicmd viins -- '^of' jump-after-first-word
+bind2maps emacs vicmd viins -- '^oh' run-help
+bind2maps emacs vicmd viins -- '^os' sudo-command-line
 
-bind2maps vicmd viins emacs -- "^p" history-search-backward
-bind2maps vicmd viins emacs -- "^n" history-search-forward
+bind2maps emacs vicmd viins -- '^ot' words-from-tmux-pane
+bind2maps emacs vicmd viins -- '^o^t' words-from-tmux-pane-anywhere
+
+bind2maps emacs vicmd viins -- "^p" history-search-backward
+bind2maps emacs vicmd viins -- "^n" history-search-forward
 
