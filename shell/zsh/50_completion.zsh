@@ -7,7 +7,7 @@ setopt always_to_end # Move cursor to the end of a completed word.
 fpath=($DOTFILES/thirdparty/zsh-completions/src $fpath)
 
 # auto completion loading and silently ignore insecure dirs
-autoload -U compinit; compinit -i
+autoload -U compinit; compinit
 
 # completion context string has a set of fields
 # They are in the order :completion:function:completer:command:argument:tag
