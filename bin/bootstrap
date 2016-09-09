@@ -55,7 +55,7 @@ function link_all() {
 
 function install() {
   local op="$1"; shift
-  l_ln "selected $op operation"
+
   if [[ -d "$DOTFILES" ]]; then
     cd "$DOTFILES"
     l_ln "Updating from repo"
@@ -72,6 +72,7 @@ function install() {
   elif [[ "$op" = "link" ]]; then
     link_all
   else
+    l_ln "no operation selected"
     l_ln "tell me to 'copy' or 'link' files"
   fi
 
