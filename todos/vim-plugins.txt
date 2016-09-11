@@ -1,4 +1,3 @@
-
 https://github.com/terryma/dotfiles/blob/master/.vimrc
 
 Plugin 'scrooloose/nerdcommenter'
