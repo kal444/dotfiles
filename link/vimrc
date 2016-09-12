@@ -156,15 +156,24 @@ let g:ycm_server_keep_logfiles = 0
 let g:ycm_server_log_level = 'info'
 
 let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsListSnippets="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsListSnippets="<c-l>"
 let g:UltiSnipsEditSplit="vertical"
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Extend the expansion text objects
+call expand_region#custom_text_objects({
+      \ 'a]'  :1,
+      \ 'ab'  :1,
+      \ 'aB'  :1,
+      \ 'ii'  :0,
+      \ 'ai'  :0,
+\ })
 
 " set extensions for markdown files
 autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set filetype=markdown
@@ -194,42 +203,17 @@ nnoremap Q :q<cr>
 nnoremap U :redo<cr>
 " rewrite the file with sudo
 cnoremap w!! w !sudo tee > /dev/null %
-" _ : Quick horizontal splits - TODO not sure why this doesn't work - it also
-" conflicts with expand region plugin
-" nnoremap _ :sp<cr>
-" | : Quick vertical splits
-" nnoremap <bar> :vsp<cr>
-" +/-: Increment number - TODO conflict with expand region
-" need to map those first
-" - map K <Plug>(expand_region_expand)
-" - map J <Plug>(expand_region_shrink)
-" nnoremap + <c-a>
-" nnoremap - <c-x>
-" >, <: Reselect visual block after indent
+" >, <: reselect visual block after indent
 xnoremap > >gv
 xnoremap < <gv
-" <cr>: highlight visual selections
-xnoremap <cr> y:let @/ = @"<cr>:set hlsearch<cr>
-
+" CTRL-A normal mode: increment number
+" CTRL-X normal mode: decrement number
 " insert mode ^u will clear line, but undo buffer now saves the cleared text.
 inoremap <c-u> <c-g>u<c-u>
 " insert mode ^w will clear word, but undo buffer now saves the cleared text.
 inoremap <c-w> <c-g>u<c-w>
-" control - J/K: Move visual block TODO (<c-j> is conflicting with UltiSnip)
-" vnoremap <c-j> :m '>+1<cr>gv=gv
-" vnoremap <c-k> :m '<-2<cr>gv=gv
-
-" window movements
-nnoremap <c-h> <c-w>h
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-l> <c-w>l
-" switch to the other window ala ^w^w, but maximize the target window too
-nnoremap <c-w><c-e> <c-w><c-w><c-w>_<cr>
-" <leader>m: Maximize current split
-nnoremap <leader>m <c-w>_<c-w><bar>
-" <leader>,: Switch to previous split
-nnoremap <leader>, <c-w>p
+" <cr>: highlight visual selections
+xnoremap <cr> y:let @/ = @"<cr>:set hlsearch<cr>
 
 " leader key bindings in alpha order
 nnoremap <leader><space> :call whitespace#strip_trailing()<cr>
@@ -251,7 +235,7 @@ vnoremap <leader>l :Tabularize<space>/
 " quit all - useful when viewing vimdiff
 nnoremap <leader>q :qall<cr>
 " ri = re-indent whole file and put you back to where you were
-" a bit magic here: save current location, save top of window loc, 
+" a bit magic here: save current location, save top of window loc,
 " reformat gg=G, move back to original top of windows, and then last line
 nnoremap <leader>ri mqHmwgg=G`wzt`q
 " rcm = remove ^M from DOS file
@@ -264,6 +248,38 @@ nnoremap <leader>v :exe ":edit " . vimrc<cr>
 " reload vimrc by reading this file
 nnoremap <leader>V :exe ":source " . vimrc<cr>
 nnoremap <leader>] :TagbarToggle<cr>
+
+" window movements
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
+" switch to the other window ala ^w^w, but maximize the target window too
+nnoremap <c-w><c-e> <c-w><c-w><c-w>_<cr>
+" <leader>m: Maximize current split
+nnoremap <leader>m <c-w>_<c-w><bar>
+" <leader>,: Switch to previous split
+nnoremap <leader>, <c-w>p
+
+" alt/meta keys
+" Fix alt/meta key keycodes. Using keycodes instead of
+" escape sequence for mapping will use ttimeout instead of timeout,
+" which means pressing escape will not cause a delay.
+let c='a'
+while c <= 'z'
+  exec "set <a-".c.">=\e".c
+  exec "set <a-".toupper(c).">=\e".toupper(c)
+  let c = nr2char(1+char2nr(c))
+endw
+" normal mode: move current line down/up
+nnoremap <a-j> mz:m+<cr>`z==
+nnoremap <a-k> mz:m-2<cr>`z==
+" insert model: move current line down/up
+imap <a-j> <esc><m-j>a
+imap <a-k> <esc><m-k>a
+" visual mode: move blocks down/up
+vnoremap <a-j> :m'>+<cr>`<my`>mzgv`yo`z
+vnoremap <a-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("gui_running")
   set columns=132 " default to 132 columns

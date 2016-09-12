@@ -4,9 +4,3 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'rhysd/clever-f.vim'
 Plugin 'easymotion/vim-easymotion'
-
-Plugin 'kana/vim-textobj-user'
-Plugin 'kana/vim-textobj-entire' " ae, ie
-Plugin 'kana/vim-textobj-line' " al, il
-Plugin 'kana/vim-textobj-indent'
-
