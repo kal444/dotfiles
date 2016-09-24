@@ -1,12 +1,6 @@
 # define shared aliases for 
 # both bash and zsh
 #
-if [ `/usr/bin/id -u` -eq 0 ]; then
-  # force interactive file operations for root
-  alias cp='cp -i'
-  alias rm='rm -i'
-  alias mv='mv -i'
-fi
 
 if ls --color=auto -d . >/dev/null 2>&1; then
   # echo "has GNU ls"
