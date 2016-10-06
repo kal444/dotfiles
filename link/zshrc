@@ -13,3 +13,7 @@ function source_files() {
 }
 
 source_files
+
+if [[ -f ~/.zshrc.local ]]; then
+  source ~/.zshrc.local
+fi

@@ -12,3 +12,7 @@ function source_files() {
 }
 
 source_files
+
+if [[ -f ~/.bashrc.local ]]; then
+  source ~/.bashrc.local
+fi
