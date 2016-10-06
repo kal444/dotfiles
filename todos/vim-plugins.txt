@@ -1,6 +1,0 @@
-https://github.com/terryma/dotfiles/blob/master/.vimrc
-
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'rhysd/clever-f.vim'
-Plugin 'easymotion/vim-easymotion'

@@ -1,3 +1,2 @@
-* go through vim-plugins file and look at interesting plugins
 * osx specific configuraiton
   * homebrew

@@ -11,6 +11,7 @@ Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'sjl/gundo.vim' " undo history in a tree
 Plugin 'majutsushi/tagbar' " current file tag browser
 Plugin 'Valloric/YouCompleteMe' " huge completion library
+Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 " editting related
 Plugin 'raimondi/delimitMate' " auto-completion for quotes, parens, brackets
 Plugin 'terryma/vim-expand-region' " selection expansion
