@@ -3,7 +3,7 @@
 ping -q -c1 berunda >/dev/null || exit; # server not up
 
 # unmount only when it's mounted
-mount | grep -q /opt/kyle/berunda/media && umount /opt/kyle/berunda/media
-mount | grep -q /opt/kyle/berunda/public && umount /opt/kyle/berunda/public
-mount | grep -q /opt/kyle/berunda/attic && umount /opt/kyle/berunda/attic
-mount | grep -q /opt/kyle/berunda/kal && umount /opt/kyle/berunda/kal
+mount | grep -q //kal@berunda/media && umount //kal@berunda/media
+mount | grep -q //kal@berunda/public && umount //kal@berunda/public
+mount | grep -q //kal@berunda/attic && umount //kal@berunda/attic
+mount | grep -q //kal@berunda/home && umount //kal@berunda/home
