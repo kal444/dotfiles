@@ -11,6 +11,10 @@ if [[ "$OSTYPE" != "darwin"* ]]; then exit 1; fi
 # install xcode command line tools, ignore error
 xcode-select --install || true
 
+# install Homebrew
+brew help >/dev/null 2>&1 || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew tap 'homebrew/bundle'
+
 # Ask for the administrator password upfront
 sudo -v
 # switch to standby after sleeping for 3 hours
