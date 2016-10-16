@@ -8,6 +8,9 @@ if [[ "$OSTYPE" != "darwin"* ]]; then exit 1; fi
 # System Setup                                                                #
 ###############################################################################
 
+# install xcode command line tools, ignore error
+xcode-select --install || true
+
 # Ask for the administrator password upfront
 sudo -v
 # switch to standby after sleeping for 3 hours

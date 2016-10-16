@@ -1,4 +1,10 @@
-.vagrant/
-shims/
-backups/
 *.swp
+.vagrant/
+backups/
+link/rbenv/shims/
+link/rbenv/version
+link/rbenv/versions/
+link/pyenv/shims/
+link/pyenv/version
+link/pyenv/versions/
+link/pyenv/cache/
