@@ -127,16 +127,6 @@ function getcertnames() {
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
-# list brew formulas and dependencies
-function brewdeps() {
-  brew list | while read formula
-  do
-    echo -n ${formula}
-    brew deps ${formula} | awk '{printf(" %s ", $0)}'
-    echo ""
-  done
-}
-
 # Change working directory to the top-most Finder window location
 function cdf() { # short for `cdfinder`
   cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
