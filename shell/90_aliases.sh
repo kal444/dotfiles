@@ -44,6 +44,8 @@ alias dpkgq='dpkg-query'
 # docker
 alias d='docker'
 alias db='docker build .'
+alias dcomp='docker-compose'
+alias denv='eval $(docker-machine env)'
 alias drun='docker run -i -t --rm'
 alias drmut='docker rmi $(docker images -q -f dangling=true)'
 alias dm='docker-machine'
