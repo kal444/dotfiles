@@ -38,6 +38,7 @@ Plugin 'fatih/vim-go'
 Plugin 'klen/python-mode'
 Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
+Plugin 'cespare/vim-toml'
 " misc
 Plugin 'tpope/vim-commentary' " comment/uncomment stuff
 Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically

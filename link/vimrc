@@ -68,7 +68,7 @@ set laststatus=2 " always show status line
 set lazyredraw " don't update screen while executing macros, registers and other commands that have not been typed
 set list " show trailing whitespace
 set listchars=tab:▸\ ,trail:▫ " set nicer chars for tabs and trailing spaces
-set nomodeline " don't use modelines
+set modeline " do use modelines
 set number " do show line numbers
 set report=0 " report all changed lines
 set ruler " show cursor position always
