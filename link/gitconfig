@@ -1,7 +1,3 @@
-[user]
-  name = Kyle Huang
-  email = kyle@yellowaxe.com
-
 [core]
   # Use custom `.gitignore`
   excludesfile = ~/.gitignore
@@ -122,4 +118,7 @@
   bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
   bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
   migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-'$CURRENT@{u}'} && git rebase --onto ${2-master} $CURRENT; }; f"
+
+[include]
+  path = ~/.gitconfig.local
 

@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-vim +PluginInstall! +qall
-vim +PluginClean +qall
+vim +PluginInstall! +PluginClean +qall
