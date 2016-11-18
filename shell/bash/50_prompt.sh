@@ -14,6 +14,10 @@ function __set_prompt_command() {
   local gitstat='$(__git_ps1 " (%s)")'
   local time="${cyan}\t"
 
-  PS1="${red}[${userhost} ${workdir}${red}]${blue}${gitstat}\n${red}[${time}${red}] ${red}\\$ ${reset}"
+  if [[ "$DISABLE_GIT_PROMPT" != "1" ]]; then
+    PS1="${red}[${userhost} ${workdir}${red}]${blue}${gitstat}\n${red}[${time}${red}] ${red}\\$ ${reset}"
+  else
+    PS1="${red}[${userhost} ${workdir}${red}]\n${red}[${time}${red}] ${red}\\$ ${reset}"
+  fi
 }
 __set_prompt_command
