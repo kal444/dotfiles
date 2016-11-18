@@ -29,7 +29,7 @@ alias sudo='sudo '
 alias week='date +%V'
 
 # command overrides
-has_command egrep && alias grep='egrep'
+has_command egrep && alias grep='egrep --color=auto' || alias grep='grep --color=auto'
 has_command less && alias more='less'
 has_command vim && alias vi='vim'
 
