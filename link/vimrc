@@ -13,6 +13,8 @@
 "========== save vimrc location for later use
 if has("win32") || has("win64")
   let vimrc='$HOME\_vimrc'
+  " keep the same .vim name instead of vimfiles
+  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
 else
   let vimrc='$HOME/.vimrc'
 endif

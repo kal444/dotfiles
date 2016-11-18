@@ -14,8 +14,15 @@ IF NOT EXIST "%DOTFILES%" (
   call git submodule update --init --recursive --remote --merge --quiet
 )
 
+for /f "skip=1" %%d in ('wmic os get localdatetime') do if not defined curdatetime set curdatetime=%%d
+set backupdir=%DOTFILES%\backups\%curdatetime:~0,12%
+mkdir %backupdir%
+
+REM backup files/directories
+forfiles /p "%DOTFILES%\link" /c "cmd /c move %HOME%\.@file %backupdir%"
+
 REM junction for dot directories
-forfiles /p "%DOTFILES%\link" /c "cmd /c IF @isdir==TRUE (mklink /j %HOME%\.@file @path)"
-REM hard link for dot files
-forfiles /p "%DOTFILES%\link" /c "cmd /c IF @isdir==FALSE   (mklink %HOME%\.@file @path)"
+forfiles /p "%DOTFILES%\link" /c "cmd /c IF @isdir==TRUE  (mklink /j %HOME%\.@file @path)"
+REM hard link for dot files - this avoids the need for symlink rights
+forfiles /p "%DOTFILES%\link" /c "cmd /c IF @isdir==FALSE (mklink /h %HOME%\.@file @path)"
 
