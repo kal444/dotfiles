@@ -12,6 +12,10 @@ function source_files() {
   done
 }
 
+if [[ -f ~/.shell.flags ]]; then
+  source ~/.shell.flags
+fi
+
 source_files
 
 if [[ -f ~/.zshrc.local ]]; then
