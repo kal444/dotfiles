@@ -100,3 +100,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   alias macupdate='sudo softwareupdate -i -a; brew update && brew upgrade --cleanup'
 
 fi
+
+alias cls="clear"
