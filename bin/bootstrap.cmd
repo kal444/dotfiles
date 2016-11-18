@@ -25,4 +25,3 @@ REM junction for dot directories
 forfiles /p "%DOTFILES%\link" /c "cmd /c IF @isdir==TRUE  (mklink /j %HOME%\.@file @path)"
 REM hard link for dot files - this avoids the need for symlink rights
 forfiles /p "%DOTFILES%\link" /c "cmd /c IF @isdir==FALSE (mklink /h %HOME%\.@file @path)"
-
