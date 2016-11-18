@@ -79,6 +79,10 @@ alias bell="tput bel"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
+  if [[ -x /Applications/MacVim.app/Contents/MacOS/Vim ]]; then
+    alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
+  fi
+
   # macOS has no `md5sum`, so use `md5` as a fallback
   has_command md5sum || alias md5sum="md5"
 

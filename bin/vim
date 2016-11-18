@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
