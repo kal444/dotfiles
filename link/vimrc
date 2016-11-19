@@ -11,18 +11,18 @@
 "    * really like the folding idea
 
 " Identify platform {
-    silent function! OSX()
-      return has('macunix')
-    endfunction
-    silent function! LINUX()
-      return has('unix') && !has('macunix') && !has('win32unix')
-    endfunction
-    silent function! WINDOWS()
-      return  (has('win32') || has('win64'))
-    endfunction
+silent function! OSX()
+  return has('macunix')
+endfunction
+silent function! LINUX()
+  return has('unix') && !has('macunix') && !has('win32unix')
+endfunction
+silent function! WINDOWS()
+  return  (has('win32') || has('win64'))
+endfunction
 " }
 
-" Set VIMRC location {
+" Set VIMRC location and runtime path {
 " vimrc location can vary based on OSes
 " see :version
 " http://vim.wikia.com/wiki/Open_vimrc_file#Location_of_vimrc
@@ -47,15 +47,9 @@ if filereadable(expand("~/.vim/vimrc.bundles"))
   source ~/.vim/vimrc.bundles.local
 endif
 call vundle#end()
-filetype plugin indent on " enable file type detection.
 " }
 
-" ========== Turn on syntax highlighting
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable
-endif
-
-"========== Settings
+" Settings {
 set nocompatible " we want VIM not VI!
 
 "========== File/buffer handling
@@ -81,6 +75,7 @@ set foldmethod=indent " make folding indent sensitive
 set foldlevel=10 " don't start folding too early
 
 "========== Display
+set background=dark " use the dark bg color set
 set cursorline " makes cursor easier to find
 set nocursorcolumn " don't make cursor TOO easy to find - too distracting
 set display+=lastline " display last line as much as possible
@@ -135,22 +130,15 @@ set incsearch " display the match for a search pattern when halfway typing it
 set ignorecase " do ignore case in search patterns. This works well with smartcase set on
 set smartcase " ignore case when the pattern contains lowercase letters only
 
-"========== Enable basic mouse behavior such as resizing buffers.
+" Enable basic mouse behavior such as resizing buffers.
 set mouse=a
 if exists('$TMUX')  " Support resizing in tmux
   set ttymouse=xterm2
 endif
+" }
 
-"========== Fix Cursor in tmux
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-
-"========== Plugin settings
+" Plugin settings {
+" Lightline status line {
 let g:lightline = {
   \ 'colorscheme': 'solarized',
   \ 'active': {
@@ -164,6 +152,7 @@ let g:lightline = {
   \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
   \ },
 \ }
+" }
 
 let g:gitgutter_enabled = 1 " do enable git gutter
 
@@ -176,8 +165,19 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
+" enable completion from tags
+let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_server_keep_logfiles = 0
 let g:ycm_server_log_level = 'info'
+
+" enable omni completion.
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
@@ -199,16 +199,13 @@ call expand_region#custom_text_objects({
       \ 'ai'  :0,
 \ })
 
-" set extensions for markdown files
-autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set filetype=markdown
-" markdown files should have spell checking
-autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set spell
-" restore last edit position if we can
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+" }
 
-"========== Key mappings
+" Key mappings {
 let mapleader = ','
 let g:mapleader = ','
 let maplocalleader = ','
@@ -310,34 +307,39 @@ nnoremap <leader>, <c-w>p
 " vnoremap <a-j> :m'>+<cr>`<my`>mzgv`yo`z
 " vnoremap <a-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
+" }
+
 " GUI configuration {
 if has("gui_running")
   set columns=132 " default to 132 columns
   set lines=50 " default to 50 lines
 
-  set background=dark " use the dark bg color set
   set guicursor=a:blinkon0 " diable blinky cursor
   set mousehide " hide the mouse when typing
 
   " at some point the fonts will be needed
-  if WINDOWS()
-    set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+  if OSX()
+    set guifont=Bitstream\ Vera\ Sans\ Mono:h11,Menlo\ Regular:h11,Andale\ Mono:h11
+  elseif WINDOWS()
+    set guifont=Bitstream_Vera_Sans_Mono:h10,DejaVu_Sans_Mono:h10,Consolas:h10
   else
-    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10,DejaVu\ Sans\ Mono\ 10,Consolas\ 10
   endif
-endif
-
-if has('gui_running') || &t_Co == 256
-  let g:solarized_termcolors=256
-  let g:solarized_termtrans=1
-  colorscheme solarized
 endif
 " }
 
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
+filetype plugin indent on " enable file type detection.
+syntax on " turn on syntax highlighting
+colorscheme solarized
+
+" set extensions for markdown files
+autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set filetype=markdown
+" markdown files should have spell checking
+autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set spell
+" restore last edit position if we can
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
 
 if filereadable(expand("~/.vim/vimrc.local"))
   source ~/.vim/vimrc.local
