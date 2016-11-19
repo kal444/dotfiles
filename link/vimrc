@@ -1,3 +1,4 @@
+" vim: set foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " Author: Kyle Huang (https://github.com/kal444)
 "
 " Based on many others' vimrc files
@@ -6,20 +7,36 @@
 "   recently, I'm inspired to look at more vim plugins and started to go
 "   through this: https://github.com/square/maximum-awesome
 "   some more 'sensible' settings from https://github.com/tpope/vim-sensible
+"   recent additions from https://github.com/spf13/spf13-vim/blob/3.0/.vimrc
+"    * really like the folding idea
 
+" Identify platform {
+    silent function! OSX()
+      return has('macunix')
+    endfunction
+    silent function! LINUX()
+      return has('unix') && !has('macunix') && !has('win32unix')
+    endfunction
+    silent function! WINDOWS()
+      return  (has('win32') || has('win64'))
+    endfunction
+" }
+
+" Set VIMRC location {
 " vimrc location can vary based on OSes
 " see :version
 " http://vim.wikia.com/wiki/Open_vimrc_file#Location_of_vimrc
 "========== save vimrc location for later use
-if has("win32") || has("win64")
+if WINDOWS()
   let vimrc='$HOME\_vimrc'
   " keep the same .vim name instead of vimfiles
   set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
 else
   let vimrc='$HOME/.vimrc'
 endif
+" }
 
-"========== configure Vundle
+" Configure Vundle {
 " This expects Vundle is already cloned into bundles directory
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -31,6 +48,7 @@ if filereadable(expand("~/.vim/vimrc.bundles"))
 endif
 call vundle#end()
 filetype plugin indent on " enable file type detection.
+" }
 
 " ========== Turn on syntax highlighting
 if has('syntax') && !exists('g:syntax_on')
@@ -94,8 +112,12 @@ set wildmenu " show a navigable menu for tab completion
 set wildmode=longest,list,full " longest match, and list if can't match only one
 
 set noerrorbells " disable error bell beep
-set visualbell " use visual bell, but we will disable it later
-set t_vb= " disable visualbell terminal chars
+if WINDOWS()
+  set novisualbell
+else
+  set visualbell " use visual bell, but we will disable it later
+  set t_vb= " disable visualbell terminal chars
+endif
 
 "========== Editting
 set backspace=indent,eol,start " this is much smarter. back over autoindent,<EOL> and insert position
@@ -263,26 +285,32 @@ nnoremap <leader>m <c-w>_<c-w><bar>
 " <leader>,: Switch to previous split
 nnoremap <leader>, <c-w>p
 
+" THIS ISN'T WORKING IN MAC
+"
 " alt/meta keys
 " Fix alt/meta key keycodes. Using keycodes instead of
 " escape sequence for mapping will use ttimeout instead of timeout,
 " which means pressing escape will not cause a delay.
-let c='a'
-while c <= 'z'
-  exec "set <a-".c.">=\e".c
-  exec "set <a-".toupper(c).">=\e".toupper(c)
-  let c = nr2char(1+char2nr(c))
-endw
-" normal mode: move current line down/up
-nnoremap <a-j> mz:m+<cr>`z==
-nnoremap <a-k> mz:m-2<cr>`z==
-" insert model: move current line down/up
-imap <a-j> <esc><m-j>a
-imap <a-k> <esc><m-k>a
-" visual mode: move blocks down/up
-vnoremap <a-j> :m'>+<cr>`<my`>mzgv`yo`z
-vnoremap <a-k> :m'<-2<cr>`>my`<mzgv`yo`z
+" let c='a'
+" while c <= 'z'
+"   exec "set <a-".c.">=\e".c
+"   exec "set <a-".toupper(c).">=\e".toupper(c)
+"   let c = nr2char(1+char2nr(c))
+" endw
 
+" normal mode: move current line down/up
+" nnoremap <a-j> mz:m+<cr>`z==
+" nnoremap <a-k> mz:m-2<cr>`z==
+
+" insert model: move current line down/up
+" imap <a-j> <esc><m-j>a
+" imap <a-k> <esc><m-k>a
+
+" visual mode: move blocks down/up
+" vnoremap <a-j> :m'>+<cr>`<my`>mzgv`yo`z
+" vnoremap <a-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+" GUI configuration {
 if has("gui_running")
   set columns=132 " default to 132 columns
   set lines=50 " default to 50 lines
@@ -292,16 +320,19 @@ if has("gui_running")
   set mousehide " hide the mouse when typing
 
   " at some point the fonts will be needed
-  " if has("win32") || has("win64")
-  "   set guifont=DejaVu_Sans_Mono:h10:cANSI
-  " else
-  "   set guifont=DejaVu\ Sans\ Mono\ 10
-  " endif
+  if WINDOWS()
+    set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+  else
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+  endif
 endif
 
 if has('gui_running') || &t_Co == 256
+  let g:solarized_termcolors=256
+  let g:solarized_termtrans=1
   colorscheme solarized
 endif
+" }
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''

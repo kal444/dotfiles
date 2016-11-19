@@ -81,6 +81,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   if [[ -x /Applications/MacVim.app/Contents/MacOS/Vim ]]; then
     alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
+    alias gvim=mvim
   fi
 
   # macOS has no `md5sum`, so use `md5` as a fallback
