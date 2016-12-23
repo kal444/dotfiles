@@ -15,7 +15,7 @@ setopt hist_reduce_blanks # remove extra spaces
 setopt hist_save_no_dups # don't want dups
 setopt hist_verify # history expansion will show the line - before running it
 setopt inc_append_history # periodically add to history
-setopt share_history # imports commands from saved history file (e.g. another session?)
+setopt no_share_history # do not imports commands from saved history file (e.g. another session?)
 
 # history keys
 bindkey '^[[A' up-line-or-search # up does search based on prefix
