@@ -40,6 +40,7 @@ brew 'zsh'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
 
+cask 'amazon-music'
 cask 'atom'
 cask 'calibre'
 cask 'dictunifier'
