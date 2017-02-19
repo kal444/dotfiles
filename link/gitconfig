@@ -118,6 +118,16 @@
   bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
   bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
   migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-'$CURRENT@{u}'} && git rebase --onto ${2-master} $CURRENT; }; f"
+  
+  # https://gist.github.com/gnarf/5406589
+  # git pr 4 - creates local branch pr/4 from the github upstream(if it exists) or origin remote and checks it out
+  # git pr 4 someremote - creates local branch pr/4 from someremote remote and checks it out
+  pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+  # git pr-clean - removes all pr/* branches from your local repo
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+  # git spr - Same as git pr command, but for bitbucket/stash remotes
+  # for bitbucket/stash remotes
+  spr = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git checkout pr/$1; }; f"
 
 [include]
   path = ~/.gitconfig.local
