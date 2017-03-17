@@ -11,7 +11,7 @@ IF NOT EXIST "%DOTFILES%" (
 ) ELSE (
   cd /d "%DOTFILES%"
   call git pull
-  call git submodule update --init --recursive --remote --merge --quiet
+  call git submodule update --init --recufsive --rebase --quiet
 )
 
 for /f "skip=1" %%d in ('wmic os get localdatetime') do if not defined curdatetime set curdatetime=%%d

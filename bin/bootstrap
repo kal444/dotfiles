@@ -60,7 +60,7 @@ function install() {
     cd "$DOTFILES"
     l_ln "Updating from repo"
     git pull
-    git submodule update --init --recursive --remote --merge --quiet
+    git submodule update --init --recursive --rebase --quiet
   else
     l_ln "Cloning from repo"
     git clone --recursive "$DOTREPO" "$DOTFILES"
