@@ -102,7 +102,7 @@
   ec = config --global -e
 
   # pull from remote, rebase local changes and remove obsolete remote tracking branches. update submodules too
-  up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+  up = !git pull --rebase --prune $@ && git submodule update --init --recursive --rebase
 
   # start new work by switching to a branch
   cob = checkout -b
