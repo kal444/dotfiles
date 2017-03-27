@@ -57,6 +57,9 @@
   log = true
 
 [alias]
+  # show all aliases
+  alias = "!f() { git config -l | grep ^alias\\. | sort; }; f"
+
   # short status
   st = status -s -b
 
@@ -118,7 +121,7 @@
   bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
   bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
   migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-'$CURRENT@{u}'} && git rebase --onto ${2-master} $CURRENT; }; f"
-  
+
   # https://gist.github.com/gnarf/5406589
   # git pr 4 - creates local branch pr/4 from the github upstream(if it exists) or origin remote and checks it out
   # git pr 4 someremote - creates local branch pr/4 from someremote remote and checks it out
