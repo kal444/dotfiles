@@ -35,6 +35,10 @@
 [credential]
   helper = osxkeychain
 
+[status]
+  # show details in an untracked directory
+  showUntrackedFiles = all
+
 [diff]
   # Detect copies as well as renames
   renames = copies
@@ -49,12 +53,25 @@
 [push]
   default = simple
 
+  # push will include new tags
+  followTags = true
+
 [branch]
   autosetuprebase = always
 
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
   log = true
+
+  # use only fast forward merge. This means all merges need to be rebased
+  ff = only
+
+  # show 3-way merge view
+  conflictstyle = diff3
+
+[transfer]
+  # perform extra checks for receive and transmit
+  fsckobjects = true
 
 [alias]
   # show all aliases
@@ -134,4 +151,3 @@
 
 [include]
   path = ~/.gitconfig.local
-
