@@ -1,5 +1,5 @@
 [core]
-  # Use custom `.gitignore`
+  # Use custom global `.gitignore`
   excludesfile = ~/.gitignore
 
   # Make `git rebase` safer on macOS
