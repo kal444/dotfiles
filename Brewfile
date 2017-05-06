@@ -1,7 +1,8 @@
 # this is a whitelist of formulae that I want.
-# currently, this cannot be used for brew bundle cleanup yet.
-# waiting for this to be merged:
-# https://github.com/Homebrew/homebrew-bundle/pull/215
+# clean up using this command
+# brew bundle cleanup --force
+# install or upgrade using
+# brew bundle
 tap 'homebrew/bundle'
 tap 'homebrew/core'
 tap 'homebrew/services'
@@ -10,16 +11,19 @@ brew 'ack'
 brew 'android-platform-tools'
 brew 'ansible'
 brew 'bash-completion'
+brew 'chromedriver'
 brew 'coreutils'
 brew 'cscope'
 brew 'ctags'
 brew 'dos2unix'
 brew 'go'
+brew 'graphviz'
 brew 'htop'
 brew 'hugo'
 brew 'imagemagick'
 brew 'jq'
 brew 'lua'
+brew 'maven'
 brew 'mono'
 brew 'ngrep'
 brew 'nmap'
