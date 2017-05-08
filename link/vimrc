@@ -101,7 +101,7 @@ set tabpagemax=50 " limit tabs opened
 set title " have vim try to update the title of the window
 set ttimeout ttimeoutlen=100 " timeout keycode after 100ms, do not timeout mappings
 set ttyfast " we are on a fast connection
-set wildchar=<Tab> " use tab to start wildcard expansion in the command-line
+set wildchar=<TAB> " use tab to start wildcard expansion in the command-line
 set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc " ignore some files/directories for completion
 set wildmenu " show a navigable menu for tab completion
 set wildmode=longest,list,full " longest match, and list if can't match only one
@@ -138,6 +138,7 @@ endif
 " }
 
 " Plugin settings {
+
 " Lightline status line {
 let g:lightline = {
   \ 'colorscheme': 'solarized',
@@ -155,35 +156,6 @@ let g:lightline = {
 " }
 
 let g:gitgutter_enabled = 1 " do enable git gutter
-
-let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
-" enable completion from tags
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_server_keep_logfiles = 0
-let g:ycm_server_log_level = 'info'
-
-" enable omni completion.
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-let g:UltiSnipsListSnippets="<c-l>"
-let g:UltiSnipsEditSplit="vertical"
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -203,6 +175,49 @@ call expand_region#custom_text_objects({
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
+
+let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+
+" start completion always
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#enable_smart_case = 1
+" use vim-snippets
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='$HOME/.vim/bundle/vim-snippets/snippets'
+
+" <C-h>, <BS>: close popup and delete backward char.
+inoremap <expr> <BS> neocomplete#smart_close_popup()."\<c-h>"
+inoremap <expr> <c-h> neocomplete#smart_close_popup()."\<c-h>"
+
+" <CR>: close popup and save indent. This does not insert CR after selection
+inoremap <silent> <CR> <c-r>=<SID>neo_cr_function()<CR>
+function! s:neo_cr_function()
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
+" use tab to navigate popup. expand/jump when there is no popup
+imap <expr> <TAB>
+ \ pumvisible() ?
+ \   "\<c-n>" :
+ \   neosnippet#expandable_or_jumpable() ?
+ \     "\<Plug>(neosnippet_expand_or_jump)" :
+ \     "\<TAB>"
+
+" when you fill out placeholders for snippets, vim is in select mode
+" this allows you to cycle through the placeholder fields using tab
+smap <expr> <TAB>
+ \ neosnippet#expandable_or_jumpable() ?
+ \   "\<Plug>(neosnippet_expand_or_jump)" :
+ \   "\<TAB>"
+
 " }
 
 " Key mappings {
@@ -331,6 +346,15 @@ endif
 filetype plugin indent on " enable file type detection.
 syntax on " turn on syntax highlighting
 colorscheme solarized
+
+" enable omni completion.
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 " set extensions for markdown files
 autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set filetype=markdown
