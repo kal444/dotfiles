@@ -12,6 +12,7 @@ Plugin 'majutsushi/tagbar' " current file tag browser
 
 " editting related
 Plugin 'raimondi/delimitMate' " auto-completion for quotes, parens, brackets
+
 Plugin 'terryma/vim-expand-region' " selection expansion
 Plugin 'vim-scripts/matchit.zip' " configure % to match more than just single characters
 Plugin 'godlygeek/tabular' " align text on =, :, etc.

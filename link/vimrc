@@ -191,6 +191,12 @@ nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>tb :TagbarToggle<cr>
 " }
 
+" delimitMate config {
+let delimitMate_autoclose = 1
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+" }
+
 " Extend the expansion text objects
 call expand_region#custom_text_objects({
       \ 'a]'  :1,
