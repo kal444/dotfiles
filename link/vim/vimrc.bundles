@@ -1,9 +1,13 @@
 Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
+
 " color schemes
 Plugin 'altercation/vim-colors-solarized' " soloarized color schemes
+
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
 Plugin 'airblade/vim-gitgutter' " show git changes in gutter
+
+Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'tpope/vim-fugitive' " git wrapper
 Plugin 'scrooloose/nerdtree' " directory tree explorer
 Plugin 'sjl/gundo.vim' " undo history in a tree
@@ -11,7 +15,6 @@ Plugin 'majutsushi/tagbar' " current file tag browser
 Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 Plugin 'easymotion/vim-easymotion' " quick movements
 Plugin 'vim-syntastic/syntastic' " syntax checker for various languages
-Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 " editting related
 Plugin 'raimondi/delimitMate' " auto-completion for quotes, parens, brackets
 Plugin 'terryma/vim-expand-region' " selection expansion
