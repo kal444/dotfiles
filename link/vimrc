@@ -95,8 +95,6 @@ set showmatch " show matching bracket briefly
 set showmode " show the current mode
 "my status line
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [%p%%][POS=%l,%v][LINES=%L]
-"show syntastic error in status line
-set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
 set tabpagemax=50 " limit tabs opened
 set title " have vim try to update the title of the window
 set ttimeout ttimeoutlen=100 " timeout keycode after 100ms, do not timeout mappings
@@ -192,11 +190,6 @@ nnoremap <leader>ntf :NERDTreeFind<cr>
 " tagbar config {
 nnoremap <leader>tb :TagbarToggle<cr>
 " }
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " Extend the expansion text objects
 call expand_region#custom_text_objects({
