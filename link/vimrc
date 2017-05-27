@@ -304,7 +304,6 @@ nnoremap <leader>ri mqHmwgg=G`wzt`q
 nnoremap <leader>rcm :%s/<c-v><c-m>//g<cr>
 nnoremap <leader>t :CtrlP<cr>
 nnoremap <leader>T :CtrlPClearCache<cr>:CtrlP<cr>
-nnoremap <leader>u :GundoToggle<cr>
 " vimrc editing (edit this file)
 nnoremap <leader>v :exe ":edit " . vimrc<cr>
 " reload vimrc by reading this file

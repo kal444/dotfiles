@@ -11,7 +11,6 @@ Plugin 'majutsushi/tagbar' " current file tag browser
 
 Plugin 'tpope/vim-fugitive' " git wrapper
 Plugin 'scrooloose/nerdtree' " directory tree explorer
-Plugin 'sjl/gundo.vim' " undo history in a tree
 Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 Plugin 'easymotion/vim-easymotion' " quick movements
 Plugin 'vim-syntastic/syntastic' " syntax checker for various languages
