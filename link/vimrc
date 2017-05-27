@@ -137,6 +137,13 @@ if exists('$TMUX')  " Support resizing in tmux
 endif
 " }
 
+" Leader mapping {
+let mapleader = ','
+let g:mapleader = ','
+let maplocalleader = ','
+let g:maplocalleader = ','
+" }
+
 " Plugin settings {
 
 " Lightline status line {
@@ -155,7 +162,17 @@ let g:lightline = {
 \ }
 " }
 
+" gitgutter config {
 let g:gitgutter_enabled = 1 " do enable git gutter
+let g:gitgutter_realtime = 0 " don't update in realtime
+let g:gitgutter_eager = 0 " don't update eagerly, wait for file save
+let g:gitgutter_map_keys = 0 " don't map keys automatically
+
+nmap [c <Plug>GitGutterPrevHunk
+nmap ]c <Plug>GitGutterNextHunk
+nmap <leader>hs <Plug>GitGutterStageHunk
+nmap <leader>hu <Plug>GitGutterUndoHunk
+" }
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -221,10 +238,6 @@ smap <expr> <TAB>
 " }
 
 " Key mappings {
-let mapleader = ','
-let g:mapleader = ','
-let maplocalleader = ','
-let g:maplocalleader = ','
 
 " jj quickly in insertmode gives escape key
 inoremap jj <esc>
