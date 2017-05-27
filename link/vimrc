@@ -146,7 +146,7 @@ let g:maplocalleader = ','
 
 " Plugin settings {
 
-" Lightline status line config {
+" lightline config {
 let g:lightline = {
   \ 'colorscheme': 'solarized',
   \ 'active': {
@@ -162,6 +162,15 @@ let g:lightline = {
 \ }
 " }
 
+" indent guides config {
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 1
+let g:indent_guides_guide_size = 0
+let g:indent_guides_default_mapping = 0
+
+nmap <leader>ig <Plug>IndentGuidesToggle
+" }
+
 " gitgutter config {
 let g:gitgutter_enabled = 1 " do enable git gutter
 let g:gitgutter_realtime = 0 " don't update in realtime
@@ -175,13 +184,9 @@ nmap <leader>hu <Plug>GitGutterUndoHunk
 nnoremap <leader>gg :GitGutterToggle<cr>
 " }
 
-" indent guides config {
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 1
-let g:indent_guides_guide_size = 0
-let g:indent_guides_default_mapping = 0
-
-nmap <leader>ig <Plug>IndentGuidesToggle
+" NERDTree config {
+nnoremap <leader>nt :NERDTreeToggle<cr>
+nnoremap <leader>ntf :NERDTreeFind<cr>
 " }
 
 " tagbar config {
@@ -288,8 +293,6 @@ nnoremap <leader>b :CtrlPBuffer<cr>
 nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 " cel = clear empty lines - deletes all empty or whitespace only lines
 vnoremap <leader>cel :g/^[<c-i> ]*$/d<cr>
-nnoremap <leader>d :NERDTreeToggle<cr>
-nnoremap <leader>f :NERDTreeFind<cr>
 " clear hlsearch highlights
 nnoremap <leader>hl :let @/ = ""<cr>
 nnoremap <leader>l :Tabularize<space>/
