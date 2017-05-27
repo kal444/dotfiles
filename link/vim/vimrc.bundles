@@ -10,9 +10,6 @@ Plugin 'airblade/vim-gitgutter' " show git changes in gutter
 Plugin 'scrooloose/nerdtree' " directory tree explorer
 Plugin 'majutsushi/tagbar' " current file tag browser
 
-Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
-Plugin 'easymotion/vim-easymotion' " quick movements
-Plugin 'vim-syntastic/syntastic' " syntax checker for various languages
 " editting related
 Plugin 'raimondi/delimitMate' " auto-completion for quotes, parens, brackets
 Plugin 'terryma/vim-expand-region' " selection expansion
@@ -22,14 +19,16 @@ Plugin 'kana/vim-textobj-indent' " defines text object for indent (give ii and a
 Plugin 'kana/vim-textobj-line' " defines text object for line (give il and al text obj)
 Plugin 'kana/vim-textobj-entire' " defines text object for file (give ie and ae text obj)
 Plugin 'kana/vim-textobj-user' " user defined text objects (used by indent/line/entire)
-" search and replace
+" movement, search and replace
+Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
+Plugin 'easymotion/vim-easymotion' " quick movements
 Plugin 'rking/ag.vim' " the_silver_searcher plugin for vim
 Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
 Plugin 'skwp/greplace.vim' " global search/replace across buffers
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
 " tmux related
 Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
-" snippets
+" autocompletes & snippets
 Plugin 'Shougo/neocomplete.vim' " auto completion
 Plugin 'Shougo/neosnippet.vim' " snippets engine
 Plugin 'Shougo/neosnippet-snippets' " default snippets
