@@ -184,6 +184,10 @@ let g:indent_guides_default_mapping = 0
 nmap <leader>ig <Plug>IndentGuidesToggle
 " }
 
+" tagbar config {
+nnoremap <leader>tb :TagbarToggle<cr>
+" }
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -305,7 +309,6 @@ nnoremap <leader>u :GundoToggle<cr>
 nnoremap <leader>v :exe ":edit " . vimrc<cr>
 " reload vimrc by reading this file
 nnoremap <leader>V :exe ":source " . vimrc<cr>
-nnoremap <leader>] :TagbarToggle<cr>
 
 " window movements
 nnoremap <c-h> <c-w>h
