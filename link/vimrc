@@ -146,7 +146,7 @@ let g:maplocalleader = ','
 
 " Plugin settings {
 
-" Lightline status line {
+" Lightline status line config {
 let g:lightline = {
   \ 'colorscheme': 'solarized',
   \ 'active': {
@@ -173,6 +173,15 @@ nmap ]c <Plug>GitGutterNextHunk
 nmap <leader>hs <Plug>GitGutterStageHunk
 nmap <leader>hu <Plug>GitGutterUndoHunk
 nnoremap <leader>gg :GitGutterToggle<cr>
+" }
+
+" indent guides config {
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 1
+let g:indent_guides_guide_size = 0
+let g:indent_guides_default_mapping = 0
+
+nmap <leader>ig <Plug>IndentGuidesToggle
 " }
 
 let g:syntastic_always_populate_loc_list = 1

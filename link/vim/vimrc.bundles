@@ -5,9 +5,9 @@ Plugin 'altercation/vim-colors-solarized' " soloarized color schemes
 
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
+Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'airblade/vim-gitgutter' " show git changes in gutter
 
-Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'tpope/vim-fugitive' " git wrapper
 Plugin 'scrooloose/nerdtree' " directory tree explorer
 Plugin 'sjl/gundo.vim' " undo history in a tree
