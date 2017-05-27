@@ -47,7 +47,6 @@ tap 'caskroom/versions'
 
 cask '1password'
 cask 'amazon-music'
-cask 'atom'
 cask 'calibre'
 cask 'dictunifier'
 cask 'docker-toolbox'
