@@ -191,6 +191,11 @@ nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>tb :TagbarToggle<cr>
 " }
 
+" tabular config {
+nnoremap <leader>l :Tabularize<space>/
+vnoremap <leader>l :Tabularize<space>/
+" }
+
 " delimitMate config {
 let delimitMate_autoclose = 1
 let delimitMate_expand_cr = 1
@@ -308,8 +313,6 @@ nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 vnoremap <leader>cel :g/^[<c-i> ]*$/d<cr>
 " clear hlsearch highlights
 nnoremap <leader>hl :let @/ = ""<cr>
-nnoremap <leader>l :Tabularize<space>/
-vnoremap <leader>l :Tabularize<space>/
 " quit all - useful when viewing vimdiff
 nnoremap <leader>q :qall<cr>
 " ri = re-indent whole file and put you back to where you were
