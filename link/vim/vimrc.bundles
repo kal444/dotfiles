@@ -23,9 +23,9 @@ Plugin 'kana/vim-textobj-user' " user defined text objects (used by indent/line/
 " movement, search and replace
 Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
-
 Plugin 'skwp/greplace.vim' " global search/replace across buffers
-Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
+Plugin 'rhysd/clevef-f.vim' " quick movement using f,F,t,T
+
 Plugin 'easymotion/vim-easymotion' " quick movements
 " tmux related
 Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
