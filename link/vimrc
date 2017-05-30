@@ -358,10 +358,11 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
-" switch to the other window ala ^w^w, but maximize the target window too
-nnoremap <c-w><c-e> <c-w><c-w><c-w>_<cr>
-" <leader>m: Maximize current split
-nnoremap <leader>m <c-w>_<c-w><bar>
+nnoremap <c-\> <c-w>p
+" switch to the other window ala ^w^w, and maximize it
+nnoremap <c-w><c-e> <c-w><c-w><c-w>_<c-w><bar>
+" maximize current split
+nnoremap <c-w><c-m> <c-w>_<c-w><bar>
 
 " }
 
