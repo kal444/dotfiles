@@ -197,6 +197,13 @@ let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 " }
 
+" matchit config {
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+" }
+
 " expand region config {
 " Extend the expansion text objects
 call expand_region#custom_text_objects({
@@ -211,11 +218,7 @@ map + <Plug>(expand_region_expand)
 map _ <Plug>(expand_region_shrink)
 " }
 
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
-
+" ctrl-p config {
 let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
@@ -224,6 +227,11 @@ if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
+
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>t :CtrlP<cr>
+nnoremap <leader>T :CtrlPClearCache<cr>:CtrlP<cr>
+" }
 
 " neocomplete & neosnippet config {
 " start completion always
@@ -294,7 +302,6 @@ nnoremap <leader><space> :call whitespace#strip_trailing()<cr>
 " toggle paste mode
 nnoremap <leader>1 :set paste!<cr>
 nnoremap <leader>a :Ag<space>
-nnoremap <leader>b :CtrlPBuffer<cr>
 " cd: Switch to the directory of the open buffer
 nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 " cel = clear empty lines - deletes all empty or whitespace only lines
@@ -311,8 +318,6 @@ nnoremap <leader>q :qall<cr>
 nnoremap <leader>ri mqHmwgg=G`wzt`q
 " rcm = remove ^M from DOS file
 nnoremap <leader>rcm :%s/<c-v><c-m>//g<cr>
-nnoremap <leader>t :CtrlP<cr>
-nnoremap <leader>T :CtrlPClearCache<cr>:CtrlP<cr>
 " vimrc editing (edit this file)
 nnoremap <leader>v :exe ":edit " . vimrc<cr>
 " reload vimrc by reading this file

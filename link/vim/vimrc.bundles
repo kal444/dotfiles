@@ -12,14 +12,14 @@ Plugin 'majutsushi/tagbar' " current file tag browser
 
 " editting related
 Plugin 'raimondi/delimitMate' " auto-completion for quotes, parens, brackets
-
-Plugin 'terryma/vim-expand-region' " selection expansion
 Plugin 'vim-scripts/matchit.zip' " configure % to match more than just single characters
-Plugin 'godlygeek/tabular' " align text on =, :, etc.
+Plugin 'terryma/vim-expand-region' " selection expansion
 Plugin 'kana/vim-textobj-indent' " defines text object for indent (give ii and ai text obj)
 Plugin 'kana/vim-textobj-line' " defines text object for line (give il and al text obj)
 Plugin 'kana/vim-textobj-entire' " defines text object for file (give ie and ae text obj)
 Plugin 'kana/vim-textobj-user' " user defined text objects (used by indent/line/entire)
+
+Plugin 'godlygeek/tabular' " align text on =, :, etc.
 " movement, search and replace
 Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 Plugin 'easymotion/vim-easymotion' " quick movements
