@@ -127,6 +127,10 @@ set hlsearch " highlight searches
 set incsearch " display the match for a search pattern when halfway typing it
 set ignorecase " do ignore case in search patterns. This works well with smartcase set on
 set smartcase " ignore case when the pattern contains lowercase letters only
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
 
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
@@ -223,16 +227,24 @@ map + <Plug>(expand_region_expand)
 map _ <Plug>(expand_region_shrink)
 " }
 
+" ack config {
+if executable('ag')
+  " Use Ag over ack
+  let g:ackprg = 'ag --vimgrep'
+  cnoreabbrev ag Ack
+  cnoreabbrev Ag Ack
+endif
+" }
+
 " ctrl-p config {
 let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+
 if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Use ag in CtrlP. Respects .gitignore, but show hidden files
+  let g:ctrlp_user_command = 'ag %s -l -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
 endif
 
+nmap <c-p> <Plug>(ctrlp)
 nnoremap <leader>b :CtrlPBuffer<cr>
 nnoremap <leader>t :CtrlP<cr>
 nnoremap <leader>T :CtrlPClearCache<cr>:CtrlP<cr>
@@ -306,7 +318,6 @@ xnoremap <cr> y:let @/ = @"<cr>:set hlsearch<cr>
 nnoremap <leader><space> :call whitespace#strip_trailing()<cr>
 " toggle paste mode
 nnoremap <leader>1 :set paste!<cr>
-nnoremap <leader>a :Ag<space>
 " cd: Switch to the directory of the open buffer
 nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 " cel = clear empty lines - deletes all empty or whitespace only lines

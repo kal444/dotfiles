@@ -20,16 +20,13 @@ Plugin 'kana/vim-textobj-line' " defines text object for line (give il and al te
 Plugin 'kana/vim-textobj-entire' " defines text object for file (give ie and ae text obj)
 Plugin 'kana/vim-textobj-user' " user defined text objects (used by indent/line/entire)
 
-
-
-
 " movement, search and replace
+Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
+Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
+
+Plugin 'skwp/greplace.vim' " global search/replace across buffers
 Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 Plugin 'easymotion/vim-easymotion' " quick movements
-Plugin 'rking/ag.vim' " the_silver_searcher plugin for vim
-Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
-Plugin 'skwp/greplace.vim' " global search/replace across buffers
-Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
 " tmux related
 Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
 " autocompletes & snippets
