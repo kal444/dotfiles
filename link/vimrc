@@ -250,6 +250,22 @@ nnoremap <leader>t :CtrlP<cr>
 nnoremap <leader>T :CtrlPClearCache<cr>:CtrlP<cr>
 " }
 
+" clever-f config {
+let g:clever_f_across_no_line = 1
+let g:clever_f_smart_case = 1
+" }
+
+" easymotion config {
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_use_smartsign_us = 1
+
+map <leader><leader> <Plug>(easymotion-prefix)
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
+nmap s <Plug>(easymotion-overwin-f2)
+" }
+
 " neocomplete & neosnippet config {
 " start completion always
 let g:neocomplete#enable_at_startup = 1
@@ -346,33 +362,6 @@ nnoremap <c-l> <c-w>l
 nnoremap <c-w><c-e> <c-w><c-w><c-w>_<cr>
 " <leader>m: Maximize current split
 nnoremap <leader>m <c-w>_<c-w><bar>
-" <leader>,: Switch to previous split
-nnoremap <leader>, <c-w>p
-
-" THIS ISN'T WORKING IN MAC
-"
-" alt/meta keys
-" Fix alt/meta key keycodes. Using keycodes instead of
-" escape sequence for mapping will use ttimeout instead of timeout,
-" which means pressing escape will not cause a delay.
-" let c='a'
-" while c <= 'z'
-"   exec "set <a-".c.">=\e".c
-"   exec "set <a-".toupper(c).">=\e".toupper(c)
-"   let c = nr2char(1+char2nr(c))
-" endw
-
-" normal mode: move current line down/up
-" nnoremap <a-j> mz:m+<cr>`z==
-" nnoremap <a-k> mz:m-2<cr>`z==
-
-" insert model: move current line down/up
-" imap <a-j> <esc><m-j>a
-" imap <a-k> <esc><m-k>a
-
-" visual mode: move blocks down/up
-" vnoremap <a-j> :m'>+<cr>`<my`>mzgv`yo`z
-" vnoremap <a-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 " }
 
