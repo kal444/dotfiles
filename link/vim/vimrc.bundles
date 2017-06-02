@@ -27,14 +27,12 @@ Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 Plugin 'easymotion/vim-easymotion' " quick movements
 Plugin 'skwp/greplace.vim' " global search/replace across buffers
 
-
-" tmux related
-Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
 " autocompletes & snippets
 Plugin 'Shougo/neocomplete.vim' " auto completion
 Plugin 'Shougo/neosnippet.vim' " snippets engine
 Plugin 'Shougo/neosnippet-snippets' " default snippets
 Plugin 'honza/vim-snippets' " community snippets
+
 " vim modes for file types
 Plugin 'pearofducks/ansible-vim'
 Plugin 'ekalinin/dockerfile.vim'
@@ -43,9 +41,13 @@ Plugin 'klen/python-mode'
 Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
 Plugin 'cespare/vim-toml'
-" misc
-Plugin 'tpope/vim-commentary' " comment/uncomment stuff
-Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
+
+" tpope's fundamental plugins
 Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
+Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
 Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc.
+Plugin 'tpope/vim-commentary' " comment/uncomment stuff
 Plugin 'tpope/vim-unimpaired' " mappings that works with paired (typically prev/next) actions
+
+" tmux related
+Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
