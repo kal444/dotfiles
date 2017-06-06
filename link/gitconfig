@@ -71,7 +71,9 @@
 
 [transfer]
   # perform extra checks for receive and transmit
-  fsckobjects = true
+  # DISABLED for now - the checks done by this is very strict, 
+  # for example timezone errors would prevent cloning a repo
+  # fsckobjects = true
 
 [alias]
   # show all aliases
