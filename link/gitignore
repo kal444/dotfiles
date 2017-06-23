@@ -1,6 +1,9 @@
 # Compiled Python files
 *.pyc
 
+# python virtual env file
+.python-version
+
 # Folder view configuration files
 .DS_Store
 Desktop.ini
