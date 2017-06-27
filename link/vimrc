@@ -301,6 +301,13 @@ smap <expr> <TAB>
  \   "\<TAB>"
 " }
 
+" vimux config {
+nnoremap <leader>vi :VimuxInspectRunner<CR>
+nnoremap <leader>vl :VimuxRunLastCommand<CR>
+nnoremap <leader>vp :VimuxPromptCommand<CR>
+nnoremap <leader>vz :VimuxZoomRunner<CR>
+" }
+
 " }
 
 " Key mappings {

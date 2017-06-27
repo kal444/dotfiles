@@ -51,3 +51,5 @@ Plugin 'tpope/vim-unimpaired' " mappings that works with paired (typically prev/
 
 " tmux related
 Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
+Plugin 'benmills/vimux' " quick way to run commands via tmux from vim
+
