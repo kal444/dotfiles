@@ -26,6 +26,8 @@ setopt no_beep # don't want beeps!
 bindkey -v
 
 # list key maps in order of emacs vicmd viins like in the man page
+bind2maps             viins -- 'jj' vi-cmd-mode
+
 bind2maps emacs       viins -- ' ' magic-space
 
 bind2maps emacs       viins -- '^[[Z' reverse-menu-complete
