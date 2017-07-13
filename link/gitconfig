@@ -32,9 +32,6 @@
   changed = green
   untracked = cyan
 
-[credential]
-  helper = osxkeychain
-
 [status]
   # show details in an untracked directory
   showUntrackedFiles = all
