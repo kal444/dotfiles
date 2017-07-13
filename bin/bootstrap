@@ -82,6 +82,7 @@ function install() {
   fi
 
   l_ln "All Done!"
+  l_ln "Look in $DOTFILES/templates directory to create local configuration overrides based on templates"
 }
 
 install "$@"
