@@ -19,3 +19,9 @@ else
   export CLICOLOR=1 # for BSD ls color output
   export LSCOLORS="exfxcxdxbxegedabagacad"
 fi
+
+if [[ $LANG =~ UTF-8 ]]; then
+  # disable VT100 line drawing/alternate char. set when using UTF-8
+  # this helps with putty and other terminal emulators
+  export NCURSES_NO_UTF8_ACS=1
+fi
