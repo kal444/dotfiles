@@ -1,0 +1,4 @@
+" force vim to use degraded 256 color mode
+let g:solarized_termcolors=256
+" reinitialize colorscheme
+colorscheme solarized

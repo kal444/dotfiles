@@ -44,6 +44,8 @@ call vundle#begin()
 " Vundle bundles
 if filereadable(expand("~/.vim/vimrc.bundles"))
   source ~/.vim/vimrc.bundles
+endif
+if filereadable(expand("~/.vim/vimrc.bundles.local"))
   source ~/.vim/vimrc.bundles.local
 endif
 call vundle#end()
