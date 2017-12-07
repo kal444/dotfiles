@@ -8,3 +8,5 @@ link/pyenv/shims/
 link/pyenv/version
 link/pyenv/versions/
 link/pyenv/cache/
+link/vim/vimrc.local
+link/vim/vimrc.bundles.local
