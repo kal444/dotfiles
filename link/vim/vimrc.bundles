@@ -1,7 +1,7 @@
 Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
 
 " color schemes
-Plugin 'altercation/vim-colors-solarized' " soloarized color schemes
+Plugin 'lifepillar/vim-solarized8' " new soloarized color scheme
 
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
