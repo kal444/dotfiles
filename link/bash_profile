@@ -5,7 +5,7 @@ export DOTFILES=$HOME/.dotfiles
 PATH=/sbin:/bin
 PATH=/usr/sbin:/usr/bin:$PATH
 PATH=/usr/local/sbin:/usr/local/bin:$PATH
-PATH=$DOTFILES/sbin:$DOTFILES/bin:$PATH
+PATH=$HOME/bin:$DOTFILES/sbin:$DOTFILES/bin:$PATH
 export PATH
 
 # load interactive config
