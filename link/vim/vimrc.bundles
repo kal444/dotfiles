@@ -37,7 +37,7 @@ Plugin 'honza/vim-snippets' " community snippets
 Plugin 'pearofducks/ansible-vim'
 Plugin 'ekalinin/dockerfile.vim'
 Plugin 'fatih/vim-go'
-Plugin 'klen/python-mode'
+Plugin 'python-mode/python-mode'
 Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
 Plugin 'cespare/vim-toml'
