@@ -8,7 +8,9 @@ setopt cdable_vars # type cd username/blah to do cd ~username/blah
 setopt pushd_ignore_dups
 setopt pushd_to_home # just pushd with no arg behaves like cd with no arg
 # expansion and globbing
+setopt no_case_glob # case insensitive globbing
 setopt extended_glob # adds ~/^/# to file glob patterns - this can get crazy
+setopt numeric_glob_sort # sort filenames numerically where it makes sense
 # input/output
 setopt no_clobber # don't overwrite file automatically
 setopt correct # correct commands
