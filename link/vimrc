@@ -241,7 +241,13 @@ map <C-v> <Plug>(expand_region_shrink)
 " }
 
 " ack config {
-if executable('ag')
+cnoreabbrev ack Ack
+if executable('rg')
+  " Use ripgrep first
+  let g:ackprg = 'rg --vimgrep'
+  cnoreabbrev rg Ack
+  cnoreabbrev Rg Ack
+elseif executable('ag')
   " Use Ag over ack
   let g:ackprg = 'ag --vimgrep'
   cnoreabbrev ag Ack
@@ -252,7 +258,7 @@ endif
 " ctrl-p config {
 let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
 
-if executable('arg')
+if executable('rg')
   " Use ripgrep first
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob "!.git/" --glob "!.hg/" --glob "!.svn/" --hidden'
   let g:ctrlp_use_caching = 0
