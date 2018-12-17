@@ -43,10 +43,12 @@ Plugin 'elzr/vim-json'
 Plugin 'cespare/vim-toml'
 
 " tpope's fundamental plugins
-Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
-Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
-Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc.
 Plugin 'tpope/vim-commentary' " comment/uncomment stuff
+Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
+Plugin 'tpope/vim-fugitive' " git plugin in vim
+Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
+Plugin 'tpope/vim-rsi' " extend readline style key bindings to vim insert mode
+Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc.
 Plugin 'tpope/vim-unimpaired' " mappings that works with paired (typically prev/next) actions
 
 " tmux related
