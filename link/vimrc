@@ -102,7 +102,7 @@ set title " have vim try to update the title of the window
 set ttimeout ttimeoutlen=100 " timeout keycode after 100ms, do not timeout mappings
 set ttyfast " we are on a fast connection
 set wildchar=<TAB> " use tab to start wildcard expansion in the command-line
-set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc " ignore some files/directories for completion
+set wildignore+=*/tmp/*,*/log/*,*/target/*,*/node_modules/*,*.swp " ignore some files/directories for completion
 set wildmenu " show a navigable menu for tab completion
 set wildmode=longest,list,full " longest match, and list if can't match only one
 
@@ -134,9 +134,15 @@ set hlsearch " highlight searches
 set incsearch " display the match for a search pattern when halfway typing it
 set ignorecase " do ignore case in search patterns. This works well with smartcase set on
 set smartcase " ignore case when the pattern contains lowercase letters only
-if executable('ag')
+if executable('rg')
+  " Use rg over grep first
+  set grepprg=rg\ --color=never
+elseif executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
+elseif executable('ack')
+  " Use ack over grep
+  set grepprg=ack\ --nogroup\ --nocolor
 endif
 
 " Enable basic mouse behavior such as resizing buffers.
@@ -230,8 +236,8 @@ call expand_region#custom_text_objects({
       \ 'ai'  :0,
 \ })
 
-map + <Plug>(expand_region_expand)
-map _ <Plug>(expand_region_shrink)
+map v <Plug>(expand_region_expand)
+map <C-v> <Plug>(expand_region_shrink)
 " }
 
 " ack config {
@@ -246,9 +252,14 @@ endif
 " ctrl-p config {
 let g:ctrlp_match_window = 'order:ttb,max:15' " change CtrlP search result order and size
 
-if executable('ag')
+if executable('arg')
+  " Use ripgrep first
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob "!.git/" --glob "!.hg/" --glob "!.svn/" --hidden'
+  let g:ctrlp_use_caching = 0
+elseif executable('ag')
   " Use ag in CtrlP. Respects .gitignore, but show hidden files
-  let g:ctrlp_user_command = 'ag %s -l -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+  let g:ctrlp_user_command = 'ag %s -l -g "" --nocolor --ignore ".git/" --ignore ".hg/" --ignore ".svn/" --hidden'
+  let g:ctrlp_use_caching = 0
 endif
 
 nmap <c-p> <Plug>(ctrlp)
@@ -366,6 +377,8 @@ nnoremap <leader>rcm :%s/<c-v><c-m>//g<cr>
 nnoremap <leader>v :exe ":edit " . vimrc<cr>
 " reload vimrc by reading this file
 nnoremap <leader>V :exe ":source " . vimrc<cr>
+" write current buffer quickly
+nnoremap <leader>w :w<cr>
 
 " window movements
 nnoremap <c-h> <c-w>h
