@@ -343,6 +343,8 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 " p in visual mode yank into blackhole register before pasting
 vnoremap p "_dP
+" stop that stupid window from showing up
+map q: :q
 " Q quits - normally Q opens ex-mode, never uses it
 nnoremap Q :q<cr>
 " U redos - normally U undo a whole line, never uses it
