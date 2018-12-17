@@ -341,8 +341,11 @@ inoremap jj <esc>
 " n / N are updated to always center (vertically) the matches
 nnoremap n nzzzv
 nnoremap N Nzzzv
-" p in visual mode yank into blackhole register before pasting
-vnoremap p "_dP
+" p in normal model move to the end of block
+nnoremap p p`]
+" p in visual mode yank into blackhole register before pasting, then move to
+" end of the block
+vnoremap p "_dP`]
 " stop that stupid window from showing up
 map q: :q
 " Q quits - normally Q opens ex-mode, never uses it
@@ -351,6 +354,8 @@ nnoremap Q :q<cr>
 nnoremap U :redo<cr>
 " rewrite the file with sudo
 cnoremap w!! w !sudo tee > /dev/null %
+" y in visual mode move to the end of the block after yank
+vnoremap y y`]
 " >, <: reselect visual block after indent
 xnoremap > >gv
 xnoremap < <gv
