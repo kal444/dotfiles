@@ -214,6 +214,10 @@ nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>tb :TagbarToggle<cr>
 " }
 
+" Mundo config {
+nnoremap <leader>u :MundoToggle<cr>
+" }
+
 " tabular config {
 nnoremap <leader>l :Tabularize<space>/
 vnoremap <leader>l :Tabularize<space>/

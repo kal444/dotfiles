@@ -2,6 +2,7 @@ Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
 
 " color schemes
 Plugin 'lifepillar/vim-solarized8' " new soloarized color scheme
+Plugin 'sjl/badwolf' " color scheme by steve losh
 
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
@@ -9,6 +10,7 @@ Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'airblade/vim-gitgutter' " show git changes in gutter
 Plugin 'scrooloose/nerdtree' " directory tree explorer
 Plugin 'majutsushi/tagbar' " current file tag browser
+Plugin 'simnalamburt/vim-mundo' " treed view of undos
 
 " editting related
 Plugin 'godlygeek/tabular' " align text on =, :, etc.
@@ -43,12 +45,12 @@ Plugin 'elzr/vim-json'
 Plugin 'cespare/vim-toml'
 
 " tpope's fundamental plugins
-Plugin 'tpope/vim-commentary' " comment/uncomment stuff
+Plugin 'tpope/vim-commentary' " comment/uncomment stuff (gcc / gc)
 Plugin 'tpope/vim-endwise' " add /end/ like keywords automatically
 Plugin 'tpope/vim-fugitive' " git plugin in vim
 Plugin 'tpope/vim-repeat' " repeat using . applies to plugin maps too
-Plugin 'tpope/vim-rsi' " extend readline style key bindings to vim insert mode
-Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc.
+Plugin 'tpope/vim-rsi' " extend readline style key bindings to vim insert/command mode
+Plugin 'tpope/vim-surround' " work with /surroundings/ - parens, brackets, xml tags, etc (cs / ds / ys)
 Plugin 'tpope/vim-unimpaired' " mappings that works with paired (typically prev/next) actions
 
 " tmux related
