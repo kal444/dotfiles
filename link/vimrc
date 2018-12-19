@@ -114,13 +114,19 @@ else
   set t_vb= " disable visualbell terminal chars
 endif
 
+if (exists('$COLORTERM') && $COLORTERM ==# 'truecolor') || ($TERM =~ 'tmux.*')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 "========== Editting
 set backspace=indent,eol,start " this is much smarter. back over autoindent,<EOL> and insert position
 set clipboard=unnamed " yank and paste with the system clipboard
 
 if !has('nvim')
-" this makes nvim hang on startup
-set esckeys " allow cursor movement in insert mode
+  " this makes nvim hang on startup
+  set esckeys " allow cursor movement in insert mode
 endif
 
 set formatoptions+=2j " better indenting. join comment lines better
