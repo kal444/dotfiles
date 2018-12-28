@@ -6,9 +6,6 @@ setopt always_to_end # Move cursor to the end of a completed word.
 # add additional zsh completions
 fpath=($DOTFILES/thirdparty/zsh-completions/src $fpath)
 
-# auto completion loading and silently ignore insecure dirs
-autoload -U compinit; compinit
-
 # completion context string has a set of fields
 # They are in the order :completion:function:completer:command:argument:tag
 
@@ -84,4 +81,7 @@ zstyle "$ctxt-*:*" pre-trim-pattern '[<"'\''`‘]##'
 zstyle "$ctxt-*:*" post-trim-pattern '[>."'\''’]##'
 zstyle "$ctxt-*:*" trim-pattern '[\\]'
 unset i ctxt
+
+# auto completion loading and silently ignore insecure dirs
+autoload -U compinit; compinit
 
