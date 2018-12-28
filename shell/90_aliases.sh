@@ -3,7 +3,7 @@
 #
 
 has_command ip && default_iface=$(ip -o -4 route show to default | awk '{print $5}')
-has_command route && route get default && default_iface=$(route get default | grep interface: | awk '{print $2}')
+has_command route && route get default > /dev/null && default_iface=$(route get default | grep interface: | awk '{print $2}')
 
 if ls --color=auto -d . >/dev/null 2>&1; then
   # echo "has GNU ls"
