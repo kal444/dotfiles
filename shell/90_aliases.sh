@@ -2,6 +2,9 @@
 # both bash and zsh
 #
 
+has_command ip && default_iface=$(ip -o -4 route show to default | awk '{print $5}')
+has_command route && route get default && default_iface=$(route get default | grep interface: | awk '{print $2}')
+
 if ls --color=auto -d . >/dev/null 2>&1; then
   # echo "has GNU ls"
   alias ls='command ls --color=auto -h -Fb --group-directories-first'
@@ -59,8 +62,8 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 done
 
 # View HTTP traffic
-alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias sniff="sudo ngrep -d $default_iface -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i $default_iface -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
