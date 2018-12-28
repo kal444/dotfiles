@@ -66,7 +66,7 @@ alias sniff="sudo ngrep -d $default_iface -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i $default_iface -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 # URL-encode strings
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+alias urlencode='python3 -c "import sys; import urllib.parse; print(urllib.parse.quote_plus(sys.argv[1]));"'
 
 # Canonical hex dump; some systems have this symlinked
 has_command hd || alias hd="hexdump -C"
