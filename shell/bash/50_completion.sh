@@ -1,9 +1,9 @@
 # Add tab completion for many Bash commands
-if [ -f /usr/local/etc/bash_completion ]; then
+if [ -r /usr/local/etc/bash_completion ]; then
   source /usr/local/etc/bash_completion;
-elif [ -f /usr/share/bash-completion/bash_completion ]; then
+elif [ -r /usr/share/bash-completion/bash_completion ]; then
   source /usr/share/bash-completion/bash_completion;
-elif [ -f /etc/bash_completion ]; then
+elif [ -r /etc/bash_completion ]; then
   source /etc/bash_completion;
 fi;
 
