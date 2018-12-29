@@ -1,8 +1,8 @@
 case $TERM in
-    xterm*|rxvt*|Eterm|aterm|kterm|gnome)
+    xterm*|rxvt*|Eterm*|aterm*|kterm*|gnome*)
         PROMPT_COMMAND="$PROMPT_COMMAND"$'\n''echo -ne "\033]0;${PWD/$HOME/~} [${USER}@${HOSTNAME}]\007"'
         ;;
-    screen)
+    screen*|tmux*)
         PROMPT_COMMAND="$PROMPT_COMMAND"$'\n''echo -ne "\033_${PWD/$HOME/~}\033\\"'
         ;;
     linux*)

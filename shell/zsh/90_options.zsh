@@ -30,6 +30,9 @@ bindkey -v
 # list key maps in order of emacs vicmd viins like in the man page
 bind2maps             viins -- 'jj' vi-cmd-mode
 
+# allow deleting past vi insert mode start point
+bind2maps             viins -- '^?' backward-delete-char
+
 bind2maps emacs       viins -- ' ' magic-space
 
 bind2maps emacs       viins -- '^[[Z' reverse-menu-complete

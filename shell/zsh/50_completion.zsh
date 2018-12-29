@@ -4,6 +4,7 @@ setopt complete_in_word # starting completion doesn't move cursor. complete from
 setopt always_to_end # Move cursor to the end of a completed word.
 
 # add additional zsh completions
+[ -d /usr/share/zsh/vendor-completions ] && fpath=(/usr/share/zsh/vendor-completions $fpath)
 fpath=($DOTFILES/thirdparty/zsh-completions/src $fpath)
 
 # completion context string has a set of fields

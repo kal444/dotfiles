@@ -3,7 +3,7 @@
 #
 
 has_command ip && default_iface=$(ip -o -4 route show to default | awk '{print $5}')
-has_command route && route get default > /dev/null && default_iface=$(route get default | grep interface: | awk '{print $2}')
+has_command route && route get default >/dev/null 2>&1 && default_iface=$(route get default | grep interface: | awk '{print $2}')
 
 if ls --color=auto -d . >/dev/null 2>&1; then
   # echo "has GNU ls"
@@ -79,6 +79,11 @@ alias map="xargs -n1"
 # Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
 # (useful when executing time-consuming commands)
 alias bell="tput bel"
+
+alias home="cd $HOME"
+alias dls="cd $HOME/Downloads"
+alias doc="cd $HOME/Documents"
+alias path="echo $PATH | sed -e 's/:/\n/g'"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 

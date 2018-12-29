@@ -1,12 +1,12 @@
 # xterm and rxvt title setting
 case $TERM in
-    xterm*|rxvt*|Eterm|aterm|kterm|gnome)
+    xterm*|rxvt*|Eterm*|aterm*|kterm*|gnome*)
         precmd() {
             # OK, this needs some documentaions, ]0 chooses title and icon title
             echo -ne "\033]0;${PWD/$HOME/~} [${USER}@${HOST}]\007"
         }
         ;;
-    screen)
+    screen*|tmux*)
         precmd() {
             # this clears the program running status and reset it to pwd
             echo -ne "\033kzsh\033\\" # clear title string
