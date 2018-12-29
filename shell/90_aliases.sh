@@ -80,10 +80,10 @@ alias map="xargs -n1"
 # (useful when executing time-consuming commands)
 alias bell="tput bel"
 
-alias home="cd $HOME"
-alias dls="cd $HOME/Downloads"
-alias doc="cd $HOME/Documents"
-alias path="echo $PATH | sed -e 's/:/\n/g'"
+alias home='cd $HOME'
+alias dls='cd $HOME/Downloads'
+alias doc='cd $HOME/Documents'
+alias path='echo $PATH | tr ":" "\n"'
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
