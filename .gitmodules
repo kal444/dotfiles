@@ -37,3 +37,6 @@
 [submodule "thirdparty/nodenv"]
 	path = thirdparty/nodenv
 	url = https://github.com/nodenv/nodenv.git
+[submodule "link/nodenv/plugins/node-build"]
+	path = link/nodenv/plugins/node-build
+	url = https://github.com/nodenv/node-build.git
