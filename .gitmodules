@@ -31,3 +31,9 @@
 [submodule "zsh-autosuggestions"]
 	path = thirdparty/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "thirdparty/goenv"]
+	path = thirdparty/goenv
+	url = https://github.com/syndbg/goenv.git
+[submodule "thirdparty/nodenv"]
+	path = thirdparty/nodenv
+	url = https://github.com/nodenv/nodenv.git
