@@ -4,9 +4,11 @@ backups/
 link/goenv/shims/
 link/goenv/version
 link/goenv/versions/
+link/goenv/cache/
 link/nodenv/shims/
 link/nodenv/version
 link/nodenv/versions/
+link/nodenv/cache/
 link/pyenv/shims/
 link/pyenv/version
 link/pyenv/versions/
@@ -14,5 +16,6 @@ link/pyenv/cache/
 link/rbenv/shims/
 link/rbenv/version
 link/rbenv/versions/
+link/rbenv/cache/
 link/vim/vimrc.local
 link/vim/vimrc.bundles.local
