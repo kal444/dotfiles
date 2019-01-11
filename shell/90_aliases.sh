@@ -62,8 +62,7 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 done
 
 # View HTTP traffic
-alias sniff="sudo ngrep -d $default_iface -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i $default_iface -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias sniff="sudo tcpdump -n -c 9999 -w - | wireshark -k -i -"
 
 # URL-encode strings
 alias urlencode='python3 -c "import sys; import urllib.parse; print(urllib.parse.quote_plus(sys.argv[1]));"'
