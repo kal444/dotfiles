@@ -342,6 +342,15 @@ nnoremap <leader>vp :VimuxPromptCommand<CR>
 nnoremap <leader>vz :VimuxZoomRunner<CR>
 " }
 
+" markdown config {
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_toml_frontmatter = 1
+" }
+
+" wiki config {
+let g:wiki_root = '~/Documents/wiki'
+" }
+
 " }
 
 " Key mappings {

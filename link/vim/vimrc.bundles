@@ -11,6 +11,7 @@ Plugin 'airblade/vim-gitgutter' " show git changes in gutter
 Plugin 'scrooloose/nerdtree' " directory tree explorer
 Plugin 'majutsushi/tagbar' " current file tag browser
 Plugin 'simnalamburt/vim-mundo' " treed view of undos
+Plugin 'lervag/wiki.vim' " a little wiki in vim
 
 " editting related
 Plugin 'godlygeek/tabular' " align text on =, :, etc.
@@ -39,9 +40,10 @@ Plugin 'honza/vim-snippets' " community snippets
 Plugin 'pearofducks/ansible-vim'
 Plugin 'ekalinin/dockerfile.vim'
 Plugin 'fatih/vim-go'
-Plugin 'python-mode/python-mode'
 Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'python-mode/python-mode'
 Plugin 'cespare/vim-toml'
 
 " tpope's fundamental plugins
