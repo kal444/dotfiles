@@ -21,6 +21,30 @@ function gitr() {
   done
 }
 
+# log something I did
+function did() {
+  done_file=~/Documents/done.md
+  timestamp="$(date +'%Y-%m-%d %H:%M:%S %A Week %V')"
+
+  if [ -n "$*" ]
+  then
+    # log the entry from the command line
+    message="$*"
+    touch $done_file
+    echo -e "### $timestamp\n- $message\n\n$(cat $done_file)" >| "$done_file"
+  else
+    # no entry input, do this in vim
+    vim +"normal O$timestamp" +'normal o' +'normal ggo-  ' +startinsert "$done_file"
+  fi
+
+  # then show what I just added to that file - print everything up to the first blank line in the file
+  echo ""
+  # don't print automatically
+  # once it hits a blank line quit (without printing the blank line)
+  # otherwise print the non-blank line
+  sed -n -e '/^$/ q' -e 'p' "$done_file"
+}
+
 # list files with have been modified in the last x days. x defaults to 1
 function modified() {
   find . -mtime -${1:-1}
