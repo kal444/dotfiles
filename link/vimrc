@@ -76,6 +76,9 @@ set foldenable " folding is good
 set foldmethod=indent " make folding indent sensitive
 set foldlevel=10 " don't start folding too early
 
+"========== Syntax Concealing
+set conceallevel=2 " by default allow concealing to appreciate the syntax scheme
+
 "========== Display
 set background=dark " use the dark bg color set
 set cursorline " makes cursor easier to find
@@ -95,7 +98,8 @@ set shortmess+=atI " abbreviate all messages
 set showcmd " show current uncompleted command
 set showmatch " show matching bracket briefly
 set showmode " show the current mode
-"my status line
+
+"========== my status line
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [%p%%][POS=%l,%v][LINES=%L]
 set tabpagemax=50 " limit tabs opened
 set title " have vim try to update the title of the window
@@ -343,12 +347,20 @@ nnoremap <leader>vz :VimuxZoomRunner<CR>
 " }
 
 " markdown config {
+let g:vim_markdown_fenced_languages = [ 'c++=cpp', 'viml=vim', 'bash=sh', 'ini=dosini', 'csharp=cs' ]
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_new_list_item_indent = 2
+let g:vim_markdown_no_extensions_in_markdown = 1
 " }
 
 " wiki config {
+let g:wiki_filetypes = [ 'md' ]
+let g:wiki_link_extention = '.md'
 let g:wiki_root = '~/Documents/wiki'
+let g:wiki_journal = 'journal'
+let g:wiki_mappings_use_defaults = 1
 " }
 
 " }
