@@ -44,6 +44,28 @@ function did() {
   # otherwise print the non-blank line
   sed -n -e '/^$/ q' -e 'p' "$done_file"
 }
+function lastweek() {
+  last_week=$(printf 'Week %02d' "$(( $(date +%V)-1 ))")
+  done_file=~/Documents/done.md
+
+  echo "$last_week Summary"
+
+  sed -ne '
+  # if empty line, check all held lines
+  /^$/ b check_and_print
+  # if at EOF, check all held lines
+  $ b check_and_print
+  # hold the line
+  H
+  # to the end, skip subroutine
+  b
+  :check_and_print
+  # hold buffer to pattern buffer
+  x
+  # if pattern buffer has the right week number, print the buffer of all lines
+  /'"$last_week"'/ p
+  ' $done_file
+}
 
 # list files with have been modified in the last x days. x defaults to 1
 function modified() {
