@@ -34,7 +34,7 @@ function did() {
     echo -e "### $timestamp\n- $message\n\n$(cat $done_file)" >| "$done_file"
   else
     # no entry input, do this in vim
-    vim +"normal O$timestamp" +'normal o' +'normal ggo-  ' +startinsert "$done_file"
+    vim +"normal ggO$timestamp" +'normal o' +'normal ggo- ' +'startinsert!' "$done_file"
   fi
 
   # then show what I just added to that file - print everything up to the first blank line in the file
