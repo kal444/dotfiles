@@ -460,7 +460,7 @@ endif
 
 filetype plugin indent on " enable file type detection.
 syntax on " turn on syntax highlighting
-colorscheme solarized8
+colorscheme dracula
 
 " enable omni completion.
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
