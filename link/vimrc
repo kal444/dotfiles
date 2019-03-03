@@ -173,7 +173,7 @@ let g:maplocalleader = ','
 
 " lightline config {
 let g:lightline = {
-  \ 'colorscheme': 'solarized',
+  \ 'colorscheme': 'dracula',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
