@@ -3,6 +3,7 @@ Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
 " color schemes
 Plugin 'lifepillar/vim-solarized8' " new soloarized color scheme
 Plugin 'sjl/badwolf' " color scheme by steve losh
+Plugin 'dracula/vim' " dracula color scheme
 
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
