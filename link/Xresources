@@ -18,3 +18,14 @@
 *.color14:    #9AEDFE
 *.color7:     #BFBFBF
 *.color15:    #E6E6E6
+
+URxvt.font: -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-*
+
+URxvt.urlLauncher:      /usr/bin/firefox
+URxvt.matcher.button:   1
+
+URxvt*saveLines: 50000
+URxvt*scrollstyle:plain
+URxvt*scrollBar: false
+URxvt*cursorBlink: false
+URxvt*cursorUnderline: false
