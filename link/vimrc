@@ -359,7 +359,15 @@ let g:vim_markdown_no_extensions_in_markdown = 1
 let g:wiki_filetypes = [ 'md' ]
 let g:wiki_link_extention = '.md'
 let g:wiki_root = '~/Documents/wiki'
-let g:wiki_journal = 'journal'
+let g:wiki_journal = {
+  \ 'name': 'journal',
+  \ 'frequency': 'daily',
+  \ 'date_format': {
+  \   'daily' : '%Y-%m-%d',
+  \   'weekly' : '%Y_w%V',
+  \   'monthly' : '%Y_m%m',
+  \ },
+\}
 let g:wiki_mappings_use_defaults = 1
 " }
 
