@@ -13,11 +13,12 @@ function gitr() {
     return 0
   fi
   shift
-  find . -name .git |
+  find . -name .git | sort |
   while read i; do
     local dir=$(dirname $i)
     echo $dir
     git -C $dir $gitcmd $@
+    echo
   done
 }
 
