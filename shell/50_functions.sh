@@ -1,8 +1,9 @@
-# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
-# the `.git` directory, listing directories first. The output gets piped into
-# `less`
+# `tre` is a shorthand for `tree` with color enabled,
+# ignoring the `.git` directory,
+# listing directories first.
+# The output gets piped into `less`
 function tre() {
-  tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less;
+  tree -C -I '.git|node_modules|bower_components' --dirsfirst "$@" | less;
 }
 
 # run a git command on all git repo under the current repo
