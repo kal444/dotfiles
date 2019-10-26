@@ -25,9 +25,6 @@
 [submodule "LS_COLORS"]
 	path = thirdparty/LS_COLORS
 	url = https://github.com/trapd00r/LS_COLORS.git
-[submodule "zsh-syntax-highlighting-filetypes"]
-	path = thirdparty/zsh-syntax-highlighting-filetypes
-	url = https://github.com/trapd00r/zsh-syntax-highlighting-filetypes.git
 [submodule "zsh-autosuggestions"]
 	path = thirdparty/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
