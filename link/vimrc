@@ -202,10 +202,10 @@ let g:gitgutter_realtime = 0 " don't update in realtime
 let g:gitgutter_eager = 0 " don't update eagerly, wait for file save
 let g:gitgutter_map_keys = 0 " don't map keys automatically
 
-nmap [c <Plug>GitGutterPrevHunk
-nmap ]c <Plug>GitGutterNextHunk
-nmap <leader>hs <Plug>GitGutterStageHunk
-nmap <leader>hu <Plug>GitGutterUndoHunk
+nmap [c <Plug>(GitGutterPrevHunk)
+nmap ]c <Plug>(GitGutterNextHunk)
+nmap <leader>hs <Plug>(GitGutterStageHunk)
+nmap <leader>hu <Plug>(GitGutterUndoHunk)
 nnoremap <leader>gg :GitGutterToggle<cr>
 " }
 
@@ -222,15 +222,25 @@ nnoremap <leader>tb :TagbarToggle<cr>
 nnoremap <leader>u :MundoToggle<cr>
 " }
 
+" wiki config {
+let g:wiki_filetypes = [ 'md' ]
+let g:wiki_link_extention = '.md'
+let g:wiki_root = '~/Documents/wiki'
+let g:wiki_journal = {
+  \ 'name': 'journal',
+  \ 'frequency': 'daily',
+  \ 'date_format': {
+  \   'daily' : '%Y-%m-%d',
+  \   'weekly' : '%Y_w%V',
+  \   'monthly' : '%Y_m%m',
+  \ },
+\}
+let g:wiki_mappings_use_defaults = 1
+" }
+
 " tabular config {
 nnoremap <leader>l :Tabularize<space>/
 vnoremap <leader>l :Tabularize<space>/
-" }
-
-" delimitMate config {
-let delimitMate_autoclose = 1
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
 " }
 
 " matchit config {
@@ -288,11 +298,6 @@ nnoremap <leader>t :CtrlP<cr>
 nnoremap <leader>T :CtrlPClearCache<cr>:CtrlP<cr>
 " }
 
-" clever-f config {
-let g:clever_f_across_no_line = 1
-let g:clever_f_smart_case = 1
-" }
-
 " easymotion config {
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
@@ -304,46 +309,24 @@ map <leader>k <Plug>(easymotion-k)
 nmap s <Plug>(easymotion-overwin-f2)
 " }
 
-" neocomplete & neosnippet config {
-" start completion always
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#enable_smart_case = 1
-" use vim-snippets
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='$HOME/.vim/bundle/vim-snippets/snippets'
+" SuperTab config {
+function FileThenUserCompletion()
+  " This assume and works better when
+  " completefunc is controlled by SuperTabChain
+  let curline = getline('.')
+  let cnum = col('.')
 
-" <C-h>, <BS>: close popup and delete backward char.
-inoremap <expr> <BS> neocomplete#smart_close_popup()."\<c-h>"
-inoremap <expr> <c-h> neocomplete#smart_close_popup()."\<c-h>"
-
-" <CR>: close popup and save indent. This does not insert CR after selection
-inoremap <silent> <CR> <c-r>=<SID>neo_cr_function()<CR>
-function! s:neo_cr_function()
-  return pumvisible() ? "\<C-y>" : "\<CR>"
+  if curline =~ '<\@<!/\.\?\w*\%' . cnum . 'c' ||
+        \ ((has('win32') || has('win64')) && curline =~ '\\\w*\%' . cnum . 'c')
+    return "\<c-x>\<c-f>"
+  elseif &completefunc != ''
+    return "\<c-x>\<c-u>"
+  endif
 endfunction
 
-" use tab to navigate popup. expand/jump when there is no popup
-imap <expr> <TAB>
- \ pumvisible() ?
- \   "\<c-n>" :
- \   neosnippet#expandable_or_jumpable() ?
- \     "\<Plug>(neosnippet_expand_or_jump)" :
- \     "\<TAB>"
-
-" when you fill out placeholders for snippets, vim is in select mode
-" this allows you to cycle through the placeholder fields using tab
-smap <expr> <TAB>
- \ neosnippet#expandable_or_jumpable() ?
- \   "\<Plug>(neosnippet_expand_or_jump)" :
- \   "\<TAB>"
-" }
-
-" vimux config {
-nnoremap <leader>vi :VimuxInspectRunner<CR>
-nnoremap <leader>vl :VimuxRunLastCommand<CR>
-nnoremap <leader>vp :VimuxPromptCommand<CR>
-nnoremap <leader>vz :VimuxZoomRunner<CR>
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabCompletionContexts = ['FileThenUserCompletion']
+let g:SuperTabCrMapping = 1
 " }
 
 " markdown config {
@@ -355,20 +338,11 @@ let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_extensions_in_markdown = 1
 " }
 
-" wiki config {
-let g:wiki_filetypes = [ 'md' ]
-let g:wiki_link_extention = '.md'
-let g:wiki_root = '~/Documents/wiki'
-let g:wiki_journal = {
-  \ 'name': 'journal',
-  \ 'frequency': 'daily',
-  \ 'date_format': {
-  \   'daily' : '%Y-%m-%d',
-  \   'weekly' : '%Y_w%V',
-  \   'monthly' : '%Y_m%m',
-  \ },
-\}
-let g:wiki_mappings_use_defaults = 1
+" vimux config {
+nnoremap <leader>vi :VimuxInspectRunner<CR>
+nnoremap <leader>vl :VimuxRunLastCommand<CR>
+nnoremap <leader>vp :VimuxPromptCommand<CR>
+nnoremap <leader>vz :VimuxZoomRunner<CR>
 " }
 
 " }
@@ -470,21 +444,23 @@ filetype plugin indent on " enable file type detection.
 syntax on " turn on syntax highlighting
 colorscheme dracula
 
-" enable omni completion.
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-" set extensions for markdown files
+" set more extensions for markdown files
 autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set filetype=markdown
 " markdown files should have spell checking
-autocmd BufNewFile,BufRead *.markdown,*.mkd,*.md set spell
+autocmd FileType markdown set spell
+" add html completion to markdown
+autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
+
+" enable omni completion.
+autocmd FileType * if &omnifunc == '' |
+      \ setlocal omnifunc=syntaxcomplete#Complete | endif
+autocmd FileType * if &omnifunc != '' |
+      \ call SuperTabChain(&omnifunc, "<c-p>") | endif
+
 " restore last edit position if we can
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |
+      \ exe "normal! g`\"" | endif
+
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
 

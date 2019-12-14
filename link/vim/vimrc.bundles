@@ -1,8 +1,6 @@
 Plugin 'VundleVim/Vundle.vim' " must have this for bundle handling
 
 " color schemes
-Plugin 'lifepillar/vim-solarized8' " new soloarized color scheme
-Plugin 'sjl/badwolf' " color scheme by steve losh
 Plugin 'dracula/vim' " dracula color scheme
 
 " visual and large functionality enhancements
@@ -16,7 +14,6 @@ Plugin 'lervag/wiki.vim' " a little wiki in vim
 
 " editting related
 Plugin 'godlygeek/tabular' " align text on =, :, etc.
-Plugin 'raimondi/delimitMate' " auto-completion for quotes, parens, brackets
 Plugin 'vim-scripts/matchit.zip' " configure % to match more than just single characters
 Plugin 'terryma/vim-expand-region' " selection expansion
 Plugin 'kana/vim-textobj-indent' " defines text object for indent (give ii and ai text obj)
@@ -27,15 +24,10 @@ Plugin 'kana/vim-textobj-user' " user defined text objects (used by indent/line/
 " movement, search and replace
 Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
-Plugin 'rhysd/clever-f.vim' " quick movement using f,F,t,T
 Plugin 'easymotion/vim-easymotion' " quick movements
-Plugin 'skwp/greplace.vim' " global search/replace across buffers
 
 " autocompletes & snippets
-Plugin 'Shougo/neocomplete.vim' " auto completion
-Plugin 'Shougo/neosnippet.vim' " snippets engine
-Plugin 'Shougo/neosnippet-snippets' " default snippets
-Plugin 'honza/vim-snippets' " community snippets
+Plugin 'ervandew/supertab'
 
 " vim modes for file types
 Plugin 'pearofducks/ansible-vim'
@@ -45,6 +37,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'python-mode/python-mode'
+Plugin 'hashivim/vim-terraform'
 Plugin 'cespare/vim-toml'
 
 " tpope's fundamental plugins
