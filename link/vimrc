@@ -187,15 +187,6 @@ let g:lightline = {
 \ }
 " }
 
-" indent guides config {
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 1
-let g:indent_guides_guide_size = 0
-let g:indent_guides_default_mapping = 0
-
-nmap <leader>ig <Plug>IndentGuidesToggle
-" }
-
 " gitgutter config {
 let g:gitgutter_enabled = 1 " do enable git gutter
 let g:gitgutter_realtime = 0 " don't update in realtime
@@ -209,6 +200,15 @@ nmap <leader>hu <Plug>(GitGutterUndoHunk)
 nnoremap <leader>gg :GitGutterToggle<cr>
 " }
 
+" indent guides config {
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 1
+let g:indent_guides_guide_size = 0
+let g:indent_guides_default_mapping = 0
+
+nmap <leader>ig <Plug>IndentGuidesToggle
+" }
+
 " NERDTree config {
 nnoremap <leader>nt :NERDTreeToggle<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
@@ -220,22 +220,6 @@ nnoremap <leader>tb :TagbarToggle<cr>
 
 " Mundo config {
 nnoremap <leader>u :MundoToggle<cr>
-" }
-
-" wiki config {
-let g:wiki_filetypes = [ 'md' ]
-let g:wiki_link_extention = '.md'
-let g:wiki_root = '~/Documents/wiki'
-let g:wiki_journal = {
-  \ 'name': 'journal',
-  \ 'frequency': 'daily',
-  \ 'date_format': {
-  \   'daily' : '%Y-%m-%d',
-  \   'weekly' : '%Y_w%V',
-  \   'monthly' : '%Y_m%m',
-  \ },
-\}
-let g:wiki_mappings_use_defaults = 1
 " }
 
 " tabular config {

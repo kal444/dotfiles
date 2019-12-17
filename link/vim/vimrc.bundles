@@ -5,40 +5,30 @@ Plugin 'dracula/vim' " dracula color scheme
 
 " visual and large functionality enhancements
 Plugin 'itchyny/lightline.vim' " lightweight pretty status line
-Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'airblade/vim-gitgutter' " show git changes in gutter
+Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 Plugin 'scrooloose/nerdtree' " directory tree explorer
 Plugin 'majutsushi/tagbar' " current file tag browser
 Plugin 'simnalamburt/vim-mundo' " treed view of undos
-Plugin 'lervag/wiki.vim' " a little wiki in vim
 
 " editting related
 Plugin 'godlygeek/tabular' " align text on =, :, etc.
 Plugin 'vim-scripts/matchit.zip' " configure % to match more than just single characters
 Plugin 'terryma/vim-expand-region' " selection expansion
-Plugin 'kana/vim-textobj-indent' " defines text object for indent (give ii and ai text obj)
-Plugin 'kana/vim-textobj-line' " defines text object for line (give il and al text obj)
-Plugin 'kana/vim-textobj-entire' " defines text object for file (give ie and ae text obj)
-Plugin 'kana/vim-textobj-user' " user defined text objects (used by indent/line/entire)
+Plugin 'wellle/targets.vim' " better text objects for pairs, quotes, separators
 
 " movement, search and replace
 Plugin 'mileszs/ack.vim' " ack searcher in case ag isn't available
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy path finder
 Plugin 'easymotion/vim-easymotion' " quick movements
+Plugin 'qpkorr/vim-bufkill' " BUN / BD / BW to unload/kill/wipe buffer without closing window/split
 
 " autocompletes & snippets
-Plugin 'ervandew/supertab'
+Plugin 'ervandew/supertab' " Simple tab based completion
+Plugin 'dense-analysis/ale' " Async linter use lang server protocol
 
 " vim modes for file types
-Plugin 'pearofducks/ansible-vim'
-Plugin 'ekalinin/dockerfile.vim'
-Plugin 'fatih/vim-go'
-Plugin 'pangloss/vim-javascript'
-Plugin 'elzr/vim-json'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'python-mode/python-mode'
-Plugin 'hashivim/vim-terraform'
-Plugin 'cespare/vim-toml'
+Plugin 'sheerun/vim-polyglot' " Curated list of file type plugins
 
 " tpope's fundamental plugins
 Plugin 'tpope/vim-commentary' " comment/uncomment stuff (gcc / gc)
@@ -52,4 +42,3 @@ Plugin 'tpope/vim-unimpaired' " mappings that works with paired (typically prev/
 " tmux related
 Plugin 'christoomey/vim-tmux-navigator' " unify vim and tmux splits navigation
 Plugin 'benmills/vimux' " quick way to run commands via tmux from vim
-
