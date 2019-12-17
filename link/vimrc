@@ -59,12 +59,14 @@ set autoread " read the file again when it's changed outside vim and not inside 
 set autowrite " write file when :next, :rewind, :last, :first, :previous, :stop, :suspend, :tag, :!, :make commands are used
 set nobackup " backups are for wimps  ;-)
 set backupcopy=yes " see :help crontab
+set fileformats=unix,dos,mac " Prefer Unix
 set encoding=utf-8
 set hidden " keep the changed buffer without saving it
 set writebackup " make a backup before overwriting a file. then remove it after the file was successfully written
 
 "========== Tabs and spaces
 set autoindent " copy indent from current line when starting a new line
+set copyindent " Make autoindent use the same chars as prev line
 set expandtab " use only spaces instead of tabs
 set shiftwidth=2 " number of spaces to use for each step of (auto)indent
 set smarttab " smart handling of tab at the front of the line vs in the line
@@ -87,7 +89,7 @@ set display+=lastline " display last line as much as possible
 set laststatus=2 " always show status line
 set lazyredraw " don't update screen while executing macros, registers and other commands that have not been typed
 set list " show trailing whitespace
-set listchars=tab:▸\ ,trail:▫ " set nicer chars for tabs and trailing spaces
+set listchars=tab:▸\ ,extends:›,precedes:‹,nbsp:·,trail:▫ " set nicer chars for tabs and trailing spaces
 set modeline " do use modelines
 set number " do show line numbers
 set report=0 " report all changed lines
@@ -144,6 +146,7 @@ set hlsearch " highlight searches
 set incsearch " display the match for a search pattern when halfway typing it
 set ignorecase " do ignore case in search patterns. This works well with smartcase set on
 set smartcase " ignore case when the pattern contains lowercase letters only
+set infercase " Completion recognizes capitalization
 if executable('rg')
   " Use rg over grep first
   set grepprg=rg\ --color=never
@@ -210,6 +213,7 @@ nmap <leader>ig <Plug>IndentGuidesToggle
 " }
 
 " NERDTree config {
+let g:NERDTreeAutoDeleteBuffer = 1
 nnoremap <leader>nt :NERDTreeToggle<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
 " }
