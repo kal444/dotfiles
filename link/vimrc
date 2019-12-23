@@ -317,6 +317,26 @@ let g:SuperTabCompletionContexts = ['FileThenUserCompletion']
 let g:SuperTabCrMapping = 1
 " }
 
+" ALE config {
+let g:ale_sign_warning = '▲'
+let g:ale_sign_error = '✗'
+highlight link ALEWarningSign String
+highlight link ALEErrorSign Title
+
+" Useful macros I use the most
+" nmap \d :ALEToggleBuffer<CR>
+" nmap \f :ALEFix<CR>
+" key bindings
+" nmap ]w :ALENextWrap<CR>
+" nmap [w :ALEPreviousWrap<CR>
+" nmap <Leader>f <Plug>(ale_fix)
+
+augroup VimDiff
+  autocmd!
+  autocmd VimEnter,FilterWritePre * if &diff | ALEDisable | endif
+augroup END
+" }
+
 " markdown config {
 let g:vim_markdown_fenced_languages = [ 'c++=cpp', 'viml=vim', 'bash=sh', 'ini=dosini', 'csharp=cs' ]
 let g:vim_markdown_frontmatter = 1
@@ -337,8 +357,17 @@ nnoremap <leader>vz :VimuxZoomRunner<CR>
 
 " Key mappings {
 
+" Make marks always save the column and not just the line
+nnoremap ' `
 " highlight last inserted text
 nnoremap gV `[v`]`
+" Turn off linewise keys. Normally, the `j' and `k' keys move the cursor
+" down one entire line. With line wrapping on, this can cause the cursor
+" to actually skip a few lines on the screen because it's moving from
+" line N to line N+1 in the file. I want this to act more visually --
+" I want `down' to mean the next line on the screen
+nmap j gj
+nmap k gk
 " jj quickly in insertmode gives escape key
 inoremap jj <esc>
 " n / N are updated to always center (vertically) the matches
@@ -375,6 +404,8 @@ xnoremap <cr> y:let @/ = @"<cr>:set hlsearch<cr>
 nnoremap <leader><space> :call whitespace#strip_trailing()<cr>
 " toggle paste mode
 nnoremap <leader>1 :set paste!<cr>
+" Search for the word under the cursor in the current directory
+nmap <leader>a :Ack! "\b<cword>\b" <CR>
 " cd: Switch to the directory of the open buffer
 nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 " cel = clear empty lines - deletes all empty or whitespace only lines
@@ -395,6 +426,8 @@ nnoremap <leader>v :exe ":edit " . vimrc<cr>
 nnoremap <leader>V :exe ":source " . vimrc<cr>
 " write current buffer quickly
 nnoremap <leader>w :w<cr>
+" quickly fix spelling errors by choosing the first result
+nmap <leader>z z=1<CR><CR>
 
 " window movements
 nnoremap <c-h> <c-w>h
@@ -406,6 +439,12 @@ nnoremap <c-\> <c-w>p
 nnoremap <c-w><c-e> <c-w><c-w><c-w>_<c-w><bar>
 " maximize current split
 nnoremap <c-w><c-m> <c-w>_<c-w><bar>
+
+" buffer movements
+" switch between current file and the alternate file similar to <c-^>
+nmap <C-e> :e#<CR>
+" Move to next open buffers.
+nmap <C-n> :bnext<CR>
 
 " }
 
