@@ -45,6 +45,8 @@ alias aptg='apt-get'
 alias dpkgq='dpkg-query'
 
 # docker
+has_command podman && alias docker='podman'
+has_command podman-compose && alias docker-compose='podman-compose'
 alias d='docker'
 alias db='docker build .'
 alias dcomp='docker-compose'
