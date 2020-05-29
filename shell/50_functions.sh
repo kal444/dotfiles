@@ -10,7 +10,7 @@ function tre() {
 function gitr() {
   local gitcmd=$1
   if [ -z "$gitcmd" ]; then
-    echo "Usage: $0 <command>"
+    echo "Usage: gitr <command>"
     return 0
   fi
   shift
@@ -18,7 +18,7 @@ function gitr() {
   while read i; do
     local dir=$(dirname $i)
     echo $dir
-    git -C $dir $gitcmd $@
+    git -C $dir $gitcmd "$@"
     echo
   done
 }
