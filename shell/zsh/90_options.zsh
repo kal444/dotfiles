@@ -30,6 +30,15 @@ bindkey -v
 # list key maps in order of emacs vicmd viins like in the man page
 bind2maps             viins -- 'jj' vi-cmd-mode
 
+bind2maps             viins -- "^a" vi-beginning-of-line
+bind2maps             viins -- "^e" vi-end-of-line
+
+bind2maps emacs vicmd viins -- "^u" kill-whole-line
+bind2maps emacs vicmd viins -- "^k" kill-line
+
+bind2maps emacs vicmd viins -- "^p" history-search-backward
+bind2maps emacs vicmd viins -- "^n" history-search-forward
+
 # allow deleting past vi insert mode start point
 bind2maps             viins -- '^?' backward-delete-char
 
@@ -43,7 +52,3 @@ bind2maps emacs vicmd viins -- '^os' sudo-command-line
 
 bind2maps emacs vicmd viins -- '^ot' words-from-tmux-pane
 bind2maps emacs vicmd viins -- '^o^t' words-from-tmux-pane-anywhere
-
-bind2maps emacs vicmd viins -- "^p" history-search-backward
-bind2maps emacs vicmd viins -- "^n" history-search-forward
-
