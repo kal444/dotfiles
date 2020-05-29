@@ -5,11 +5,17 @@ set keymap vi-command
 
 # keybinding below affects INSERT MODE
 set keymap vi-insert
+C-a: beginning-of-line
+C-e: end-of-line
+C-u: unix-line-discard
+C-k: kill-line
+C-p: history-search-backward
+C-n: history-search-forward
 # Up/down arrows search history
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 # remap jj to exit insert mode, just like in vim
-"jj": vi-movement-mode
+jj: vi-movement-mode
 
 # Make Tab autocomplete regardless of filename case
 set completion-ignore-case on
