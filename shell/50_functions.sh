@@ -6,7 +6,7 @@ function tre() {
   tree -C -I '.git|node_modules|bower_components' --dirsfirst "$@" | less;
 }
 
-# run a git command on all git repo under the current repo
+# run a git command on all git repos under the current directory
 function gitr() {
   local gitcmd=$1
   if [ -z "$gitcmd" ]; then
@@ -14,7 +14,8 @@ function gitr() {
     return 0
   fi
   shift
-  find . -name .git | sort |
+  # Use .git to find git repos. But ignore any repo directories that's hidden
+  find . -name .git | grep -v '\./\..*\.git' | sort |
   while read i; do
     local dir=$(dirname $i)
     echo $dir
