@@ -26,6 +26,12 @@ font pango:monospace 10
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
 
+# app specific fixes
+# fix IntelliJ popups not focusing in i3
+for_window [class="^jetbrains-.+"][window_type=dialog] focus
+# make menus look like menu and not like a window
+for_window [instance="sun-awt-X11-XWindowPeer"] border pixel 0
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
