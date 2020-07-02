@@ -15,7 +15,7 @@ function gitr() {
   fi
   shift
   # Use .git to find git repos. But ignore any repo directories that's hidden
-  find . -name .git | grep -v '\./\..*\.git' | sort |
+  find . -name .git -not -path "*/.*/*" | sort |
   while read i; do
     local dir=$(dirname $i)
     echo $dir
