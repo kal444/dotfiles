@@ -8,7 +8,7 @@ has_command less && export PAGER="less"
 export LESS="-Fe -RX -M -i -x4"
 export LESSEDIT="$EDITOR ?lm+%lm -- %f"
 
-if ls --color=auto -d . >/dev/null 2>&1; then
+if ls --version >/dev/null 2>&1; then
   # echo "has GNU ls"
   eval $(dircolors -b $DOTFILES/thirdparty/LS_COLORS/LS_COLORS)
 elif has_command gls; then
