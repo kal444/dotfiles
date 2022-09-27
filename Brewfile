@@ -28,8 +28,7 @@ brew 'the_silver_searcher'
 brew 'tmux'
 brew 'trash'
 brew 'tree'
-brew 'unrar'
-brew 'wget', args: ['with-iri']
+brew 'wget'
 brew 'zsh'
 
 tap 'homebrew/cask'
