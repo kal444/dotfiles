@@ -174,6 +174,30 @@ function getcertnames() {
   fi;
 }
 
+# Simple calculator
+function calc() {
+  local result=""
+  result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
+  #                       └─ default (when `--mathlib` is used) is 20
+  #
+  if [[ "$result" == *.* ]]; then
+    # improve the output for decimal numbers
+    printf "$result" |
+    sed -e 's/^\./0./'        `# add "0" for cases like ".5"` \
+      -e 's/^-\./-0./'      `# add "0" for cases like "-.5"`\
+      -e 's/0*$//;s/\.$//'   # remove trailing zeros
+  else
+    printf "$result"
+  fi
+  printf "\n"
+}
+
+# quick function to show temperature in F & C
+function temp() {
+  printf '%s°C\n' "$(gunits "tempF($@)" 'tempC' | xargs)"
+  printf '%s°F\n' "$(gunits "tempC($@)" 'tempF' | xargs)"
+}
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
   # Change working directory to the top-most Finder window location
