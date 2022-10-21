@@ -1,4 +1,4 @@
-# define shared aliases for 
+# define shared aliases for
 # both bash and zsh
 #
 
