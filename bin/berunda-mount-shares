@@ -9,10 +9,14 @@ done
 
 ping -q -c1 berunda >/dev/null || exit; # server not up
 
-pw=$(security find-internet-password -w -a kal -s berunda)
+pw=$(security find-internet-password -w -a kal -l berunda)
+
+prefix=$HOME
+
+mkdir -p $HOME/mnt/berunda/{media,public,attic,kal}
 
 # mount only when it's not mounted
-mount | grep -q /opt/kyle/berunda/media || mount -t smbfs smb://kal:$pw@berunda/media /opt/kyle/berunda/media
-mount | grep -q /opt/kyle/berunda/public || mount -t smbfs smb://kal:$pw@berunda/public /opt/kyle/berunda/public
-mount | grep -q /opt/kyle/berunda/attic || mount -t smbfs smb://kal:$pw@berunda/attic /opt/kyle/berunda/attic
-mount | grep -q /opt/kyle/berunda/kal || mount -t smbfs smb://kal:$pw@berunda/home /opt/kyle/berunda/kal
+mount | grep -q $prefix/mnt/berunda/media || mount -t smbfs smb://kal:$pw@berunda/media $prefix/mnt/berunda/media
+mount | grep -q $prefix/mnt/berunda/public || mount -t smbfs smb://kal:$pw@berunda/public $prefix/mnt/berunda/public
+mount | grep -q $prefix/mnt/berunda/attic || mount -t smbfs smb://kal:$pw@berunda/attic $prefix/mnt/berunda/attic
+mount | grep -q $prefix/mnt/berunda/kal || mount -t smbfs smb://kal:$pw@berunda/home $prefix/mnt/berunda/kal
