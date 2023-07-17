@@ -35,29 +35,16 @@
   changed = green
   untracked = cyan
 
-[status]
-  # show details in an untracked directory
-  showUntrackedFiles = all
-
 [diff]
+  # highlight moved lines differently
+  colorMoved = zebra
+
   # Detect copies as well as renames
   renames = copies
 
 [diff "bin"]
   # Use `hexdump` to diff binary files
   textconv = hexdump -v -C
-
-[pull]
-  rebase = preserve
-
-[push]
-  default = simple
-
-  # push will include new tags
-  followTags = true
-
-[branch]
-  autosetuprebase = always
 
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
@@ -68,6 +55,25 @@
 
   # show 3-way merge view
   conflictstyle = diff3
+
+[push]
+  # assume --set-upstream when no tracking exists.
+  # Useful for simple workflow where all branches are expected to be the same on the remote.
+  autoSetupRemote = true
+
+  # push the current branch with same name on the remote
+  default = simple
+
+  # push will include new tags
+  followTags = true
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+
+[status]
+  # show details in an untracked directory
+  showUntrackedFiles = all
 
 [transfer]
   # perform extra checks for receive and transmit
@@ -153,6 +159,7 @@
 
 [include]
   path = ~/.gitconfig.local
+
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
