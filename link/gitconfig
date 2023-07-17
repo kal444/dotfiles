@@ -77,7 +77,7 @@
 
 [transfer]
   # perform extra checks for receive and transmit
-  # DISABLED for now - the checks done by this is very strict, 
+  # DISABLED for now - the checks done by this is very strict,
   # for example timezone errors would prevent cloning a repo
   # fsckobjects = true
 
@@ -114,6 +114,12 @@
   branches = branch -a
   remotes = remote -v
 
+  # handle ignored files
+  # see: https://stackoverflow.com/a/11366713
+  ignored = !git ls-files -v | grep "^[[:lower:]]"
+  ignore = update-index --assume-unchanged
+  unignore = update-index --no-assume-unchanged
+
   # Remove branches that have already been merged with master
   # a.k.a. "delete merged" - same as bclean
   # http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
@@ -130,7 +136,7 @@
   ec = config --global -e
 
   # pull from remote, rebase local changes and remove obsolete remote tracking branches. update submodules too
-  up = !git pull --rebase --prune $@ && git submodule update --init --recursive --rebase
+  up = !git pull --prune $@ && git submodule update --init --recursive
 
   # start new work by switching to a branch
   cob = checkout -b
@@ -161,7 +167,7 @@
   path = ~/.gitconfig.local
 
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
