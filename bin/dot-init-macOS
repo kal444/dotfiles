@@ -44,6 +44,9 @@ defaults write -g AppleICUForce24HourTime -bool true
 defaults write -g AppleFirstWeekday -dict 'gregorian' 2
 defaults write com.apple.iCal "first day of week" -int 1
 
+# holding down shift key will show slow effect of the windows minimizing (genie) effect.
+defaults write com.apple.dock slow-motion-allowed -bool YES
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
