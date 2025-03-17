@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+ping -q -c1 sharabha >/dev/null || exit; # server not up
+
+# unmount only when it's mounted
+mount | grep -q //kal@sharabha/media && umount //kal@sharabha/media
+mount | grep -q //kal@sharabha/public && umount //kal@sharabha/public
+mount | grep -q //kal@sharabha/attic && umount //kal@sharabha/attic
+mount | grep -q //kal@sharabha/home && umount //kal@sharabha/home
