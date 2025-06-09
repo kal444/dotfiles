@@ -78,7 +78,7 @@ cask 'busycal'
 cask 'cleanshot'
 cask 'daisydisk'
 cask 'keyboard-maestro'
-cask 'keycue'
+# cask 'keycue' # commented out to keep keycue at 10.2. /opt/homebrew/Caskroom/keycue has been removed
 cask 'swish'
 cask 'textsniper'
 cask 'unclutter'
