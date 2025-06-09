@@ -13,7 +13,7 @@ ping -q -c1 sharabha >/dev/null || exit; # server not up
 
 prefix=$HOME
 
-mkdir -p $HOME/mnt/sharabha/{media,public,attic,kal}
+mkdir -p $prefix/mnt/sharabha/{media,public,attic,kal}
 
 # mount only when it's not mounted
 mount | grep -q $prefix/mnt/sharabha/media  || mount -v -t smbfs -o -f=644,-d=755 smb://sharabha/media  $prefix/mnt/sharabha/media

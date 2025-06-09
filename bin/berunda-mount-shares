@@ -13,7 +13,7 @@ ping -q -c1 berunda >/dev/null || exit; # server not up
 
 prefix=$HOME
 
-mkdir -p $HOME/mnt/berunda/{media,public,attic,kal}
+mkdir -p $prefix/mnt/berunda/{media,public,attic,kal}
 
 # mount only when it's not mounted
 mount | grep -q $prefix/mnt/berunda/media  || mount -v -t smbfs -o -f=644,-d=755 smb://berunda/media  $prefix/mnt/berunda/media
